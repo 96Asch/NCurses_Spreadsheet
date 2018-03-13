@@ -1,0 +1,10 @@
+# Eclipse project
+.cproject
+.project
+.settings/
+
+# Executable
+spreadsheet
+
+#bin folder
+/bin
