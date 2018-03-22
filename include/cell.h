@@ -12,6 +12,10 @@ class Cell {
 public:
 	Cell();
 	virtual ~Cell();
+
+private:
+
+
 };
 
 #endif /* INCLUDE_CELL_H_ */
