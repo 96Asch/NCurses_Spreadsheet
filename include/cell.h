@@ -17,6 +17,7 @@ class Cell {
 public:
 	Cell();
 	virtual ~Cell();
+<<<<<<< HEAD
   void readInt(int value);
   void readFloat(float value);
   void readString(std::string value);
