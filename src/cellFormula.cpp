@@ -5,7 +5,7 @@
  *      Author: asch
  */
 
-#include "CellFormula.h"
+#include "cellFormula.h"
 
 CellFormula::CellFormula() {
 	// TODO Auto-generated constructor stub

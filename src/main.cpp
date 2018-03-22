@@ -1,9 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "cell.h"
+#include <iostream>
+#include <string>
 
 int main(void) {
-	char s[512] = "Hello world";
-//	puts("!!!Hello World!!!");
-	printf("Message of the day: %s\n", s);
-	return EXIT_SUCCESS;
+	std::string input;
+	
+	std::cout << "Enter stuff\n";
+	while (std::cin >> input) {
+	
+	Cell cell;
+	
+	cell.readString(input);
+	
+	std::cout << cell.getEditString() << std::endl;
+  }
 }
