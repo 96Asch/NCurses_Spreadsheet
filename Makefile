@@ -4,14 +4,17 @@ OBJDIR = bin
 OBJS =	$(addprefix $(OBJDIR)/, $(patsubst $(SRC)/%.cpp, %.o, $(wildcard $(SRC)/*.cpp)))
 INC = include
 SRC = src
-LIB = 
+LIB = curses
+BOOST_LIBS =  -lboost_unit_test_framework
+BOOST_CXXFLAGS = -I/vol/share/groups/liacs/scratch/pt2018/include -DBOOST_TEST_DYN_LINK
+LDFLAGS = -L/vol/share/groups/liacs/scratch/pt2018/lib
 TARGET = spreadsheet
 DEPS = $(wildcard $(INC)/*.h)
 
 
 .PHONY: all clean
 
-all: clean $(OBJDIR) $(TARGET)
+all: $(OBJDIR) $(TARGET)
 	@echo Done Building...	
 
 $(OBJDIR):
@@ -20,13 +23,13 @@ $(OBJDIR):
 
 $(OBJDIR)/%.o:	$(SRC)/%.cpp
 	@echo Building $@
-	@$(CXX) $(CFLAGS) -c -I$(INC) $< -o $@	
+	@$(CXX) $(CFLAGS) $(BOOST_CXXFLAGS) $(LDFLAGS) -c -I$(INC) $< -o $@	
 	@echo Done Building $@
 	
     
 $(TARGET):	$(OBJS) $(DEPS)
 	@echo Building executable $@
-	@$(CXX) $(CFLAGS) -o $@ $^
+	@$(CXX) $(CFLAGS) -o $@ $^ -l$(LIB)
 
 run:
 	@./$(TARGET)

@@ -12,57 +12,59 @@
 #include "cellValueBase.h"
 
 template<typename T>
-class CellValue final : public CellValueBase
-{
-  private:
-    T value;
-  public:
-    CellValue(T initial_value)
-    : CellValueBase(), value(initial_value){ 
-    
-    
-    }
-    ~CellValue() = default;
-    T getValue(){
-      return value;
-    }
-    
-    std::string getDrawString(){
-      using boost::lexical_cast;
-      try {
-        return lexical_cast<std::string>(value);
-      } catch (...) {
-        return "error";
-      }
-    }//getDrawString
+class CellValue final : public CellValueBase {
+private:
+	T value;
+public:
+	CellValue(T initial_value) :
+			CellValueBase(), value(initial_value) {
 
-    std::string getEditString(){
-       using boost::lexical_cast;
-      try {
-        return lexical_cast<std::string>(value);
-      } catch (...) {
-        return "error";
-      }
-    }//getEditString
+	}
+	~CellValue() = default;
+	T getValue() {
+		return value;
+	}
 
-    float  getFloat(){
-      using boost::lexical_cast;
-      try {
-        return lexical_cast<float>(value);
-      } catch (...) {
-        return 0;
-      }
-    }//getFloat
+	std::string getDrawString() {
+		using boost::lexical_cast;
+		using boost::bad_lexical_cast;
+		try {
+			return lexical_cast<std::string>(value);
+		} catch (bad_lexical_cast &) {
+			return "error";
+		}
+	} //getDrawString
 
-    int  getInt(){
-      using boost::lexical_cast;
-      try {
-        return lexical_cast<int>(value);
-      } catch (...) {
-        return 0;
-      }
-    }//getFloat
-};//CellValue   
+	std::string getEditString() {
+		using boost::lexical_cast;
+		using boost::bad_lexical_cast;
+		try {
+			return lexical_cast<std::string>(value);
+		} catch (bad_lexical_cast &) {
+			return "error";
+		}
+	} //getEditString
 
+	float getFloat() {
+		using boost::lexical_cast;
+		using boost::bad_lexical_cast;
+		try {
+			return lexical_cast<float>(value);
+		} catch (bad_lexical_cast &) {
+			return 0;
+		}
+	} //getFloat
+
+	int getInt() {
+		using boost::lexical_cast;
+		using boost::bad_lexical_cast;
+		try {
+			return lexical_cast<int>(value);
+		} catch (bad_lexical_cast &) {
+			return 0;
+		}
+	} //getFloat
+};
+//CellValue   
 
 #endif /* INCLUDE_CELLVALUE_H_ */

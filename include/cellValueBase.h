@@ -15,13 +15,10 @@ public:
 	CellValueBase();
 	virtual ~CellValueBase() = 0;
 	virtual std::string getDrawString() = 0;
-  virtual std::string getEditString() = 0;
-  virtual float getFloat() = 0;
-  virtual int getInt() = 0;  
-  
-	
+	virtual std::string getEditString() = 0;
+	virtual float getFloat() = 0;
+	virtual int getInt() = 0;
+
 };
-
-
 
 #endif /* INCLUDE_CELLVALUEBASE_H_ */
