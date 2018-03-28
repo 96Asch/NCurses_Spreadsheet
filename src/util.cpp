@@ -48,23 +48,11 @@ bool isOperator(const char & c) {
 	case '-':
 	case '/':
 	case '*':
-		return true;
-	default:
-		return false;
-	}
-}
-
-bool isSpecialChar(char c) {
-	switch(c) {
 	case '(':
 	case ')':
-	case ':':
 		return true;
 	default:
 		return false;
 	}
 }
 
-bool isValidRename(char c) {
-	return (!isdigit(c) && !isOperator(c) && !isSpecialChar(c));
-}

@@ -9,16 +9,38 @@
 #define INCLUDE_CELLFORMULAPARSER_H_
 
 #include <string>
-#include <vector>
-#include <stack>
 #include <map>
+#include <list>
 #include "cellAddress.h"
 
-enum Operator {
-	PLUS, MINUS, DIVIDE, MULTIPLICATION, AVG, COUNT, SUM
-};
-
-
+//enum TokenType {
+//	PLUS,
+//	MINUS,
+//	DIVIDE,
+//	MULTIPLICATION,
+//	AVG,
+//	COUNT,
+//	SUM,
+//	CELLADDRESS,
+//	INT,
+//	FLOAT
+//};
+//
+//struct Token {
+//	Token(const TokenType & type, const bool & isOperator) :
+//			type(type), isOper(isOperator) {
+//	}
+//
+//	union {
+//		CellAddress address;
+//		int integer;
+//		float floatingPoint;
+//	} value;
+//
+//	TokenType type;
+//	bool isOper;
+//	Token* left, *right;
+//};
 
 class CellFormulaParser {
 public:
@@ -27,21 +49,15 @@ public:
 	bool parse(const std::string & formula);
 
 private:
-	std::string prefix;
-	std::map<char, std::string> renameTable;
-	char renamable = 33;
 
-	void fillBlankAroundOperatorsAndAppend(std::string &copy,
-			const std::string & src);
-	char getRenamable();
-	void rename(std::string & rename);
-	void reverseRename(std::string & rename);
-	bool parseToken(const std::string & tokenString);
-	bool parseSub(const std::string & subFormula);
-	void infixToPostfix(std::stack<char> & charStack, std::string & formula);
+	std::string fillBlankAroundOperators(const std::string & src);
+	bool isNegativeNum(const std::string & src, size_t index);
+	void split(std::string rename, std::list<std::string> & tokens);
+//	bool parseToken(const char & renamed, Token* token);
+//	Token* buildTree(const std::string & prefix, size_t index, bool & hasError);
 	bool isAggregate(const std::string & str);
 	int getOperatorPriority(const char & op);
-
+	void infixToPrefix(std::list<std::string> & infix);
 };
 
 #endif /* INCLUDE_CELLFORMULAPARSER_H_ */

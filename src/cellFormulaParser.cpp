@@ -8,8 +8,9 @@
 #include "cellFormulaParser.h"
 #include "util.h"
 #include <boost/tokenizer.hpp>
-#include<algorithm>
+#include <algorithm>
 #include <sstream>
+#include <list>
 #include <stack>
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,152 +35,173 @@ bool CellFormulaParser::isAggregate(const std::string & str) {
 
 int CellFormulaParser::getOperatorPriority(const char & op) {
 	switch (op) {
+	case '(':
+	case ')':
+		return 1;
 	case '-':
 	case '+':
 		return 2;
 	case '*':
 	case '\\':
-		return 1;
+		return 3;
 	default:
 		return -1;
 	}
 }
 
-void CellFormulaParser::fillBlankAroundOperatorsAndAppend(std::string &copy,
+bool CellFormulaParser::isNegativeNum(const std::string & src, size_t index) {
+	if (index + 1 < src.size() && src[index] == '-'
+			&& isdigit(src[index + 1])) {
+		if (index == 0)
+			return true;
+		else
+			return (src[index - 1] == '(') || isOperator(src[index - 1]);
+	}
+	return false;
+}
+
+std::string CellFormulaParser::fillBlankAroundOperators(
 		const std::string & src) {
-	for (char c : src) {
-		if (isOperator(c) || c == '(' || c == ')') {
-			copy.push_back(' ');
-			copy.push_back(c);
-			copy.push_back(' ');
+	std::string processed;
+	for (size_t i = 0; i < src.size(); i++) {
+		if (isOperator(src[i]) && !isNegativeNum(src, i)) {
+			processed.push_back(' ');
+			processed.push_back(src[i]);
+			processed.push_back(' ');
 		} else
-			copy.push_back(c);
+			processed.push_back(src[i]);
 	}
+	return processed;
 }
 
-char CellFormulaParser::getRenamable() {
-	char newRenamable;
-	while (!isValidRename(renamable)) {
-		renamable++;
-	}
-	newRenamable = renamable;
-	renamable++;
-
-	if (renamable == 127)
-		renamable = 33;
-	return newRenamable;
-}
-
-//TODO Fix (A3-A5) corner cases in a better way
-void CellFormulaParser::rename(std::string & rename) {
-	std::string copy, tokenString, aggregateString;
-	char temp;
+void CellFormulaParser::split(std::string rename,
+		std::list<std::string> & tokens) {
+	std::string tokenString, aggregateString;
 	bool aggregateMode = false;
-	fillBlankAroundOperatorsAndAppend(copy, rename);
-	rename.clear();
-	std::stringstream ss(copy);
-//	printf("Original String: %s\n", copy.c_str());
+
+	rename = fillBlankAroundOperators(rename);
+	std::stringstream ss(rename);
+
 	while (std::getline(ss, tokenString, ' ')) {
 		if (!tokenString.empty()) {
-
-			if(tokenString == "SUM" || tokenString == "AVG" || tokenString == "COUNT") {
+			if (tokenString == "SUM" || tokenString == "AVG"
+					|| tokenString == "COUNT") {
 				aggregateMode = true;
 			}
-
-			if(aggregateMode) {
+			if (aggregateMode) {
 				aggregateString += tokenString;
-				if(tokenString.front() == ')') {
+				if (tokenString.front() == ')') {
 					aggregateMode = false;
 					tokenString = aggregateString;
 					aggregateString.clear();
 				}
 			}
 
-			if (isAggregate(tokenString) || isCellAddress(tokenString)
-					|| isCellAddress(tokenString.substr(1))
-					|| isCellAddress(
-							tokenString.substr(0, tokenString.size() - 1))) {
-				temp = getRenamable();
-				renameTable.insert(std::make_pair(temp, tokenString));
-				rename.push_back(temp);
-			} else if(!aggregateMode){
-				rename += tokenString;
+			if (!aggregateMode) {
+				tokens.push_back(tokenString);
 			}
-//						printf("Token: %s\n", tokenString.c_str());
-			//			printf("is aggregate?: %s\n", isAggregate(tokenString) ? "YES" : "NO");
 		}
-
-
 	}
 }
 
-void CellFormulaParser::reverseRename(std::string & rename) {
-	std::string temp;
-	for (char c : rename) {
-		if (isValidRename(c)) {
-			if (renameTable.count(c))
-				temp += renameTable.at(c);
-		} else {
-			temp.push_back(c);
-		}
-	}
-	rename = temp;
-}
+//bool CellFormulaParser::parseToken(const char & renamed, Token* token) {
+//	if(isOperator(renamed)) {
+//		token = new Token;
+//		switch(renamed) {
+//		case '+':
+//			token->type = Token::PLUS;
+//			return true;
+//		case '-':
+//			token->type = Token::PLUS;
+//			return true;
+//		case '/':
+//			token->type = Token::PLUS;
+//			return true;
+//		case '*':
+//			token->type = Token::PLUS;
+//			return true;
+//		default:
+//			delete token;
+//			token = nullptr;
+//			return false;
+//		}
+//	}
+//}
+
+//Token* CellFormulaParser::buildTree(const std::string & prefix, size_t index, bool & hasError) {
+//	Token* token = nullptr;
+//	if (index < prefix.size()) {
+//		if(!parseToken(prefix[index++], token)){
+//			hasError = true;
+//			return nullptr;
+//		}
+//		else if(token->isOperator) {
+//			token->left = buildTree(prefix, index, hasError);
+//			token->right = buildTree(prefix, index, hasError);
+//		}
+//		else {
+//			token->left = token->right = nullptr;
+//		}
+//	}
+//}
 
 bool CellFormulaParser::parse(const std::string & formula) {
+
 	if (formula.front() != '=')
 		return false;
-	std::string copy = formula.substr(1, formula.size() - 1);
-
-	rename(copy);
-
-//	while (!charStack.empty()) {
-//		char c = charStack.top();
-//		charStack.pop();
-//		prefix += c;
-//		printf("Rest: %c\n", c);
-//	}
-//	printf("Postfix: %s\n", prefix.c_str());
-//	prefix.clear();
-	printf("Renamed String: %s\n", copy.c_str());
-
-	reverseRename(copy);
-	printf("Turned back String: %s\n", copy.c_str());
-
+	printf("O: %s\n", formula.c_str());
+	std::list < std::string > tokens;
+	split(formula.substr(1, formula.size() - 1), tokens);
+	infixToPrefix (tokens);
+	for (std::string s : tokens) {
+		printf("Token: %s\n", s.c_str());
+	}
 	return true;
 }
 
-void CellFormulaParser::infixToPostfix(std::stack<char> & charStack,
-		std::string & infix) {
-	if (!isOperator(infix)) {
-		prefix += infix;
-		printf("Operand: %s\n", infix.c_str());
-	} else if (infix == "(") {
-		charStack.push('(');
-	} else if (infix == ")") {
-		while (!charStack.empty() && charStack.top() != '(') {
-			char c = charStack.top();
-			charStack.pop();
-			prefix += c;
-			printf("Operator: %c\n", c);
-		}
-		if (!charStack.empty() && charStack.top() == '(') {
-			charStack.pop();
-		}
-	} else {
-		while (!charStack.empty()
-				&& getOperatorPriority(infix.front())
-						<= getOperatorPriority(infix.front())) {
-			if (charStack.top() == '(')
+void CellFormulaParser::infixToPrefix(std::list<std::string> & tokens) {
+	std::list < std::string > temp;
+	std::stack<char> charStack;
+	std::string operators;
+	char op;
+
+	for (auto it = tokens.rbegin(); it != tokens.rend(); it++) {
+		if (!isOperator(*it)) {
+			temp.push_back(*it);
+		} else {
+			op = (*it).front();
+			if (op == ')')
+				charStack.push(op);
+			else if (op == '(') {
+				while (!charStack.empty() && charStack.top() != ')') {
+					operators = charStack.top();
+					temp.push_back(operators);
+					charStack.pop();
+				}
 				charStack.pop();
-			else {
-				char c = charStack.top();
-				printf("op %c\n", c);
-				charStack.pop();
-				prefix += c;
+			} else {
+				if (!charStack.empty()
+						&& getOperatorPriority(charStack.top())
+								<= getOperatorPriority(op)) {
+					charStack.push(op);
+				} else {
+					while (!charStack.empty()
+							&& getOperatorPriority(charStack.top())
+									>= getOperatorPriority(op)) {
+						operators = charStack.top();
+						temp.push_back(operators);
+					}
+					charStack.push(op);
+				}
 			}
 		}
-		charStack.push(infix.front());
 	}
+	while (!charStack.empty()) {
+		operators = charStack.top();
+		temp.push_back(operators);
+		charStack.pop();
+	}
+	tokens.clear();
+	tokens.assign(temp.rbegin(), temp.rend());
 }
 
