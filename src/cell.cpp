@@ -9,29 +9,23 @@
 #include "cellValue.h"
 
 Cell::Cell() {
-	// TODO Auto-generated constructor stub
 	clear();
-
 }
 
-Cell::~Cell() {
-	// TODO Auto-generated destructor stub
-}
-
-void Cell::readInt(int input) {
+void Cell::readInt(const int & input) {
 	value.reset(new CellValue<int>(input));
 }
 
-void Cell::readFloat(float input) {
+void Cell::readFloat(const float & input) {
 	value.reset(new CellValue<float>(input));
 }
 
-void Cell::readString(std::string input) {
+void Cell::readString(const std::string & input) {
 	value.reset(new CellValue<std::string>(input));
 }
 
-void Cell::readFormula(CellFormula formula) {
-
+void Cell::readFormula(const std::string & formula) {
+	value.reset(new CellFormula(formula));
 }
 
 int Cell::getInt() {

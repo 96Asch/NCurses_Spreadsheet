@@ -16,5 +16,5 @@ int main(void) {
 				<< "Output Parsed Formula: ";
 				formula.print();
 	std::cout 	<< "\nEvaluation Result Int: " << formula.getInt() << "\n"
-				<< "\nEvaluation Result Float: " << formula.getFloat() << std::endl;
+				<< "Evaluation Result Float: " << formula.getFloat() << std::endl;
 }

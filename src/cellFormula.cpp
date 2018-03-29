@@ -42,6 +42,7 @@ int CellFormula::getInt() {
 	return static_cast<int>(result);
 }
 
+//TODO Add Celladdresses and Aggregate functions
 float CellFormula::evaluate(std::shared_ptr<Token> & node) {
 	if (node) {
 		switch (node->type) {

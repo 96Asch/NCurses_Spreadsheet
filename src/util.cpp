@@ -10,6 +10,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <math.h>
+#include <fenv.h>
 
 
 bool contains(const std::string & src, const char & c, int & occurence) {
@@ -57,6 +59,7 @@ bool isOperator(const char & c) {
 }
 
 bool isInteger(const float & val) {
-	return val == ceilf(val);
+    fesetround(FE_TONEAREST);
+	return val == rintf(val);
 }
 

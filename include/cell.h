@@ -16,11 +16,11 @@
 class Cell {
 public:
 	Cell();
-	virtual ~Cell();
-	void readInt(int value);
-	void readFloat(float value);
-	void readString(std::string value);
-	void readFormula(CellFormula formula);
+	~Cell() = default;
+	void readInt(const int & value);
+	void readFloat(const float & value);
+	void readString(const std::string & value);
+	void readFormula(const std::string & value);
 
 	int getInt();
 	float getFloat();
