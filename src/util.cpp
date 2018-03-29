@@ -56,3 +56,7 @@ bool isOperator(const char & c) {
 	}
 }
 
+bool isInteger(const float & val) {
+	return val == ceilf(val);
+}
+

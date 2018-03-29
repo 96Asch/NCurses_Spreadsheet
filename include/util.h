@@ -29,6 +29,7 @@ bool contains(const std::string & src, const char & c, int & occurence);
 bool isCellAddress(const std::string & address);
 bool isOperator(const std::string & str);
 bool isOperator(const char & c);
+bool isInteger(const float & val);
 
 
 

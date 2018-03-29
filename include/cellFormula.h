@@ -29,9 +29,11 @@ private:
 	CellFormulaParser parser;
 	std::shared_ptr<Token> formula;
 
+	float result;
 
+	float evaluate(std::shared_ptr<Token> & node);
 	void print(std::shared_ptr<Token> const node);
-	void evaluate();
+
 
 
 };

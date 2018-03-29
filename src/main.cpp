@@ -11,9 +11,10 @@ int main(void) {
 	std::cout << "Enter stuff\n";
 	std::cin >> input;
 	CellFormula formula(input);
-	std::cout << "Raw Formula: " << formula.getEditString() << "\n"
-				<< "Output: " << formula.getDrawString() << "\n"
+	std::cout 	<< "Edit String: " << formula.getEditString() << "\n"
+				<< "Draw String: " << formula.getDrawString() << "\n"
 				<< "Output Parsed Formula: ";
-	formula.print();
-	std::cout << std::endl;
+				formula.print();
+	std::cout 	<< "\nEvaluation Result Int: " << formula.getInt() << "\n"
+				<< "\nEvaluation Result Float: " << formula.getFloat() << std::endl;
 }
