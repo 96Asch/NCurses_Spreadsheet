@@ -8,6 +8,7 @@
 #include "cell.h"
 #include "cellValue.h"
 
+
 Cell::Cell() {
 	clear();
 }
