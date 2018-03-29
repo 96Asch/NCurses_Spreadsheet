@@ -7,15 +7,13 @@
 
 #include "cellFormulaParser.h"
 #include "util.h"
-#include <boost/tokenizer.hpp>
-#include <algorithm>
 #include <sstream>
+#include <algorithm>
 #include <list>
 #include <stack>
 #include <stdio.h>
 #include <stdlib.h>
 
-//TODO Account for multiple brackets
 bool CellFormulaParser::isAggregate(const std::string & str) {
 	std::string aggregates[] = { "SUM", "AVG", "COUNT" };
 	size_t firstBracketIndex;
@@ -25,8 +23,9 @@ bool CellFormulaParser::isAggregate(const std::string & str) {
 			firstBracketIndex = agg.size();
 			if (str[firstBracketIndex] == '(' && str.back() == ')') {
 				if (contains(str.substr(firstBracketIndex + 1), ':', occurence)
-						&& occurence == 1)
+						&& occurence == 1) {
 					return true;
+				}
 			}
 		}
 	}
@@ -71,6 +70,7 @@ std::string CellFormulaParser::fillBlankAroundOperators(
 		} else
 			processed.push_back(src[i]);
 	}
+	printf("Processed String: %s\n", processed.c_str());
 	return processed;
 }
 
@@ -102,61 +102,6 @@ void CellFormulaParser::split(std::string rename,
 			}
 		}
 	}
-}
-
-//bool CellFormulaParser::parseToken(const char & renamed, Token* token) {
-//	if(isOperator(renamed)) {
-//		token = new Token;
-//		switch(renamed) {
-//		case '+':
-//			token->type = Token::PLUS;
-//			return true;
-//		case '-':
-//			token->type = Token::PLUS;
-//			return true;
-//		case '/':
-//			token->type = Token::PLUS;
-//			return true;
-//		case '*':
-//			token->type = Token::PLUS;
-//			return true;
-//		default:
-//			delete token;
-//			token = nullptr;
-//			return false;
-//		}
-//	}
-//}
-
-//Token* CellFormulaParser::buildTree(const std::string & prefix, size_t index, bool & hasError) {
-//	Token* token = nullptr;
-//	if (index < prefix.size()) {
-//		if(!parseToken(prefix[index++], token)){
-//			hasError = true;
-//			return nullptr;
-//		}
-//		else if(token->isOperator) {
-//			token->left = buildTree(prefix, index, hasError);
-//			token->right = buildTree(prefix, index, hasError);
-//		}
-//		else {
-//			token->left = token->right = nullptr;
-//		}
-//	}
-//}
-
-bool CellFormulaParser::parse(const std::string & formula) {
-
-	if (formula.front() != '=')
-		return false;
-	printf("O: %s\n", formula.c_str());
-	std::list < std::string > tokens;
-	split(formula.substr(1, formula.size() - 1), tokens);
-	infixToPrefix (tokens);
-	for (std::string s : tokens) {
-		printf("Token: %s\n", s.c_str());
-	}
-	return true;
 }
 
 void CellFormulaParser::infixToPrefix(std::list<std::string> & tokens) {
@@ -201,7 +146,100 @@ void CellFormulaParser::infixToPrefix(std::list<std::string> & tokens) {
 		temp.push_back(operators);
 		charStack.pop();
 	}
-	tokens.clear();
 	tokens.assign(temp.rbegin(), temp.rend());
+}
+
+void CellFormulaParser::splitAggregates(std::list<std::string> & tokens) {
+	std::string delim = "(:)";
+	std::list < std::string > tempList;
+	std::string temp;
+	for (std::string token : tokens) {
+		if (isAggregate(token)) {
+			std::stringstream ss(token);
+			for (size_t i = 0; i < delim.size(); i++) {
+				std::getline(ss, temp, delim[i]);
+				if (!temp.empty())
+					tempList.push_back(temp);
+			}
+		} else {
+			tempList.push_back(token);
+		}
+	}
+	tokens.assign(tempList.begin(), tempList.end());
+}
+
+bool CellFormulaParser::parseToken(const std::string & token, std::shared_ptr<Token> & newTok) {
+	int intVal;
+	float floatVal;
+	if (isOperator(token)) {
+		switch (token.front()) {
+		case '+':
+			newTok = std::make_shared<Operator>(PLUS);
+			break;
+		case '-':
+			newTok = std::make_shared<Operator>(MINUS);
+			break;
+		case '/':
+			newTok = std::make_shared<Operator>(DIVIDE);
+			break;
+		case '*':
+			newTok = std::make_shared<Operator>(MULTIPLICATION);
+			break;
+		default:
+			return false;
+		}
+	} else if (token == "AVG" || token == "SUM" || token == "COUNT")
+		newTok = std::make_shared<Operator>(aggregateMap.at(token));
+	else if (isCellAddress(token))
+		newTok = std::make_shared<Address>(token);
+	else if (is<int>(token, intVal))
+		newTok = std::make_shared<Integer>(intVal);
+	else if (is<float>(token, floatVal))
+		newTok = std::make_shared<Float>(floatVal);
+	else
+		return false;
+	return true;
+}
+
+std::shared_ptr<Token>  CellFormulaParser::buildTree(ListIt & begin, const ListIt & end,
+		bool & hasError) {
+	std::shared_ptr<Token> token;
+	if (begin != end) {
+		if (!parseToken(*begin++, token)) {
+			hasError = true;
+			return nullptr;
+		} else if (token && token->isOperator) {
+			token->left = buildTree(begin, end, hasError);
+			token->right = buildTree(begin, end, hasError);
+		}
+		else {
+			token->right = token->left = nullptr;
+
+		}
+		return token;
+	}
+	return nullptr;
+}
+
+bool CellFormulaParser::parse(const std::string & formula, std::shared_ptr<Token> & root) {
+
+	if (formula.front() != '=')
+		return false;
+
+	root = nullptr;
+	bool hasError = false;
+	std::list < std::string > tokens;
+
+	split(formula.substr(1, formula.size() - 1), tokens);
+	infixToPrefix (tokens);
+	splitAggregates(tokens);
+	ListIt tokenIt = tokens.begin();
+	root = buildTree(tokenIt, tokens.end(), hasError);
+
+	if (hasError) {
+		root = nullptr;
+		return false;
+	}
+	return true;
 }
 

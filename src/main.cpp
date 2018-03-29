@@ -1,5 +1,6 @@
 #include "cell.h"
-#include "cellFormulaParser.h"
+#include "cellAddress.h"
+#include "cellFormula.h"
 #include "util.h"
 #include <iostream>
 #include <string>
@@ -8,9 +9,11 @@ int main(void) {
 	std::string input;
 
 	std::cout << "Enter stuff\n";
-	CellFormulaParser parser;
-	while (std::cin >> input) {
-		if(!parser.parse(input))
-			std::cout << "parse error" << std::endl;
-	}
+	std::cin >> input;
+	CellFormula formula(input);
+	std::cout << "Raw Formula: " << formula.getEditString() << "\n"
+				<< "Output: " << formula.getDrawString() << "\n"
+				<< "Output Parsed Formula: ";
+	formula.print();
+	std::cout << std::endl;
 }

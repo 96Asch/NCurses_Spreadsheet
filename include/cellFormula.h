@@ -10,20 +10,28 @@
 
 #include <string>
 #include "cellValueBase.h"
+#include "cellFormulaParser.h"
+#include <memory>
 
 class CellFormula : public CellValueBase{
 public:
 	CellFormula(const std::string & formula);
-	~CellFormula() = default;
+	~CellFormula();
 	std::string getDrawString();
 	std::string getEditString();
 	float getFloat();
 	int getInt();
 
-private:
-	std::string originalFormula;
+	void print();
 
-	void parse(const std::string & formula);
+private:
+	std::string originalFormula, output;
+	CellFormulaParser parser;
+	std::shared_ptr<Token> formula;
+
+
+	void print(std::shared_ptr<Token> const node);
+	void evaluate();
 
 
 };
