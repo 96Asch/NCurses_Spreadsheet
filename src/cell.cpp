@@ -9,8 +9,15 @@
 #include "cellValue.h"
 
 
+Cell::Cell(Cell && c) :
+		value(std::move(c.value)) {
+}
+
 Cell::Cell() {
 	clear();
+}
+
+Cell::~Cell() {
 }
 
 void Cell::readInt(const int & input) {
@@ -25,8 +32,8 @@ void Cell::readString(const std::string & input) {
 	value.reset(new CellValue<std::string>(input));
 }
 
-void Cell::readFormula(const std::string & formula) {
-	value.reset(new CellFormula(formula));
+void Cell::readFormula(CellValueBase* base) {
+	value.reset(base);
 }
 
 int Cell::getInt() {

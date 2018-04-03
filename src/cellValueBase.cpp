@@ -8,11 +8,9 @@
 #include "cellValueBase.h"
 
 CellValueBase::CellValueBase() {
-	// TODO Auto-generated constructor stub
 
 }
 
 CellValueBase::~CellValueBase() {
-	// TODO Auto-generated destructor stub
 }
 

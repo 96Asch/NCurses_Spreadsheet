@@ -8,15 +8,14 @@
 #include "cellFormula.h"
 #include "util.h"
 
-CellFormula::CellFormula(const std::string & rawFormula) :
-		originalFormula(rawFormula) {
+CellFormula::CellFormula(Sheet & sheet, const std::string & rawFormula) :
+		sheet(sheet), originalFormula(rawFormula) {
 	if (!parser.parse(rawFormula, formula)) {
 		output = "ERR";
 		formula = nullptr;
-	}
-	else {
+	} else {
 		result = evaluate(formula);
-		if(isInteger(result))
+		if (isInteger(result))
 			output = std::to_string(getInt());
 		else
 			output = std::to_string(getFloat());
@@ -64,9 +63,9 @@ float CellFormula::evaluate(std::shared_ptr<Token> & node) {
 		case INT:
 			return node->getValue();
 		case CELLADDRESS:
-			return 3;
-		default:
-			return 0;
+			CellAddress address(node->toString());
+			//TODO ERROR if cell is a string or circular
+			return sheet.getCell(address.getRow(), address.getColumn()).getFloat();
 		}
 	}
 	return 0;

@@ -8,6 +8,9 @@
 #ifndef INCLUDE_UTIL_H_
 #define INCLUDE_UTIL_H_
 
+#define MAX_COL_LENGTH 3
+#define MAX_ROW_LENGTH 3
+
 #include <string>
 #include <boost/lexical_cast.hpp>
 
@@ -24,13 +27,11 @@ bool is(std::string someString, T & casted) {
 
 	return true;
 }
-
+void splitAddress(const std::string & address, size_t & index);
 bool contains(const std::string & src, const char & c, int & occurence);
 bool isCellAddress(const std::string & address);
 bool isOperator(const std::string & str);
 bool isOperator(const char & c);
 bool isInteger(const float & val);
-
-
 
 #endif /* INCLUDE_UTIL_H_ */

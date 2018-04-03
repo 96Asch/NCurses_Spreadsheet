@@ -61,7 +61,9 @@ struct Token {
 		}
 	}
 
-	virtual float getValue(){return 0;}
+	virtual float getValue() {
+		return 0;
+	}
 
 	TokenType type;
 	bool isOperator;
@@ -82,7 +84,9 @@ struct Float: Token {
 	std::string toString() {
 		return std::to_string(value);
 	}
-	float getValue(){return value;}
+	float getValue() {
+		return value;
+	}
 	float value;
 };
 
@@ -93,7 +97,9 @@ struct Integer: Token {
 	std::string toString() {
 		return std::to_string(value);
 	}
-	float getValue(){return value;}
+	float getValue() {
+		return value;
+	}
 	int value;
 };
 

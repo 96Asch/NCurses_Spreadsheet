@@ -8,25 +8,25 @@
 #ifndef INCLUDE_CELL_H_
 #define INCLUDE_CELL_H_
 
-#include<string>
-#include"cellFormula.h"
-#include"cellValueBase.h"
-#include<memory>
+#include <string>
+#include <memory>
+
+#include "cellValueBase.h"
 
 class Cell {
 public:
+	Cell(Cell&& c);
 	Cell();
-	~Cell() = default;
+	~Cell();
 	void readInt(const int & value);
 	void readFloat(const float & value);
 	void readString(const std::string & value);
-	void readFormula(const std::string & value);
+	void readFormula(CellValueBase* base);
 
 	int getInt();
 	float getFloat();
 	std::string getEditString();
 	std::string getDrawString();
-	CellFormula getFormula();
 
 	void clear();
 private:

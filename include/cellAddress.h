@@ -13,17 +13,17 @@
 class CellAddress {
 public:
 	CellAddress(std::string address);
-	virtual ~CellAddress();
+	~CellAddress() = default;
 
-  int getRow();
-  int getColumn();
+	int getRow();
+	int getColumn();
+	void createFromReference(const std::string & address);
 private:
-  int row;
-  int column;
-  int letterToInt(char c);
-  void columnToNumber(std::string letter);
-	void rowToIndex(std::string rowNumber);
-	void init(std::string address);
+	int row;
+	int column;
+	int letterToInt(const char & c);
+	void columnToNumber(const std::string & letter);
+	void rowToIndex(const std::string & rowNumber);
 };
 
 #endif /* INCLUDE_CELLADDRESS_H_ */
