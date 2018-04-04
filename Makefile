@@ -1,15 +1,17 @@
 MAKE = make
+
 SRC = src
 MODEL = $(SRC)/model
 VIEW = $(SRC)/view
 CONTROL = $(SRC)/controller
 UTIL = $(SRC)/util
-TEST = src/test
-CURRDIR = $(shell pwd)
+
 CXX = g++ 
 CFLAGS = -std=c++14 -Wall -g -Wextra -pedantic 
 OBJDIR = bin
 LIBDIR = src/lib
+TESTDIR = src/test
+
 INC = -I$(UTIL)/include -I$(MODEL)/include #-I$(VIEW)/include $-I(CONTROL)/include
 
 LIBS = -lcurses -lmodel -lutil
@@ -18,19 +20,21 @@ BOOST_CXXFLAGS = -I/vol/share/groups/liacs/scratch/pt2018/include -DBOOST_TEST_D
 LDFLAGS = -L$(LIBDIR) -L/vol/share/groups/liacs/scratch/pt2018/lib
 
 TARGET = spreadsheet
-
+TESTERS = modeltest
 .PHONY: all clean
 
-all: $(LIBDIR) obj $(TARGET)
+all: build $(TARGET)
 	@echo Done Building...	
 
-$(OBJDIR):
-	@echo Making bin directory
-	@mkdir $(OBJDIR)
+build: $(LIBDIR) obj 
 
 $(LIBDIR):
 	@echo Making $(LIBDIR) directory
 	@mkdir $(LIBDIR)
+
+$(TEST):
+	@echo Making test directory
+	@mkdir $(TEST)
 	
 obj: 
 	@echo Make $(MODEL) object
@@ -44,19 +48,16 @@ obj:
     
 $(TARGET):	src/main.cpp
 	@echo Building executable $@
-	$(CXX) $(CFLAGS) $(LDFLAGS) $(INC) -o $@ $^ $(LIBS)
+	@$(CXX) $(CFLAGS) $(LDFLAGS) $(INC) -o $@ $^ $(LIBS)
 
-$(TEST):
-	@echo Making test directory
-	@mkdir $(TEST)
+check: $(TEST) build $(TESTERS)
+	@./maintest
 
-check: $(TEST) obj testing
-	./maintest
-
-testing:	src/maintest.cpp
-	$(CXX) $(CFLAGS) $(LDFLAGS) $(INC) -o maintest $^ $(LIBS)
-
-#	export LD_LIBRARY_PATH="src/lib"
+$(TESTERS):	$(SRC)/modeltest.cpp
+	@$(CXX) $(CFLAGS) $(LDFLAGS) $(INC) -o maintest $^ $(LIBS)
+	
+dist: clean
+	tar -czvf opdracht2-s1913999-s1437267-s1551973-s1453440.tar.gz src/ Makefile README.MD --exclude=".*"
 
 clean:
 	@echo Cleaning $(OBJDIR) $(LIBDIR) $(TARGET) $(wildcard *.o)...
@@ -65,5 +66,5 @@ clean:
 	@+$(MAKE) -C $(MODEL) $@
 	@+$(MAKE) -C $(VIEW) $@
 	@+$(MAKE) -C $(CONTROL) $@
-	@rm -rf $(OBJDIR) $(LIBDIR) $(TEST)
+	@rm -rf $(LIBDIR) $(TEST)
 	@echo Done Cleaning...

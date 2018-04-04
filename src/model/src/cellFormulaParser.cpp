@@ -11,8 +11,6 @@
 #include <algorithm>
 #include <list>
 #include <stack>
-#include <stdio.h>
-#include <stdlib.h>
 
 bool CellFormulaParser::isAggregate(const std::string & str) {
 	std::string aggregates[] = { "SUM", "AVG", "COUNT" };
@@ -70,7 +68,6 @@ std::string CellFormulaParser::fillBlankAroundOperators(
 		} else
 			processed.push_back(src[i]);
 	}
-	printf("Processed String: %s\n", processed.c_str());
 	return processed;
 }
 

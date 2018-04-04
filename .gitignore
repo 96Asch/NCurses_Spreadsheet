@@ -5,6 +5,11 @@
 
 # Executable
 spreadsheet
+modeltest
 
 #bin folder
 /bin
+
+# Shared Libraries
+*.so
+*.o
