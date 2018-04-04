@@ -15,4 +15,4 @@ modeltest
 *.o
 
 #zip
-*.tar.gz	
+*.gz	
