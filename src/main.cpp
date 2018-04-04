@@ -1,11 +1,10 @@
+#include "sheet.h"
 #include "cell.h"
-#include "cellAddress.h"
-#include "cellFormula.h"
-#include "util.h"
 #include <iostream>
-#include <string>
-#include <cellAddress.h>
 
 int main(void) {
-	return EXIT_SUCCESS;
+	Sheet sheet;
+	sheet.getCell(0, 0).readFloat(4);
+	std::cout << sheet.getCell(0, 0).getFloat() << std::endl;
+	return 0;
 }

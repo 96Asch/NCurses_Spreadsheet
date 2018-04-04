@@ -1,44 +1,59 @@
-CXX = g++ 
-CFLAGS =	-std=c++14 -Wall -g -Wextra -pedantic 
-OBJDIR = bin
-OBJS =	$(addprefix $(OBJDIR)/, $(patsubst $(SRC)/%.cpp, %.o, $(wildcard $(SRC)/*.cpp)))
-INC = include
+MAKE = make
 SRC = src
-LIB = curses
+MODEL = $(SRC)/model
+VIEW = $(SRC)/view
+CONTROL = $(SRC)/controller
+UTIL = $(SRC)/util
+
+CURRDIR = $(shell pwd)
+CXX = g++ 
+CFLAGS = -std=c++14 -Wall -g -Wextra -pedantic 
+OBJDIR = bin
+LIBDIR = src/lib
+INC = -I$(UTIL)/include -I$(MODEL)/include #-I$(VIEW)/include $-I(CONTROL)/include
+
+LIBS = -lcurses -lmodel -lutil
 BOOST_LIBS =  -lboost_unit_test_framework
 BOOST_CXXFLAGS = -I/vol/share/groups/liacs/scratch/pt2018/include -DBOOST_TEST_DYN_LINK
-LDFLAGS = -L/vol/share/groups/liacs/scratch/pt2018/lib
-TARGET = spreadsheet
-DEPS = $(wildcard $(INC)/*.h)
+LDFLAGS = -L$(LIBDIR) -L/vol/share/groups/liacs/scratch/pt2018/lib
 
+TARGET = spreadsheet
 
 .PHONY: all clean
 
-all: $(OBJDIR) $(TARGET)
+all: $(LIBDIR) obj $(TARGET)
 	@echo Done Building...	
 
 $(OBJDIR):
 	@echo Making bin directory
 	@mkdir $(OBJDIR)
 
-$(OBJDIR)/%.o:	$(SRC)/%.cpp
-	@echo Building $@
-	@$(CXX) $(CFLAGS) $(BOOST_CXXFLAGS) $(LDFLAGS) -c -I$(INC) $< -o $@	
-	@echo Done Building $@
+$(LIBDIR):
+	@echo Making $(LIBDIR) directory
+	@mkdir $(LIBDIR)
 	
+obj: 
+	@echo Make $(MODEL) object
+	@+$(MAKE) -C $(UTIL)
+	@+$(MAKE) -C $(MODEL)
+#	@echo Make $(VIEW) object
+#	@+$(MAKE) -C $(VIEW)
+#	@echo Make $(CONTROL) object
+#	@+$(MAKE) -C $(CONTROL)
+
     
-$(TARGET):	$(OBJS) $(DEPS)
+$(TARGET):	src/main.cpp
 	@echo Building executable $@
-	@$(CXX) $(CFLAGS) -o $@ $^ -l$(LIB)
-
-run:
-	@./$(TARGET)
-
-check:
+	$(CXX) $(CFLAGS) $(LDFLAGS) $(INC) -o $@ $^ $(LIBS)
 	
+#	export LD_LIBRARY_PATH="src/lib"
 
 clean:
-	@echo Cleaning $(OBJDIR) $(TARGET) $(wildcard *.o)...
+	@echo Cleaning $(OBJDIR) $(LIBDIR) $(TARGET) $(wildcard *.o)...
 	@rm -f $(TARGET) $(wildcard *.o)
-	@rm -rf $(OBJDIR)
+	@+$(MAKE) -C $(UTIL) $@
+	@+$(MAKE) -C $(MODEL) $@
+	@+$(MAKE) -C $(VIEW) $@
+	@+$(MAKE) -C $(CONTROL) $@
+	@rm -rf $(OBJDIR) $(LIBDIR)
 	@echo Done Cleaning...
