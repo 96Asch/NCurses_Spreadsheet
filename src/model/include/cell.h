@@ -15,18 +15,13 @@
 
 class Cell {
 public:
-	Cell(Cell&& c);
 	Cell();
-	~Cell();
-	void readInt(const int & value);
-	void readFloat(const float & value);
-	void readString(const std::string & value);
-	void readFormula(CellValueBase* base);
+	void set(CellValueBase* base);
 
 	int getInt();
 	float getFloat();
-	std::string getEditString();
-	std::string getDrawString();
+	std::string getEditString() const;
+	std::string getDrawString() const;
 
 	void clear();
 private:

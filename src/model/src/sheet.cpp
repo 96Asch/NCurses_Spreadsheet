@@ -1,8 +1,6 @@
 #include "sheet.h"
 
-Sheet::Sheet() :
-		sheet(80) {
-}
+Sheet::Sheet() : sheet(80) {}
 
 std::vector<Column>::iterator Sheet::begin() {
 	return sheet.begin();
@@ -17,7 +15,5 @@ Cell & Sheet::getCell(int row, int column) {
 }
 
 void Sheet::ensureSize(const int & rows, const int & cols) {
-//	sheet.resize(cols);
-//	for(int i =0; i < cols; i++)
-//		sheet.at(i).resize(rows);
+
 }

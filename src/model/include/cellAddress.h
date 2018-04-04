@@ -12,12 +12,16 @@
 
 class CellAddress {
 public:
+  CellAddress(const CellAddress & add);
 	CellAddress(std::string address);
+	CellAddress() = default;
 	~CellAddress() = default;
-
-	int getRow();
-	int getColumn();
+  
+   
+	int getRow() const;
+	int getColumn() const;
 	void createFromReference(const std::string & address);
+
 private:
 	int row;
 	int column;
@@ -25,5 +29,6 @@ private:
 	void columnToNumber(const std::string & letter);
 	void rowToIndex(const std::string & rowNumber);
 };
+
 
 #endif /* INCLUDE_CELLADDRESS_H_ */

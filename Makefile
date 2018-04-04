@@ -4,7 +4,7 @@ MODEL = $(SRC)/model
 VIEW = $(SRC)/view
 CONTROL = $(SRC)/controller
 UTIL = $(SRC)/util
-
+TEST = src/test
 CURRDIR = $(shell pwd)
 CXX = g++ 
 CFLAGS = -std=c++14 -Wall -g -Wextra -pedantic 
@@ -45,7 +45,17 @@ obj:
 $(TARGET):	src/main.cpp
 	@echo Building executable $@
 	$(CXX) $(CFLAGS) $(LDFLAGS) $(INC) -o $@ $^ $(LIBS)
-	
+
+$(TEST):
+	@echo Making test directory
+	@mkdir $(TEST)
+
+check: $(TEST) obj testing
+	./maintest
+
+testing:	src/maintest.cpp
+	$(CXX) $(CFLAGS) $(LDFLAGS) $(INC) -o maintest $^ $(LIBS)
+
 #	export LD_LIBRARY_PATH="src/lib"
 
 clean:
@@ -55,5 +65,5 @@ clean:
 	@+$(MAKE) -C $(MODEL) $@
 	@+$(MAKE) -C $(VIEW) $@
 	@+$(MAKE) -C $(CONTROL) $@
-	@rm -rf $(OBJDIR) $(LIBDIR)
+	@rm -rf $(OBJDIR) $(LIBDIR) $(TEST)
 	@echo Done Cleaning...

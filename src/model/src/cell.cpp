@@ -8,48 +8,39 @@
 #include "cell.h"
 #include "cellValue.h"
 
-
-Cell::Cell(Cell && c) :
-		value(std::move(c.value)) {
-}
+#define DEFAULT_NUM 0
+#define DEFAULT_STR ""
 
 Cell::Cell() {
 	clear();
 }
 
-Cell::~Cell() {
-}
-
-void Cell::readInt(const int & input) {
-	value.reset(new CellValue<int>(input));
-}
-
-void Cell::readFloat(const float & input) {
-	value.reset(new CellValue<float>(input));
-}
-
-void Cell::readString(const std::string & input) {
-	value.reset(new CellValue<std::string>(input));
-}
-
-void Cell::readFormula(CellValueBase* base) {
+void Cell::set(CellValueBase* base) {
 	value.reset(base);
 }
 
 int Cell::getInt() {
-	return value->getInt();
+  if(value)
+	  return value->getInt();
+	return DEFAULT_NUM;
 }
 
 float Cell::getFloat() {
-	return value->getFloat();
+  if(value)
+	  return value->getFloat();
+  return DEFAULT_NUM;
 }
 
-std::string Cell::getEditString() {
-	return value->getEditString();
+std::string Cell::getEditString() const {
+  if(value)
+	  return value->getEditString();
+  return DEFAULT_STR;
 }
 
-std::string Cell::getDrawString() {
-	return value->getDrawString();
+std::string Cell::getDrawString() const {
+	if(value)
+	  return value->getDrawString();
+  return DEFAULT_STR;
 }
 
 void Cell::clear() {

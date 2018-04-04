@@ -10,6 +10,9 @@
 #include <iostream>
 #include <cmath>
 
+CellAddress::CellAddress(const CellAddress & add) : row(add.row),
+	column(add.column) {}
+
 CellAddress::CellAddress(std::string address) {
 	createFromReference(address);
 }
@@ -39,10 +42,10 @@ void CellAddress::rowToIndex(const std::string & rowNumber) {
 	row = std::stoi(rowNumber) - 1;
 }
 
-int CellAddress::getRow() {
+int CellAddress::getRow() const {
 	return row;
 }
 
-int CellAddress::getColumn() {
-	return column;
+int CellAddress::getColumn() const {
+	return column-1;
 }

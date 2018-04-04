@@ -3,17 +3,19 @@ CFLAGS = -std=c++14 -Wall -fPIC -g -Wextra -pedantic
 OBJDIR = bin
 CURRDIR = $(shell pwd)
 LIBDIR = ../lib
+
 CXX = g++ 
 OBJS =	$(addprefix $(OBJDIR)/, $(patsubst $(SRC)/%.cpp, %.o, $(wildcard $(SRC)/*.cpp)))
 INC = -Iinclude -I../util/include
 SRC = src
-BOOST_LIBS =  -lboost_unit_test_framework
-BOOST_CXXFLAGS = -I/vol/share/groups/liacs/scratch/pt2018/include -DBOOST_TEST_DYN_LINK
+BOOST_LIBS =  #-lboost_unit_test_framework
+BOOST_CXXFLAGS = #-I/vol/share/groups/liacs/scratch/pt2018/include -DBOOST_TEST_DYN_LINK
 
 .PHONY: all clean
 
 all: $(OBJDIR) link
 	@echo Done Building...	
+	
 
 $(OBJDIR):
 	@echo Making $(OBJDIR) directory
@@ -27,6 +29,7 @@ $(OBJDIR)/%.o:	$(SRC)/%.cpp
 link:	$(OBJS)
 	@echo Linking files... 
 	$(CXX) -shared $(CFLAGS) -o $(LIBDIR)/libmodel.so $(OBJS)
+  
 
 clean:
 	@echo Cleaning $(OBJDIR) $(TARGET) $(wildcard *.o)...
