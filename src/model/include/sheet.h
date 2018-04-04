@@ -17,7 +17,7 @@ public:
 	Sheet();
 	~Sheet() = default;
 	std::vector<Column>::iterator begin();
-  std::vector<Column>::iterator end();
+	std::vector<Column>::iterator end();
 	Cell& getCell(int row, int column);
 	void ensureSize(const int & rows, const int & cols);
 

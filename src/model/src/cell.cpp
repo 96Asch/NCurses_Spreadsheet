@@ -19,28 +19,28 @@ void Cell::set(CellValueBase* base) {
 	value.reset(base);
 }
 
-int Cell::getInt() {
-  if(value)
-	  return value->getInt();
+int Cell::getInt() const {
+	if (value)
+		return value->getInt();
 	return DEFAULT_NUM;
 }
 
-float Cell::getFloat() {
-  if(value)
-	  return value->getFloat();
-  return DEFAULT_NUM;
+float Cell::getFloat() const {
+	if (value)
+		return value->getFloat();
+	return DEFAULT_NUM;
 }
 
 std::string Cell::getEditString() const {
-  if(value)
-	  return value->getEditString();
-  return DEFAULT_STR;
+	if (value)
+		return value->getEditString();
+	return DEFAULT_STR;
 }
 
 std::string Cell::getDrawString() const {
-	if(value)
-	  return value->getDrawString();
-  return DEFAULT_STR;
+	if (value)
+		return value->getDrawString();
+	return DEFAULT_STR;
 }
 
 void Cell::clear() {

@@ -14,19 +14,46 @@
 #include "cellValueBase.h"
 
 class Cell {
+
 public:
 	Cell();
+	/**
+	 * Sets a value in the cell.
+	 * @param Celvaluebase pointer to a value
+	 */
 	void set(CellValueBase* base);
 
-	int getInt();
-	float getFloat();
+	/**
+	 * Returns an integer value from the cell.
+	 * @return integer value
+	 */
+	int getInt() const;
+
+	/**
+	 * Returns a float value from the cell.
+	 * @return float value
+	 */
+	float getFloat() const;
+
+	/**
+	 * Returns a string value for editing.
+	 * @return string value
+	 */
 	std::string getEditString() const;
+
+	/**
+	 * Returs a string value for drawing.
+	 * @return string value
+	 */
 	std::string getDrawString() const;
 
+	/**
+	 * Clears the value of the cell
+	 */
 	void clear();
+
 private:
 	std::unique_ptr<CellValueBase> value;
-
 };
 
 #endif /* INCLUDE_CELL_H_ */

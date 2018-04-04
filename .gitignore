@@ -13,3 +13,6 @@ modeltest
 # Shared Libraries
 *.so
 *.o
+
+#zip
+*.tar.gz	

@@ -26,7 +26,7 @@ $(OBJDIR)/%.o:	$(SRC)/%.cpp
 
 link:	$(OBJS)
 	@echo Linking files... 
-	$(CXX) -shared $(CFLAGS) -o $(LIBDIR)/libutil.so $(OBJS)
+	@$(CXX) -shared $(CFLAGS) -o $(LIBDIR)/libutil.so $(OBJS)
 
 clean:
 	@echo Cleaning $(OBJDIR) $(TARGET) $(wildcard *.o)...

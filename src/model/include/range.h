@@ -5,76 +5,84 @@
 #include "cellAddress.h"
 #include "cell.h"
 #include "sheet.h"
-#include <iterator>
 
 class RangeIterator;
 
 class Range {
 public:
-	Range();
+	Range() = default;
 	~Range() = default;
 
-  RangeIterator begin();
-  RangeIterator end();
-  
-private:
-  bool checkRange(std::string address, int & split);
-  Range* createRange(CellAddress begin, CellAddress end, Sheet* sheet);
-  Range* rangeFromString(std::string rangeString, Sheet* sheet);
- 
+	Range* createRange(CellAddress begin, CellAddress end, Sheet* sheet);
+	Range* rangeFromString(const std::string & rangeString, Sheet* sheet);
+	RangeIterator begin();
+	RangeIterator end();
+	int getSize();
+	typedef RangeIterator iterator;
 
- 
-  CellAddress beginAddress;
-  CellAddress endAddress;
-  Sheet* sheet;
+private:
+	CellAddress beginAddress;
+	CellAddress endAddress;
+	Sheet* sheet;
+
+	bool checkRange(const std::string & address, int & split);
 };
 
-class RangeIterator : public std::iterator<std::input_iterator_tag, Cell>
-{
-  private:
-    Sheet* sheet;
-    int offsetX;
-    int offsetY;
-    CellAddress begin;
-    CellAddress end;
-    
-  public:
-      RangeIterator(Sheet* sheet, const CellAddress & beginAdd, const CellAddress & endAdd) : sheet(sheet), begin(beginAdd), end(endAdd){ 
+class RangeIterator: public std::iterator<std::input_iterator_tag, Cell> {
+private:
+	Sheet* sheet;
+	int offsetX, offsetY;
+	int beginY, endX, endY;
 
-      offsetX = beginAdd.getColumn();
-      offsetY = beginAdd.getRow();
-    }
-    
-  /* Zijn de iteratoren gelijk aan elkaar? */
-  bool operator==(const RangeIterator &iter) const {
-    return (&iter.sheet == &sheet && iter.offsetY == offsetY && iter.offsetX == offsetX &&
-    begin.getRow() == iter.begin.getRow() && begin.getColumn() == iter.begin.getColumn() 
-    && end.getRow() == iter.end.getRow() && end.getColumn() == iter.end.getColumn());
-  }
-  
-  bool operator!=(const RangeIterator &iter) const {
-    return !operator==(iter);
-  }
-  
-  /* Element op de huidige plek van de iterator uitlezen */
-  Cell &operator*() const {
-    return sheet->getCell(offsetY, offsetX);
-  }
-  
-  Cell *operator->() const {
-    return &sheet->getCell(offsetY, offsetX);
-  }
-  
-  /* Implementeer "++iter": verplaats de iterator een plek */
-  RangeIterator &operator++() {
-    if (offsetX < end.getColumn()) {  
-      offsetY++;
-      if (offsetY > end.getRow()){
-        offsetX++;
-        offsetY = begin.getRow();
-      }
-    }
-    return *this;
-  }
+public:
+	RangeIterator(Sheet* sheet, const CellAddress & beginAdd,
+			const CellAddress & endAdd) :
+			sheet(sheet), offsetX(beginAdd.getColumn()), offsetY(
+					beginAdd.getRow()), beginY(beginAdd.getRow()), endX(
+					endAdd.getColumn()), endY(endAdd.getRow()) {
+	}
+
+	//TODO FIX equals
+	/* Zijn de iteratoren gelijk aan elkaar? */
+	bool operator==(const RangeIterator &iter) const {
+		return (iter.offsetY == offsetY && iter.offsetX == offsetX);
+	}
+
+	bool operator!=(const RangeIterator &iter) const {
+		return !operator==(iter);
+	}
+
+	/* Element op de huidige plek van de iterator uitlezen */
+	Cell &operator*() const {
+		return sheet->getCell(offsetY, offsetX);
+	}
+
+	Cell *operator->() const {
+		return &sheet->getCell(offsetY, offsetX);
+	}
+
+	/* Implementeer "++iter": verplaats de iterator een plek */
+	RangeIterator &operator++() {
+		if (offsetX <= endX) {
+			offsetY++;
+			if (offsetY > endY) {
+				offsetX++;
+				offsetY = beginY;
+			}
+		}
+		return *this;
+	}
+
+	RangeIterator &operator++(int) {
+		if (offsetX <= endX) {
+			offsetY++;
+			if (offsetY > endY) {
+				offsetX++;
+				offsetY = beginY;
+			}
+		}
+		return *this;
+	}
+
 };
 #endif 

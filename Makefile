@@ -31,10 +31,6 @@ build: $(LIBDIR) obj
 $(LIBDIR):
 	@echo Making $(LIBDIR) directory
 	@mkdir $(LIBDIR)
-
-$(TEST):
-	@echo Making test directory
-	@mkdir $(TEST)
 	
 obj: 
 	@echo Make $(MODEL) object
@@ -50,21 +46,21 @@ $(TARGET):	src/main.cpp
 	@echo Building executable $@
 	@$(CXX) $(CFLAGS) $(LDFLAGS) $(INC) -o $@ $^ $(LIBS)
 
-check: $(TEST) build $(TESTERS)
-	@./maintest
+check: build $(TESTERS)
+	@./$(TESTERS)
 
 $(TESTERS):	$(SRC)/modeltest.cpp
-	@$(CXX) $(CFLAGS) $(LDFLAGS) $(INC) -o maintest $^ $(LIBS)
+	@$(CXX) $(CFLAGS) $(LDFLAGS) $(INC) -o modeltest $^ $(LIBS)
 	
 dist: clean
 	tar -czvf opdracht2-s1913999-s1437267-s1551973-s1453440.tar.gz src/ Makefile README.MD --exclude=".*"
 
 clean:
 	@echo Cleaning $(OBJDIR) $(LIBDIR) $(TARGET) $(wildcard *.o)...
-	@rm -f $(TARGET) $(wildcard *.o)
+	@rm -f $(TARGET) $(TESTERS) $(wildcard *.o)
 	@+$(MAKE) -C $(UTIL) $@
 	@+$(MAKE) -C $(MODEL) $@
 	@+$(MAKE) -C $(VIEW) $@
 	@+$(MAKE) -C $(CONTROL) $@
-	@rm -rf $(LIBDIR) $(TEST)
+	@rm -rf $(LIBDIR)
 	@echo Done Cleaning...

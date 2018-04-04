@@ -25,7 +25,7 @@ public:
 		return value;
 	}
 
-	std::string getDrawString() {
+	std::string getDrawString() const{
 		using boost::lexical_cast;
 		using boost::bad_lexical_cast;
 		try {
@@ -35,7 +35,7 @@ public:
 		}
 	} //getDrawString
 
-	std::string getEditString() {
+	std::string getEditString() const{
 		using boost::lexical_cast;
 		using boost::bad_lexical_cast;
 		try {
@@ -45,7 +45,7 @@ public:
 		}
 	} //getEditString
 
-	float getFloat() {
+	float getFloat() const{
 		using boost::lexical_cast;
 		using boost::bad_lexical_cast;
 		try {
@@ -55,7 +55,7 @@ public:
 		}
 	} //getFloat
 
-	int getInt() {
+	int getInt() const{
 		using boost::lexical_cast;
 		using boost::bad_lexical_cast;
 		try {

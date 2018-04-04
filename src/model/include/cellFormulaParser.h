@@ -115,8 +115,18 @@ struct Address: Token {
 
 class CellFormulaParser {
 public:
+	/**
+	 * Constructor for the CellFormulaParser.
+	 */
 	CellFormulaParser() = default;
 	~CellFormulaParser() = default;
+
+	/**
+	 * Parses a string into an expression tree.
+	 * @param string formula, the string to be parsed.
+	 * @param std::shared_ptr<Token> root, the pointer to the root of the tree.
+	 * @return true if the formula is correctly parsed.
+	 */
 	bool parse(const std::string & formula, std::shared_ptr<Token> & root);
 
 private:
@@ -124,15 +134,69 @@ private:
 	std::map<std::string, TokenType> aggregateMap = { { "AVG", AVG }, { "COUNT",
 			COUNT }, { "SUM", SUM } };
 
+	/**
+	 * Returns true if the string is an aggregate formula.
+	 * @param string str, the string formula.
+	 * @return true if the formula is an aggregate formula.
+	 */
 	bool isAggregate(const std::string & str);
+
+	/**
+	 * Returns the priority of the operator.
+	 * @param char op, the operator.
+	 * @return the priority of the operator.
+	 */
 	int getOperatorPriority(const char & op);
+
+	/**
+	 * Inserts whitespace around the operators of the string and returns it.
+	 * @param string src, the string to insert whitespace.
+	 * @return string with whitespaces around the operators.
+	 */
 	std::string fillBlankAroundOperators(const std::string & src);
+
+	/**
+	 * Returns true if a string is a negative number.
+	 * @param string src, the string to check.
+	 * @param size_t index, the index of the current string.
+	 * @return true if the string is a negative number.
+	 */
 	bool isNegativeNum(const std::string & src, size_t index);
-	void split(std::string rename, std::list<std::string> & tokens);
+
+	/**
+	 * Tokenizes a string around the whitespaces and puts them in a list.
+	 * @param string src, the string with whitespaces to tokenize.
+	 * @param std::list<std::string> tokens, the list to fill with tokens.
+	 */
+	void split(std::string src, std::list<std::string> & tokens);
+
+	/**
+	 * Converts a formula in the infix notation to prefix notation.
+	 * @param std::list<std::string> infix, the infix notation formula to convert.
+	 */
 	void infixToPrefix(std::list<std::string> & infix);
+
+	/**
+	 * Splits aggregate formulae into tokens and reinserts them, preserving order.
+	 * @param std::list<std::string> tokens, the list of tokens to split.
+	 */
 	void splitAggregates(std::list<std::string> & tokens);
 
+	/**
+	 * Parses a single token and sets the node for the expression tree.
+	 * @param string token, the token to parse.
+	 * @param std::shared_ptr<Token> newTok, the new node for the expression tree.
+	 * @return true if the token is correctly parsed.
+	 */
 	bool parseToken(const std::string & token, std::shared_ptr<Token> & newTok);
+
+	/**
+	 * Builds an expression tree of a list of tokens in prefix notation.
+	 * @param ListIt begin, the begin iterator of the list.
+	 * @param ListIt end, the end iterator of the list.
+	 * @param bool hasError, true if there was an error during building.
+	 * @return std::shared_ptr<Token>, the new node of the expression tree.
+	 */
 	std::shared_ptr<Token> buildTree(ListIt & begin, const ListIt & end,
 			bool & hasError);
 

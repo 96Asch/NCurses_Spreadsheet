@@ -27,7 +27,8 @@ bool isCellAddress(const std::string & address) {
 	bool digitMode = false;
 	size_t digitIn;
 	splitAddress(address, digitIn);
-	if(digitIn > MAX_COL_LENGTH || (address.length() - digitIn) > MAX_ROW_LENGTH)
+	if (digitIn > MAX_COL_LENGTH
+			|| (address.length() - digitIn) > MAX_ROW_LENGTH)
 		return false;
 	if (address.size() >= 2 && isalpha(address.front())
 			&& isdigit(address.back())) {
@@ -51,7 +52,6 @@ void splitAddress(const std::string & address, size_t & index) {
 		}
 	}
 }
-
 
 bool isOperator(const std::string & str) {
 	return (str.size() == 1 && isOperator(str.front()));

@@ -10,14 +10,11 @@
 #include <iostream>
 #include <cmath>
 
-CellAddress::CellAddress(const CellAddress & add) : row(add.row),
-	column(add.column) {}
-
 CellAddress::CellAddress(std::string address) {
 	createFromReference(address);
 }
 
-void CellAddress::createFromReference(const std::string & address){
+void CellAddress::createFromReference(const std::string & address) {
 	size_t i;
 	splitAddress(address, i);
 	columnToNumber(address.substr(0, i));
@@ -47,5 +44,5 @@ int CellAddress::getRow() const {
 }
 
 int CellAddress::getColumn() const {
-	return column-1;
+	return column - 1;
 }

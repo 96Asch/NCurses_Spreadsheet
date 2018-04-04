@@ -8,8 +8,6 @@ CXX = g++
 OBJS =	$(addprefix $(OBJDIR)/, $(patsubst $(SRC)/%.cpp, %.o, $(wildcard $(SRC)/*.cpp)))
 INC = -Iinclude -I../util/include
 SRC = src
-BOOST_LIBS =  #-lboost_unit_test_framework
-BOOST_CXXFLAGS = #-I/vol/share/groups/liacs/scratch/pt2018/include -DBOOST_TEST_DYN_LINK
 
 .PHONY: all clean
 
@@ -23,7 +21,7 @@ $(OBJDIR):
 
 $(OBJDIR)/%.o:	$(SRC)/%.cpp
 	@echo Building $@
-	@$(CXX) $(CFLAGS) -c $(BOOST_CXXFLAGS) $(INC) $< -o $@ $(BOOST_LIBS)
+	@$(CXX) $(CFLAGS) -c  $(INC) $< -o $@
 	@echo Done Building $@
 
 link:	$(OBJS)

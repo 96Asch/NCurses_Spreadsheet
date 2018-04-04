@@ -7,11 +7,14 @@
 
 #include "cellFormula.h"
 #include "util.h"
+#include <iostream>
 
 CellFormula::CellFormula(Sheet & sheet, const std::string & rawFormula) :
 		sheet(sheet), originalFormula(rawFormula) {
+	CellFormulaParser parser;
 	if (!parser.parse(rawFormula, formula)) {
 		output = "ERR";
+		result = 0;
 		formula = nullptr;
 	} else {
 		result = evaluate(formula);
@@ -25,20 +28,49 @@ CellFormula::CellFormula(Sheet & sheet, const std::string & rawFormula) :
 CellFormula::~CellFormula() {
 	formula = nullptr;
 }
-std::string CellFormula::getDrawString() {
+std::string CellFormula::getDrawString() const {
 	return output;
 }
 
-std::string CellFormula::getEditString() {
+std::string CellFormula::getEditString() const {
 	return originalFormula;
 }
 
-float CellFormula::getFloat() {
+float CellFormula::getFloat() const {
 	return result;
 }
 
-int CellFormula::getInt() {
+int CellFormula::getInt() const {
 	return static_cast<int>(result);
+}
+
+//TODO FIX RANGE loop does not accept end
+float CellFormula::sum(const std::string & begin, const std::string & end) {
+	CellAddress address1(begin), address2(end);
+	range.createRange(address1, address2, &sheet);
+	float sum = 0;
+	for (Range::iterator it = range.begin(); it != range.end(); ++it)
+		sum += it->getFloat();
+	sum += range.end()->getFloat();
+	return sum;
+}
+
+float CellFormula::average(const std::string & begin, const std::string & end) {
+	CellAddress address1(begin), address2(end);
+	range.createRange(address1, address2, &sheet);
+	float sum = 0;
+	float count = range.getSize();
+	for (const auto &i : range) {
+		sum += i.getFloat();
+	}
+	sum += range.end()->getFloat();
+	return sum / count;
+}
+
+float CellFormula::count(const std::string & begin, const std::string & end) {
+	CellAddress address1(begin), address2(end);
+	range.createRange(address1, address2, &sheet);
+	return range.getSize();
 }
 
 //TODO Add Celladdresses and Aggregate functions
@@ -54,11 +86,11 @@ float CellFormula::evaluate(std::shared_ptr<Token> & node) {
 		case MULTIPLICATION:
 			return evaluate(node->left) * evaluate(node->right);
 		case AVG:
-			return 0;
+			return average(node->left->toString(), node->right->toString());
 		case COUNT:
-			return 1;
+			return count(node->left->toString(), node->right->toString());
 		case SUM:
-			return 2;
+			return sum(node->left->toString(), node->right->toString());
 		case FLOAT:
 		case INT:
 			return node->getValue();
