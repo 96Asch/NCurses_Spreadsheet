@@ -12,9 +12,9 @@ OBJDIR = bin
 LIBDIR = src/lib
 TESTDIR = test
 
-INC = -I$(UTIL)/include -I$(MODEL)/include #-I$(VIEW)/include $-I(CONTROL)/include
+INC = -I$(UTIL)/include -I$(MODEL)/include -I$(VIEW)/include #$-I(CONTROL)/include
 
-LIBS = -lcurses -lmodel -lutil
+LIBS = -lcurses -lmodel -lutil -lview
 BOOST_CXXFLAGS = -I/vol/share/groups/liacs/scratch/pt2018/include -DBOOST_TEST_DYN_LINK
 LDFLAGS = -L$(LIBDIR) -L/vol/share/groups/liacs/scratch/pt2018/lib
 
@@ -35,8 +35,8 @@ obj:
 	@echo Make $(MODEL) object
 	@+$(MAKE) -C $(UTIL)
 	@+$(MAKE) -C $(MODEL)
-#	@echo Make $(VIEW) object
-#	@+$(MAKE) -C $(VIEW)
+	@echo Make $(VIEW) object
+	@+$(MAKE) -C $(VIEW)
 #	@echo Make $(CONTROL) object
 #	@+$(MAKE) -C $(CONTROL)
 

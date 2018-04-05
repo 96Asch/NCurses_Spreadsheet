@@ -5,6 +5,7 @@
 #include "cellAddress.h"
 #include "cell.h"
 #include "sheet.h"
+#include <iostream>
 
 class RangeIterator;
 
@@ -63,7 +64,7 @@ public:
 	RangeIterator &operator++() {
 		if (offsetX <= endX) {
 			offsetY++;
-			if (offsetY > endY) {
+			if (offsetY >= endY && offsetX != endX) {
 				offsetX++;
 				offsetY = beginY;
 			}
@@ -74,7 +75,7 @@ public:
 	RangeIterator &operator++(int) {
 		if (offsetX <= endX) {
 			offsetY++;
-			if (offsetY > endY) {
+			if (offsetY >= endY && offsetX != endX) {
 				offsetX++;
 				offsetY = beginY;
 			}

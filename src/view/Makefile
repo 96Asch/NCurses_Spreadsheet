@@ -1,41 +1,33 @@
-CXX = g++ 
-CFLAGS =	-std=c++14 -Wall -g -Wextra -pedantic 
-OBJDIR = bin
-OBJS =	$(addprefix $(OBJDIR)/, $(patsubst $(SRC)/%.cpp, %.o, $(wildcard $(SRC)/*.cpp)))
-INC = include
-SRC = src
-LIB = curses
-BOOST_LIBS =  -lboost_unit_test_framework
-BOOST_CXXFLAGS = -I/vol/share/groups/liacs/scratch/pt2018/include -DBOOST_TEST_DYN_LINK
-LDFLAGS = -L/vol/share/groups/liacs/scratch/pt2018/lib
-TARGET = spreadsheet
-DEPS = $(wildcard $(INC)/*.h)
 
+CFLAGS = -std=c++14 -Wall -fPIC -g -Wextra -pedantic
+OBJDIR = bin
+CURRDIR = $(shell pwd)
+LIBDIR = ../lib
+
+CXX = g++ 
+OBJS =	$(addprefix $(OBJDIR)/, $(patsubst $(SRC)/%.cpp, %.o, $(wildcard $(SRC)/*.cpp)))
+INC = -Iinclude -I../util/include
+SRC = src
 
 .PHONY: all clean
 
-all: $(OBJDIR) $(TARGET)
+all: $(OBJDIR) link
 	@echo Done Building...	
+	
 
 $(OBJDIR):
-	@echo Making bin directory
+	@echo Making $(OBJDIR) directory
 	@mkdir $(OBJDIR)
 
 $(OBJDIR)/%.o:	$(SRC)/%.cpp
 	@echo Building $@
-	@$(CXX) $(CFLAGS) $(BOOST_CXXFLAGS) $(LDFLAGS) -c -I$(INC) $< -o $@	
+	@$(CXX) $(CFLAGS) -c  $(INC) $< -o $@
 	@echo Done Building $@
-	
-    
-$(TARGET):	$(OBJS) $(DEPS)
-	@echo Building executable $@
-	@$(CXX) $(CFLAGS) -o $@ $^ -l$(LIB)
 
-run:
-	@./$(TARGET)
-
-check:
-	
+link:	$(OBJS)
+	@echo Linking files... 
+	@$(CXX) -shared $(CFLAGS) -o $(LIBDIR)/libview.so $(OBJS)
+  
 
 clean:
 	@echo Cleaning $(OBJDIR) $(TARGET) $(wildcard *.o)...

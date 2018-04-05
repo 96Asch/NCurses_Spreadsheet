@@ -17,7 +17,7 @@ bool Range::checkRange(const std::string & address, int & split) {
 
 Range* Range::createRange(CellAddress begin, CellAddress end) {
 	beginAddress = begin;
-	endAddress = end;
+	endAddress = ++end;
 	return this;
 } //createRange
 
@@ -26,6 +26,7 @@ Range* Range::rangeFromString(const std::string & rangeString) {
 	if (checkRange(rangeString, split)) {
 		beginAddress.createFromReference(rangeString.substr(0, split));
 		endAddress.createFromReference(rangeString.substr(split + 1));
+		++endAddress;
 	} //if
 	return this;
 } //createRange
@@ -40,6 +41,6 @@ RangeIterator Range::end() {
 
 int Range::getSize() {
 	int distanceX = 1 + endAddress.getColumn() - beginAddress.getColumn();
-	int distanceY = 1 + endAddress.getRow() - beginAddress.getRow();
+	int distanceY = endAddress.getRow() - beginAddress.getRow();
 	return (distanceX * distanceY);
 }

@@ -45,14 +45,13 @@ int CellFormula::getInt() const {
 	return static_cast<int>(result);
 }
 
-//TODO FIX RANGE loop does not accept end
+
 float CellFormula::sum(const std::string & begin, const std::string & end) {
 	CellAddress address1(begin), address2(end);
 	range.createRange(address1, address2);
 	float sum = 0;
-	for (Range::iterator it = range.begin(); it != range.end(); ++it)
-		sum += it->getFloat();
-	sum += range.end()->getFloat();
+	for (const auto &i : range)
+		sum += i.getFloat();
 	return sum;
 }
 
@@ -61,10 +60,8 @@ float CellFormula::average(const std::string & begin, const std::string & end) {
 	range.createRange(address1, address2);
 	float sum = 0;
 	float count = range.getSize();
-	for (const auto &i : range) {
+	for (const auto &i : range) 
 		sum += i.getFloat();
-	}
-	sum += range.end()->getFloat();
 	return sum / count;
 }
 

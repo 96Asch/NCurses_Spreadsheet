@@ -42,6 +42,11 @@ public:
 	 * @param string address to convert
 	 */
 	void createFromReference(const std::string & address);
+	
+	CellAddress &operator++() {
+		 row++;
+		return *this;
+	}
 
 private:
 	size_t row, column;
