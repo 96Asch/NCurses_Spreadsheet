@@ -13,8 +13,8 @@ public:
 	Range() = default;
 	~Range() = default;
 
-	Range* createRange(CellAddress begin, CellAddress end, Sheet* sheet);
-	Range* rangeFromString(const std::string & rangeString, Sheet* sheet);
+	Range* createRange(CellAddress begin, CellAddress end);
+	Range* rangeFromString(const std::string & rangeString);
 	RangeIterator begin();
 	RangeIterator end();
 	int getSize();
@@ -23,21 +23,19 @@ public:
 private:
 	CellAddress beginAddress;
 	CellAddress endAddress;
-	Sheet* sheet;
 
 	bool checkRange(const std::string & address, int & split);
 };
 
 class RangeIterator: public std::iterator<std::input_iterator_tag, Cell> {
 private:
-	Sheet* sheet;
 	int offsetX, offsetY;
 	int beginY, endX, endY;
 
 public:
-	RangeIterator(Sheet* sheet, const CellAddress & beginAdd,
+	RangeIterator(const CellAddress & beginAdd,
 			const CellAddress & endAdd) :
-			sheet(sheet), offsetX(beginAdd.getColumn()), offsetY(
+			offsetX(beginAdd.getColumn()), offsetY(
 					beginAdd.getRow()), beginY(beginAdd.getRow()), endX(
 					endAdd.getColumn()), endY(endAdd.getRow()) {
 	}
@@ -54,11 +52,11 @@ public:
 
 	/* Element op de huidige plek van de iterator uitlezen */
 	Cell &operator*() const {
-		return sheet->getCell(offsetY, offsetX);
+		return Sheet::getInstance().getCell(offsetY, offsetX);
 	}
 
 	Cell *operator->() const {
-		return &sheet->getCell(offsetY, offsetX);
+		return &Sheet::getInstance().getCell(offsetY, offsetX);
 	}
 
 	/* Implementeer "++iter": verplaats de iterator een plek */

@@ -5,6 +5,11 @@ Sheet::Sheet() :
 		sheet(80) {
 }
 
+Sheet& Sheet::getInstance() {
+	static Sheet instance;
+	return instance;
+}
+
 std::vector<Column>::iterator Sheet::begin() {
 	return sheet.begin();
 }

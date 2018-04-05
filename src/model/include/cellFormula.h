@@ -13,7 +13,6 @@
 
 #include "cellValueBase.h"
 #include "cellFormulaParser.h"
-#include "sheet.h"
 #include "range.h"
 
 class CellFormula: public CellValueBase {
@@ -23,7 +22,7 @@ public:
 	 * @param Sheet sheet, the reference to the sheet.
 	 * @param std::string formula, the input formula.
 	 */
-	CellFormula(Sheet & sheet, const std::string & formula);
+	CellFormula(const std::string & formula);
 	~CellFormula();
 
 	/**
@@ -56,7 +55,6 @@ public:
 	void print();
 
 private:
-	Sheet& sheet;
 	Range range;
 	std::string originalFormula, output;
 	std::shared_ptr<Token> formula;

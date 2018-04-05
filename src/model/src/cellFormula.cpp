@@ -8,9 +8,10 @@
 #include "cellFormula.h"
 #include "util.h"
 #include <iostream>
+#include "sheet.h"
 
-CellFormula::CellFormula(Sheet & sheet, const std::string & rawFormula) :
-		sheet(sheet), originalFormula(rawFormula) {
+CellFormula::CellFormula(const std::string & rawFormula) :
+		originalFormula(rawFormula) {
 	CellFormulaParser parser;
 	if (!parser.parse(rawFormula, formula)) {
 		output = "ERR";
@@ -47,7 +48,7 @@ int CellFormula::getInt() const {
 //TODO FIX RANGE loop does not accept end
 float CellFormula::sum(const std::string & begin, const std::string & end) {
 	CellAddress address1(begin), address2(end);
-	range.createRange(address1, address2, &sheet);
+	range.createRange(address1, address2);
 	float sum = 0;
 	for (Range::iterator it = range.begin(); it != range.end(); ++it)
 		sum += it->getFloat();
@@ -57,7 +58,7 @@ float CellFormula::sum(const std::string & begin, const std::string & end) {
 
 float CellFormula::average(const std::string & begin, const std::string & end) {
 	CellAddress address1(begin), address2(end);
-	range.createRange(address1, address2, &sheet);
+	range.createRange(address1, address2);
 	float sum = 0;
 	float count = range.getSize();
 	for (const auto &i : range) {
@@ -69,7 +70,7 @@ float CellFormula::average(const std::string & begin, const std::string & end) {
 
 float CellFormula::count(const std::string & begin, const std::string & end) {
 	CellAddress address1(begin), address2(end);
-	range.createRange(address1, address2, &sheet);
+	range.createRange(address1, address2);
 	return range.getSize();
 }
 
@@ -97,7 +98,7 @@ float CellFormula::evaluate(std::shared_ptr<Token> & node) {
 		case CELLADDRESS:
 			CellAddress address(node->toString());
 			//TODO ERROR if cell is a string or circular
-			return sheet.getCell(address.getRow(), address.getColumn()).getFloat();
+			return Sheet::getInstance().getCell(address.getRow(), address.getColumn()).getFloat();
 		}
 	}
 	return 0;

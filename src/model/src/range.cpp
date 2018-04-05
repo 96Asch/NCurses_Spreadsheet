@@ -15,17 +15,15 @@ bool Range::checkRange(const std::string & address, int & split) {
 	return false;
 } //checkRange
 
-Range* Range::createRange(CellAddress begin, CellAddress end, Sheet* sheet) {
+Range* Range::createRange(CellAddress begin, CellAddress end) {
 	beginAddress = begin;
 	endAddress = end;
-	this->sheet = sheet;
 	return this;
 } //createRange
 
-Range* Range::rangeFromString(const std::string & rangeString, Sheet* sheet) {
+Range* Range::rangeFromString(const std::string & rangeString) {
 	int split = 0;
 	if (checkRange(rangeString, split)) {
-		this->sheet = sheet;
 		beginAddress.createFromReference(rangeString.substr(0, split));
 		endAddress.createFromReference(rangeString.substr(split + 1));
 	} //if
@@ -33,11 +31,11 @@ Range* Range::rangeFromString(const std::string & rangeString, Sheet* sheet) {
 } //createRange
 
 RangeIterator Range::begin() {
-	return RangeIterator(this->sheet, beginAddress, endAddress);
+	return RangeIterator(beginAddress, endAddress);
 } //begin
 
 RangeIterator Range::end() {
-	return RangeIterator(this->sheet, endAddress, endAddress);
+	return RangeIterator(endAddress, endAddress);
 } //end
 
 int Range::getSize() {

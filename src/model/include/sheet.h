@@ -12,16 +12,19 @@
 #include "column.h"
 #include <vector>
 
-class Sheet {
+class Sheet{
 public:
-	Sheet();
-	~Sheet() = default;
+	static Sheet& getInstance();
 	std::vector<Column>::iterator begin();
 	std::vector<Column>::iterator end();
 	Cell& getCell(int row, int column);
 	void ensureSize(const int & rows, const int & cols);
 
 private:
+	Sheet();
+	~Sheet() = default;
+	Sheet(Sheet const&);
+    void operator=(Sheet const&);
 	std::vector<Column> sheet;
 
 };
