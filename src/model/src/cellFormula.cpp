@@ -74,7 +74,6 @@ float CellFormula::count(const std::string & begin, const std::string & end) {
 	return range.getSize();
 }
 
-//TODO Add Celladdresses and Aggregate functions
 float CellFormula::evaluate(std::shared_ptr<Token> & node) {
 	if (node) {
 		switch (node->type) {

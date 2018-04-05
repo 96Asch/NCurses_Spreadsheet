@@ -18,8 +18,7 @@
 class CellFormula: public CellValueBase {
 public:
 	/**
-	 * Constructor for the CellFormula class.
-	 * @param Sheet sheet, the reference to the sheet.
+	 * Constructor for the CellFormula class..
 	 * @param std::string formula, the input formula.
 	 */
 	CellFormula(const std::string & formula);

@@ -21,3 +21,5 @@ std::vector<Cell>::iterator Column::end() {
 	return column.end();
 }
 
+
+

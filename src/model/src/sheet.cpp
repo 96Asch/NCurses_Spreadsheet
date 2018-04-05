@@ -24,5 +24,4 @@ Cell & Sheet::getCell(int row, int column) {
 
 //TODO implement
 void Sheet::ensureSize(const int & rows, const int & cols) {
-	std::cout << rows << " " << cols << std::endl;
 }
