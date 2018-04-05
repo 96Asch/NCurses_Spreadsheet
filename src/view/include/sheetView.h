@@ -10,20 +10,22 @@ class SheetView {
 
 private:
 	WINDOW *win;
-
 	void initHeader();
-	CellAddress cursorLocatie;
-	void initialize();
+	CellAddress cursorLocation;
+	char headerLetter(int asciiVal);
+	void initCells();
+	
 
 public:
+	void initialize();
 	SheetView();
 	~SheetView();
-
-	
 	void draw();
 	void exit();
 	CellAddress getCursor();
-	Sheet sheet;
+	void setCursor();
+	char getChar(int x, int y);
+
 
 };
 
