@@ -26,7 +26,7 @@ $(OBJDIR)/%.o:	$(SRC)/%.cpp
 
 link:	$(OBJS)
 	@echo Linking files... 
-	@$(CXX) -shared $(CFLAGS) -o $(LIBDIR)/libview.so $(OBJS)
+	@$(CXX) -shared $(CFLAGS) -o $(LIBDIR)/libview.so $(OBJS) -lcurses
   
 
 clean:

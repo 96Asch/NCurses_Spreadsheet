@@ -6,6 +6,7 @@
 # Executable
 spreadsheet
 modeltest
+utiltest
 
 #bin folder
 /bin

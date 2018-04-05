@@ -43,7 +43,7 @@ obj:
     
 $(TARGET):	src/main.cpp
 	@echo Building executable $@
-	@$(CXX) $(CFLAGS) $(LDFLAGS) $(INC) -o $@ $^ $(LIBS)
+	$(CXX) $(CFLAGS) $(LDFLAGS) $(INC) -o $@ $^ $(LIBS)
 
 check: build comptest
 	@./modeltest
