@@ -18,6 +18,8 @@ public:
 	void resize(const int & rows);
 	std::vector<Cell>::iterator begin();
 	std::vector<Cell>::iterator end();
+	int getSize();
+	typedef std::vector<Cell>::iterator iterator;
 
 private:
 	std::vector<Cell> column;

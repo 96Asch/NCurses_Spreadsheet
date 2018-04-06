@@ -76,3 +76,4 @@ bool isInteger(const float & val) {
 	return val == rintf(val);
 }
 
+

@@ -34,4 +34,5 @@ bool isOperator(const std::string & str);
 bool isOperator(const char & c);
 bool isInteger(const float & val);
 
+
 #endif /* INCLUDE_UTIL_H_ */

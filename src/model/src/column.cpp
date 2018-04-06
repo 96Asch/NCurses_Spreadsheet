@@ -21,5 +21,8 @@ std::vector<Cell>::iterator Column::end() {
 	return column.end();
 }
 
+int Column::getSize() {
+	return column.size();
+}
 
 

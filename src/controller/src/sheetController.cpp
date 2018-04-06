@@ -34,7 +34,6 @@ void SheetController::handleCommand(const int & command) {
 void SheetController::loop() {
 	do {
 		view.draw();
-		view.debug("This is text");
 		command = view.getInput();
 		handleCommand(command);
 	} while(!finished);

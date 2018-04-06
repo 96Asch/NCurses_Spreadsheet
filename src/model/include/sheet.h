@@ -19,6 +19,8 @@ public:
 	std::vector<Column>::iterator end();
 	Cell& getCell(int row, int column);
 	void ensureSize(const int & rows, const int & cols);
+	int getSize();
+	typedef std::vector<Column>::iterator iterator;
 
 private:
 	Sheet();

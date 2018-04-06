@@ -8,12 +8,17 @@
 class SheetView {
 
 private:
+
 	WINDOW *win;
-	void initHeader();
 	CellAddress cursorLocation;
+
+	void initHeader();
+
 	char headerLetter(int asciiVal);
-	void initCells();
-	
+	void drawHighlight(const char* string);
+	void drawHeader();
+	void drawCells();
+	std::string numberToAlpha(const int & num);
 
 public:
 
@@ -21,14 +26,13 @@ public:
 	~SheetView();
 
 	int getInput();
-	void debug(const char* string);
 	void initialize();
+	void exit();
 
 	void draw();
-	void exit();
+
 	CellAddress getCursor();
 	void setCursor();
-	char getChar(int x, int y);
 
 
 };

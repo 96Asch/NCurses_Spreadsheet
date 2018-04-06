@@ -22,6 +22,10 @@ Cell & Sheet::getCell(int row, int column) {
 	return sheet[column].getCell(row);
 }
 
+int Sheet::getSize() {
+	return sheet.size();
+}
+
 //TODO implement
 void Sheet::ensureSize(const int & rows, const int & cols) {
 }
