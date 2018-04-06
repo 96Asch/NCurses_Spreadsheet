@@ -16,6 +16,7 @@ public:
 	~SheetView();
 
 	WINDOW* getWin();
+	int getInput();
 	void debug(const char* string);
 	void initialize();
 	void draw();

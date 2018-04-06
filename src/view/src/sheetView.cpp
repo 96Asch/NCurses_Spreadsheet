@@ -25,12 +25,16 @@ WINDOW* SheetView::getWin() {
 	return win;
 }
 
+int SheetView::getInput() {
+	return wgetch(win);
+}
+
 void SheetView::draw() {
 
 	/* Verplaats cursor rij 10, kolom 20 */
-//	wmove(win, 0, 0);
+	wmove(win, 0, 0);
 //	/* Plaats een string */
-//	waddstr(win, "HELLO!!");
+	waddstr(win, "HELLO!!");
 	/* Nogmaals, maar nu op een achtergrond */
 	attr_t old_attr; /* Huidige settings onthouden */
 	short old_pair;
@@ -42,7 +46,7 @@ void SheetView::draw() {
 }
 
 void SheetView::debug(const char* string) {
-	wmove(win, 0, 0);
+	wmove(win, 24, 80);
 	waddstr(win, string);
 }
 

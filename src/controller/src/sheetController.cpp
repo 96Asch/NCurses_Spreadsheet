@@ -6,31 +6,37 @@
  */
 
 #include "sheetController.h"
-#include <curses.h>
 
 
-SheetController::SheetController(SheetView* view) :
+SheetController::SheetController(SheetView view) :
 		view(view), finished(false) {
-
 }
 
 SheetController::~SheetController() {
 }
 
 void SheetController::run() {
-	view->initialize();
+	view.initialize();
 	loop();
-	view->exit();
+	view.exit();
+}
+
+void SheetController::handleCommand(const int & command) {
+	switch(command) {
+	case 'q':
+		finished = true;
+		break;
+	default:
+		break;
+	}
 }
 
 void SheetController::loop() {
 	do {
-		view->draw();
-		view->debug("This is text");
-		command = wgetch(view->getWin());
-		if(command == 'q')
-			finished = true;
-
+		view.draw();
+		view.debug("This is text");
+		command = view.getInput();
+		handleCommand(command);
 	} while(!finished);
 }
 

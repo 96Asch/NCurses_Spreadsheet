@@ -9,20 +9,21 @@
 #define SRC_CONTROLLER_INCLUDE_SHEETCONTROLLER_H_
 
 #include "sheetView.h"
+#include "sheet.h"
 
 class SheetController {
 public:
-	SheetController(SheetView* view);
+	SheetController(SheetView view);
 	virtual ~SheetController();
 
 	void run();
 
 private:
-	SheetView* view;
+	SheetView view;
 	bool finished;
-	char command;
+	int command;
 
-	void handleCommand(const char & command);
+	void handleCommand(const int & command);
 	void loop();
 
 };

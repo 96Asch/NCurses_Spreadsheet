@@ -2,9 +2,8 @@
 
 
 int main(void) {
-	SheetView* view = new SheetView;
+	SheetView view;
 	SheetController controller(view);
 	controller.run();
-	delete view;
 	return 0;
 }
