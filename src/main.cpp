@@ -1,10 +1,9 @@
-#include "sheetView.h"
+#include "sheetController.h"
+
 
 int main(void) {
-
-	SheetView sheet;
-	sheet.initialize();
-	sheet.draw();
-	sheet.exit();
+	SheetView view;
+	SheetController controller(view);
+	controller.run();
 	return 0;
 }

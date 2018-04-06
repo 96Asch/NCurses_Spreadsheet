@@ -3,8 +3,7 @@
 #define INCLUDE_SHEETVIEW_H_
 
 #include <curses.h>
-#include "../../model/include/cellAddress.h"
-#include "../../model/include/sheet.h"
+#include "cellAddress.h"
 
 class SheetView {
 
@@ -17,9 +16,14 @@ private:
 	
 
 public:
-	void initialize();
+
 	SheetView();
 	~SheetView();
+
+	int getInput();
+	void debug(const char* string);
+	void initialize();
+
 	void draw();
 	void exit();
 	CellAddress getCursor();

@@ -25,6 +25,10 @@ void SheetView::initialize() {
 }
 
 
+int SheetView::getInput() {
+	return wgetch(win);
+}
+
 char SheetView::headerLetter(int asciiVal){
 	char asciiChar = asciiVal + 65;
 	return asciiChar;
@@ -88,8 +92,7 @@ void SheetView::initCells(); {
 */
 
 void SheetView::draw() {
-//	initHeader()
-//	initCells()
+
 	/* Verplaats cursor rij 10, kolom 20 */
 	wmove(win, 10, 20);
 	/* Plaats een string */
@@ -99,15 +102,14 @@ void SheetView::draw() {
 	short old_pair;
 	wattr_get(win, &old_attr, &old_pair, NULL);
 	wattron(win, A_STANDOUT);
-	wmove(win, 12, 20);
+	wmove(win, 10, 10);
 	waddstr(win, "HELLO WORLD!!!");
 	wattr_set(win, old_attr, old_pair, NULL); /* Oude settings terugzetten */
-	wrefresh(win);
+}
 
-	int ch;
-	while ((ch = wgetch(win)) != '\n')
-		;
-
+void SheetView::debug(const char* string) {
+	wmove(win, 24, 80);
+	waddstr(win, string);
 }
 
 char SheetView::getChar(int x, int y){
