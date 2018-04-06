@@ -69,6 +69,12 @@ char SheetView::headerLetter(int asciiVal) {
 }
 
 void SheetView::drawCells() {
+
+	for (Sheet::iterator sit = Sheet::getInstance().begin(); sit != Sheet::getInstance().end(); ++sit){
+			for(Column::iterator cit = sit->begin() ; cit != sit->end(); ++cit){
+
+			}
+	}
 }
 
 void SheetView::draw() {
