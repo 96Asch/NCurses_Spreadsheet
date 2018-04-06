@@ -1,13 +1,14 @@
-
+CXX = g++ 
 CFLAGS = -std=c++14 -Wall -fPIC -g -Wextra -pedantic
 OBJDIR = bin
 CURRDIR = $(shell pwd)
 LIBDIR = ../lib
 
-CXX = g++ 
+
 OBJS =	$(addprefix $(OBJDIR)/, $(patsubst $(SRC)/%.cpp, %.o, $(wildcard $(SRC)/*.cpp)))
 INC = -Iinclude -I../util/include
 SRC = src
+LIBS = -lcurses
 
 .PHONY: all clean
 
@@ -26,7 +27,7 @@ $(OBJDIR)/%.o:	$(SRC)/%.cpp
 
 link:	$(OBJS)
 	@echo Linking files... 
-	@$(CXX) -shared $(CFLAGS) -o $(LIBDIR)/libview.so $(OBJS) -lcurses
+	@$(CXX) -shared $(CFLAGS) -o $(LIBDIR)/libview.so $(OBJS) $(LIBS)
   
 
 clean:

@@ -6,13 +6,14 @@ VIEW = $(SRC)/view
 CONTROL = $(SRC)/controller
 UTIL = $(SRC)/util
 
+CONTROLOBJS = $(addprefix $(CONTROL)/$(OBJDIR)/, $(patsubst $(CONTROL)/$(SRC)/%.cpp, %.o, $(wildcard $(CONTROL)/$(SRC)/*.cpp)))
 CXX = g++
 CFLAGS = -std=c++14 -Wall -g -Wextra -pedantic 
 OBJDIR = bin
 LIBDIR = src/lib
 TESTDIR = test
 
-INC = -I$(UTIL)/include -I$(MODEL)/include -I$(VIEW)/include #$-I(CONTROL)/include
+INC = -I$(UTIL)/include -I$(MODEL)/include -I$(VIEW)/include -I$(CONTROL)/include
 
 LIBS = -lcurses -lmodel -lutil -lview
 BOOST_CXXFLAGS = -I/vol/share/groups/liacs/scratch/pt2018/include -DBOOST_TEST_DYN_LINK
@@ -32,18 +33,19 @@ $(LIBDIR):
 	@mkdir $(LIBDIR)
 	
 obj: 
-	@echo Make $(MODEL) object
+	@echo Make $(UTIL) object
 	@+$(MAKE) -C $(UTIL)
+	@echo Make $(MODEL) object
 	@+$(MAKE) -C $(MODEL)
 	@echo Make $(VIEW) object
 	@+$(MAKE) -C $(VIEW)
-#	@echo Make $(CONTROL) object
-#	@+$(MAKE) -C $(CONTROL)
+	@echo Make $(CONTROL) object
+	@+$(MAKE) -C $(CONTROL)
 
     
 $(TARGET):	src/main.cpp
 	@echo Building executable $@
-	$(CXX) $(CFLAGS) $(LDFLAGS) $(INC) -o $@ $^ $(LIBS)
+	@$(CXX) $(CFLAGS) $(LDFLAGS) $(INC) -o $@ $(CONTROLOBJS) $^ $(LIBS)
 
 check: build comptest
 	@./modeltest
@@ -55,6 +57,19 @@ comptest:	$(TESTDIR)/modeltest.cpp $(TESTDIR)/utiltest.cpp
 	
 dist: clean
 	tar -czvf opdracht2-s1913999-s1437267-s1551973-s1453440.tar.gz src/ Makefile README.MD --exclude=".*"
+
+
+#REMOVE before distribution#############
+vcCleanBuild:
+	@rm -f $(TARGET) $(wildcard *.o)
+	@+$(MAKE) -C $(VIEW) clean
+	@+$(MAKE) -C $(VIEW)
+	@+$(MAKE) -C $(CONTROL) clean
+	@+$(MAKE) -C $(CONTROL)
+	 
+vc:	build vcCleanBuild $(TARGET) 
+	./spreadsheet
+########################################
 
 clean:
 	@echo Cleaning $(OBJDIR) $(LIBDIR) $(TARGET) $(wildcard *.o)...

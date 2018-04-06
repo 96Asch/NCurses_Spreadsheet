@@ -2,11 +2,10 @@ CXX = g++
 CFLAGS =	-std=c++14 -Wall -g -Wextra -pedantic 
 OBJDIR = bin
 OBJS =	$(addprefix $(OBJDIR)/, $(patsubst $(SRC)/%.cpp, %.o, $(wildcard $(SRC)/*.cpp)))
-INC = -Iinclude -I../util/include
+INC = -Iinclude -I../util/include -I../model/include -I../view/include
 SRC = src
-BOOST_LIBS =  -lboost_unit_test_framework
-BOOST_CXXFLAGS = -I/vol/share/groups/liacs/scratch/pt2018/include -DBOOST_TEST_DYN_LINK
-LDFLAGS = -L/vol/share/groups/liacs/scratch/pt2018/lib
+
+LIBS = -lcurses
 
 
 .PHONY: all clean
@@ -20,7 +19,7 @@ $(OBJDIR):
 
 $(OBJDIR)/%.o:	$(SRC)/%.cpp
 	@echo Building $@
-	@$(CXX) $(CFLAGS) $(BOOST_CXXFLAGS) $(LDFLAGS) -c $(INC) $< -o $@	
+	@$(CXX) $(CFLAGS) $(LDFLAGS) -c $(INC) $< -o $@	$(LIBS)
 	@echo Done Building $@
 
 clean:
