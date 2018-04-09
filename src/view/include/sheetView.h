@@ -19,6 +19,7 @@ private:
 	void drawHeader();
 	void drawCells();
 	std::string numberToAlpha(const int & num);
+	std::string formater(std::string cellstring);
 
 public:
 
