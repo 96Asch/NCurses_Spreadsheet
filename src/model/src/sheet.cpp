@@ -26,6 +26,8 @@ int Sheet::getSize() {
 	return sheet.size();
 }
 
-//TODO implement
 void Sheet::ensureSize(const int & rows, const int & cols) {
+	sheet.resize(cols);
+	for(size_t i = 0; i < sheet.size(); i++)
+		sheet[i].resize(rows);
 }

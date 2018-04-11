@@ -7,7 +7,7 @@ LIBDIR = ../lib
 OBJS =	$(addprefix $(OBJDIR)/, $(patsubst $(SRC)/%.cpp, %.o, $(wildcard $(SRC)/*.cpp)))
 INC = -Iinclude -I../util/include -I../model/include	
 SRC = src
-LIBS = -lcurses
+LIBS = -lcurses -lmodel -lutil
 
 .PHONY: all clean
 
@@ -26,7 +26,7 @@ $(OBJDIR)/%.o:	$(SRC)/%.cpp
 
 link:	$(OBJS)
 	@echo Linking files... 
-	@$(CXX) -shared $(CFLAGS) -o $(LIBDIR)/libview.so $(OBJS) $(LIBS)
+	@$(CXX) -shared $(CFLAGS) -L$(LIBDIR) -o $(LIBDIR)/libview.so $(OBJS) $(LIBS)
   
 
 clean:
