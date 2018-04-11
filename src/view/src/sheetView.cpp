@@ -68,17 +68,24 @@ char SheetView::headerLetter(int asciiVal) {
 }
 
 void SheetView::drawCells() {
-
-//	for (Sheet::iterator sit = Sheet::getInstance().begin(); sit != Sheet::getInstance().end(); ++sit){
-////			for(Column::iterator cit = sit->begin() ; cit != sit->end(); ++cit){
-////
-////			}
-//	}
+	std::string drawstring;
+	int row = 0, column = 0;
+	for (Sheet::iterator sit = Sheet::getInstance().begin(); sit != Sheet::getInstance().end(); ++sit){
+			for(Column::iterator cit = sit->begin() ; cit != sit->end(); ++cit){
+				drawstring = formater(cit->getDrawString());
+				wmove(win, row + 1, column * CELLSIZE);
+				waddstr(win, drawstring.c_str());
+				row++;
+			}
+	column++;
+	}
 }
+
+
 
 void SheetView::draw() {
 	drawHeader();
-	drawCells();
+	//drawCells();
 }
 
 void SheetView::setCursor() {
@@ -86,14 +93,20 @@ void SheetView::setCursor() {
 }
 
 CellAddress SheetView::getCursor() {
-
 	return cursorLocation;
-
 }
 
 void SheetView::exit() {
 	delwin(win); /* Dealloceer venster */
 	endwin(); /* Curses stoppen */
+}
+
+//retutn string van 8 tekens
+std::string SheetView::formater(std::string cellstring){
+	if (cellstring.length()<8)
+		while(cellstring.length()<8)
+			cellstring = " " + cellstring;
+	return cellstring.substr(0,8);
 }
 
 std::string SheetView::numberToAlpha(const int & num) {
@@ -107,4 +120,3 @@ std::string SheetView::numberToAlpha(const int & num) {
 	alpha.push_back((65 + rest));
 	return alpha;
 }
-
