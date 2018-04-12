@@ -7,8 +7,8 @@
 
 #define CELLSIZE 8
 
-SheetView::SheetView(): rows(24), cols(80), cursorLocation("B4") {
-
+SheetView::SheetView(): rows(24), cols(80), cursorLocation("A1") {
+	Sheet::getInstance().getCell(4,5).set(new CellValue<std::string>("lange string"));
 }
 
 SheetView::~SheetView() {
@@ -69,7 +69,6 @@ char SheetView::headerLetter(int asciiVal) {
 
 void SheetView::drawCells() {
 	std::string drawstring;
-	Sheet::getInstance().getCell(4,5).set(new CellValue<std::string>("lange string"));
 	int row = 0, column = 0;
 	for (Sheet::iterator sit = Sheet::getInstance().begin(); sit != Sheet::getInstance().end(); ++sit){
 			for(Column::iterator cit = sit->begin() ; cit != sit->end(); ++cit){
@@ -99,8 +98,8 @@ void SheetView::drawCursor(){
 	drawHighlight(formatter(string).c_str());
 }
 
-void SheetView::setCursor() {
-
+void SheetView::setCursor(const CellAddress newLocation) {
+	cursorLocation = newLocation;
 }
 
 CellAddress SheetView::getCursor() {

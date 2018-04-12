@@ -22,9 +22,13 @@ private:
 	SheetView view;
 	bool finished;
 	int command;
-
+	void moveUp();
+	void moveDown();
+	void moveLeft();
+	void moveRight();
 	void handleCommand(const int & command);
 	void loop();
+	void backspace();
 
 };
 

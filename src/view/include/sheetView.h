@@ -35,7 +35,7 @@ public:
 	void draw();
 
 	CellAddress getCursor();
-	void setCursor();
+	void setCursor(const CellAddress newLocation);
 
 
 };

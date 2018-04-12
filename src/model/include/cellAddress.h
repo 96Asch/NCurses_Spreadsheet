@@ -30,7 +30,7 @@ public:
 	 * @return integer number of the row
 	 */
 	int getRow() const;
-
+	
 	/**
 	 * Returns the column of the cell.
 	 * @return integer number of the column
@@ -42,6 +42,11 @@ public:
 	 * @param string address to convert
 	 */
 	void createFromReference(const std::string & address);
+	
+	
+	CellAddress moveRow(const int number);
+	
+	CellAddress moveColumn(const int number);
 	
 	CellAddress &operator++() {
 		 row++;
@@ -57,8 +62,7 @@ private:
 	 * @return integer number
 	 */
 	int letterToInt(const char & c);
-	void moveRow(const int number);
-	void moveColumn(const int number);
+	
 
 	/**
 	 * Converts and sets the column string to numbers.

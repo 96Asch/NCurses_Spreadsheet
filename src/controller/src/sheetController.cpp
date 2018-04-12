@@ -6,7 +6,7 @@
  */
 
 #include "sheetController.h"
-
+#include "cellValue.h"
 
 SheetController::SheetController(SheetView view) :
 		view(view), finished(false) {
@@ -22,34 +22,57 @@ void SheetController::run() {
 }
 
 void SheetController::handleCommand(const int & command) {
+	
 	switch(command) {
-	case 'q':
-		finished = true;
-		break;
-	case KEY_DOWN:
-		moveDown();
-	case KEY_UP:
-		moveCursor();
-	case KEY_RIGHT:
-		moveCursor();
-	case KEY
-	default:
-		break;
-	}
+		case 'q':
+			finished = true;
+			break;
+		case KEY_DOWN:
+			moveDown();
+			break;
+		case KEY_UP:
+			moveUp();
+			break;
+		case KEY_RIGHT:
+			moveRight();
+			break;
+		case KEY_LEFT:
+			moveLeft();
+			break;
+		case KEY_BACKSPACE:
+			backspace();
+			break;
+		default:
+			break;
+	} 
+	
+	
+}
+
+
+void SheetController::backspace(){
+	int row = view.getCursor().getRow();
+	int column = view.getCursor().getColumn();
+	Sheet::getInstance().getCell(row,column).set(new CellValue<std::string>("        "));
+
 }
 
 void SheetController::moveDown(){
-	view.getCursor.moveRow(-1);
+	view.setCursor(view.getCursor().moveRow(1));
 }
 void SheetController::moveUp(){
-	view.getCursor.moveRow(1);
+	if(view.getCursor().getRow() != 0)
+	{
+	view.setCursor(view.getCursor().moveRow(-1));
+	}
 }
 void SheetController::moveLeft(){
-	view.getCursor.moveColumn(-1);
+	view.setCursor(view.getCursor().moveColumn(-1));
 }
-void SheetController::moveRigth(){
-	view.getCursor.moveColumn(1);
+void SheetController::moveRight(){
+	view.setCursor(view.getCursor().moveColumn(1));
 }
+
 void SheetController::loop() {
 	do {
 		view.draw();
