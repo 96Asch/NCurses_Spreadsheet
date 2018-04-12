@@ -26,11 +26,30 @@ void SheetController::handleCommand(const int & command) {
 	case 'q':
 		finished = true;
 		break;
+	case KEY_DOWN:
+		moveDown();
+	case KEY_UP:
+		moveCursor();
+	case KEY_RIGHT:
+		moveCursor();
+	case KEY
 	default:
 		break;
 	}
 }
 
+void SheetController::moveDown(){
+	view.getCursor.moveRow(-1);
+}
+void SheetController::moveUp(){
+	view.getCursor.moveRow(1);
+}
+void SheetController::moveLeft(){
+	view.getCursor.moveColumn(-1);
+}
+void SheetController::moveRigth(){
+	view.getCursor.moveColumn(1);
+}
 void SheetController::loop() {
 	do {
 		view.draw();

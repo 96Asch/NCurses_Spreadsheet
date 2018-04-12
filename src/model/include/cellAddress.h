@@ -57,6 +57,8 @@ private:
 	 * @return integer number
 	 */
 	int letterToInt(const char & c);
+	void moveRow(const int number);
+	void moveColumn(const int number);
 
 	/**
 	 * Converts and sets the column string to numbers.
