@@ -6,7 +6,6 @@
  */
 
 #include "util.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -22,9 +21,31 @@ bool contains(const std::string & src, const char & c, int & occurence) {
 	return false;
 }
 
-//TODO improve
+//TODO improve >> improved, lijkt nu goed te werken
 bool isCellAddress(const std::string & address) {
 	bool digitMode = false;
+	size_t digitIn;
+	splitAddress(address, digitIn);
+	if (digitIn > MAX_COL_LENGTH || (address.length() - digitIn) > MAX_ROW_LENGTH)
+		return false;
+		
+	if (!isupper(address[0]) || address.size() < 2)
+	  return false;
+	  
+	for (size_t i = 1; i < address.size() - 1; i++) {
+	  if (!isdigit(address[i]) && !isupper(address[i]))
+	    return false;
+	  if (!digitMode) {
+	    if (isdigit(address[i]))
+        digitMode = true;	  
+	  }
+	  if (digitMode)
+	    if (!isdigit(address[i]))
+	      return false;
+	}
+	return true;
+	
+	/*bool digitMode = false;
 	size_t digitIn;
 	splitAddress(address, digitIn);
 	if (digitIn > MAX_COL_LENGTH
@@ -41,7 +62,7 @@ bool isCellAddress(const std::string & address) {
 		}
 		return true;
 	}
-	return false;
+	return false;*/
 }
 
 void splitAddress(const std::string & address, size_t & index) {
