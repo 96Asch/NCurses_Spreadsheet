@@ -14,8 +14,10 @@
 #include "cellValueBase.h"
 #include "cellFormulaParser.h"
 #include "range.h"
+#include "observer.h"
+#include <set>
 
-class CellFormula: public CellValueBase {
+class CellFormula: public CellValueBase, public Observer{
 public:
 	/**
 	 * Constructor for the CellFormula class..
@@ -48,6 +50,8 @@ public:
 	 */
 	int getInt() const;
 
+	void update(int row, int col) override;
+
 	/**
 	 * Prints the expression tree in infix notation
 	 */
@@ -57,7 +61,9 @@ private:
 	Range range;
 	std::string originalFormula, output;
 	std::shared_ptr<Token> formula;
+	std::set<std::pair<int, int>> addresses;
 	float result;
+	int recursionDepth;
 
 	/**
 	 * Calculates the sum of the cells within the given range.

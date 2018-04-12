@@ -10,8 +10,11 @@
 #include <iostream>
 #include "sheet.h"
 
+#define MAX_RECURSION 7
+
 CellFormula::CellFormula(const std::string & rawFormula) :
-		originalFormula(rawFormula) {
+		originalFormula(rawFormula), recursionDepth(5) {
+	Sheet::getInstance().attach(this);
 	CellFormulaParser parser;
 	if (!parser.parse(rawFormula, formula)) {
 		output = "ERR";
@@ -27,6 +30,7 @@ CellFormula::CellFormula(const std::string & rawFormula) :
 }
 
 CellFormula::~CellFormula() {
+	Sheet::getInstance().detach(this);
 	formula = nullptr;
 }
 std::string CellFormula::getDrawString() const {
@@ -45,6 +49,11 @@ int CellFormula::getInt() const {
 	return static_cast<int>(result);
 }
 
+void CellFormula::update(int row, int col) {
+	if(addresses.find(std::make_pair(row, col)) != addresses.end())
+		result = evaluate(formula);
+}
+
 
 float CellFormula::sum(const std::string & begin, const std::string & end) {
 	CellAddress address1(begin), address2(end);
@@ -58,8 +67,7 @@ float CellFormula::sum(const std::string & begin, const std::string & end) {
 float CellFormula::average(const std::string & begin, const std::string & end) {
 	CellAddress address1(begin), address2(end);
 	range.createRange(address1, address2);
-	float sum = 0;
-	float count = range.getSize();
+	float count = range.getSize(), sum = 0;
 	for (const auto &i : range) 
 		sum += i.getFloat();
 	return sum / count;
@@ -93,12 +101,15 @@ float CellFormula::evaluate(std::shared_ptr<Token> & node) {
 			return node->getValue();
 		case CELLADDRESS:
 			CellAddress address(node->toString());
+			addresses.insert(std::make_pair(address.getRow(), address.getColumn()));
 			//TODO ERROR if cell is a string or circular
 			return Sheet::getInstance().getCell(address.getRow(), address.getColumn()).getFloat();
 		}
 	}
 	return 0;
 }
+
+
 
 void CellFormula::print(std::shared_ptr<Token> const token) {
 	if (token) {

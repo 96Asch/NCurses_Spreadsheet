@@ -12,7 +12,7 @@ class Observer {
 public:
 	Observer(){};
 	virtual ~Observer(){};
-	virtual void update() = 0;
+	virtual void update(int row, int col) = 0;
 };
 
 #endif /* SRC_UTIL_OBSERVER_H_ */

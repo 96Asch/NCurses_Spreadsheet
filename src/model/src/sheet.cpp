@@ -19,11 +19,19 @@ std::vector<Column>::iterator Sheet::end() {
 }
 
 Cell & Sheet::getCell(int row, int column) {
+
 	return sheet[column].getCell(row);
 }
 
 int Sheet::getSize() {
 	return sheet.size();
+}
+
+void Sheet::notify(int row, int col) {
+	for(Observer* obs : observers) {
+		if(obs)
+			obs->update(row, col);
+	}
 }
 
 void Sheet::ensureSize(const int & rows, const int & cols) {

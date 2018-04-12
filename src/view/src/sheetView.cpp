@@ -1,14 +1,13 @@
 #include "sheetView.h"
 #include "sheet.h"
 #include "column.h"
+#include "cellValue.h"
 #include "util.h"
 #include <string>
 
-#define LINES 24
-#define COLS 80
 #define CELLSIZE 8
 
-SheetView::SheetView() {
+SheetView::SheetView(): rows(24), cols(80) {
 
 }
 
@@ -22,7 +21,7 @@ void SheetView::initialize() {
 	initscr();
 	noecho();
 	/* Maak een venster, grootte lines x cols */
-	win = newwin((LINES + 5), (COLS + 5) * CELLSIZE, 0, 0);
+	win = newwin((rows + 5), (cols + 5) * CELLSIZE, 0, 0);
 	keypad(win, TRUE); /* Enable keypad input */
 
 }
@@ -37,7 +36,7 @@ void SheetView::drawHighlight(const char* string) {
 
 void SheetView::drawHeader() {
 	std::string temp, temp2;
-	for (int i = 0; i <= COLS; i++) {
+	for (int i = 0; i <= cols; i++) {
 		wmove(win, 0, i * 8 + 8);
 		temp = "   ";
 		temp += numberToAlpha(i);
@@ -47,7 +46,7 @@ void SheetView::drawHeader() {
 		drawHighlight(temp.c_str());
 	}
 
-	for (int i = 1; i <= LINES; i++) {
+	for (int i = 1; i <= rows; i++) {
 		wmove(win, i, 0);
 		temp = "   ";
 		temp += std::to_string(i);
@@ -73,7 +72,7 @@ void SheetView::drawCells() {
 	for (Sheet::iterator sit = Sheet::getInstance().begin(); sit != Sheet::getInstance().end(); ++sit){
 			for(Column::iterator cit = sit->begin() ; cit != sit->end(); ++cit){
 				drawstring = formater(cit->getDrawString());
-				wmove(win, row + 1, column * CELLSIZE);
+				wmove(win, row + 1, (column+1) * CELLSIZE);
 				waddstr(win, drawstring.c_str());
 				row++;
 			}
@@ -85,7 +84,7 @@ void SheetView::drawCells() {
 
 void SheetView::draw() {
 	drawHeader();
-	//drawCells();
+	drawCells();
 }
 
 void SheetView::setCursor() {

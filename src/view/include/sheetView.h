@@ -8,6 +8,7 @@
 class SheetView {
 
 private:
+	int rows, cols;
 
 	WINDOW *win;
 	CellAddress cursorLocation;
