@@ -28,16 +28,16 @@ void SheetController::handleCommand(const int & command) {
 			finished = true;
 			break;
 		case KEY_DOWN:
-			moveDown();
+			moveCursorDown();
 			break;
 		case KEY_UP:
-			moveUp();
+			moveCursorUp();
 			break;
 		case KEY_RIGHT:
-			moveRight();
+			moveCursorRight();
 			break;
 		case KEY_LEFT:
-			moveLeft();
+			moveCursorLeft();
 			break;
 		case KEY_BACKSPACE:
 			backspace();
@@ -53,23 +53,26 @@ void SheetController::handleCommand(const int & command) {
 void SheetController::backspace(){
 	int row = view.getCursor().getRow();
 	int column = view.getCursor().getColumn();
-	Sheet::getInstance().getCell(row,column).set(new CellValue<std::string>("        "));
+	std::string backspacedString = Sheet::getInstance().getCell(row,column).getDrawString();
 
+	if (!backspacedString.empty())
+  		backspacedString.erase(std::prev(backspacedString.end()));
+
+	Sheet::getInstance().getCell(row,column).set(new CellValue<std::string>(backspacedString));
 }
 
-void SheetController::moveDown(){
+void SheetController::moveCursorDown(){
 	view.setCursor(view.getCursor().moveRow(1));
 }
-void SheetController::moveUp(){
+void SheetController::moveCursorUp(){
 	if(view.getCursor().getRow() != 0)
-	{
-	view.setCursor(view.getCursor().moveRow(-1));
-	}
+		view.setCursor(view.getCursor().moveRow(-1));
 }
-void SheetController::moveLeft(){
-	view.setCursor(view.getCursor().moveColumn(-1));
+void SheetController::moveCursorLeft(){
+	if(view.getCursor().getColumn() != 0)	
+		view.setCursor(view.getCursor().moveColumn(-1));
 }
-void SheetController::moveRight(){
+void SheetController::moveCursorRight(){
 	view.setCursor(view.getCursor().moveColumn(1));
 }
 
