@@ -42,6 +42,9 @@ void SheetController::handleCommand(const int & command) {
 		case KEY_BACKSPACE:
 			backspace();
 			break;
+		case KEY_DC:
+			deleteCell();
+			break;
 		default:
 			break;
 	} 
@@ -60,6 +63,15 @@ void SheetController::backspace(){
 
 	Sheet::getInstance().getCell(row,column).set(new CellValue<std::string>(backspacedString));
 }
+
+
+void SheetController::deleteCell(){
+	int row = view.getCursor().getRow();
+	int column = view.getCursor().getColumn();
+
+	Sheet::getInstance().getCell(row,column).set(new CellValue<std::string>("        "));
+}
+
 
 void SheetController::moveCursorDown(){
 	view.setCursor(view.getCursor().moveRow(1));

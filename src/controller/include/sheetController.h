@@ -29,6 +29,7 @@ private:
 	void handleCommand(const int & command);
 	void loop();
 	void backspace();
+	void deleteCell();
 
 };
 
