@@ -10,13 +10,14 @@
 
 #include <vector>
 #include "observer.h"
+#include "cell.h"
 
 class Subject {
 public:
 	Subject();
 	virtual ~Subject();
 
-	virtual void notify(int row, int col) = 0;
+	virtual void notify(const Cell & cell) = 0;
 	void attach(Observer* observer);
 	void detach(Observer* observer);
 	std::vector<Observer*> observers;

@@ -17,7 +17,7 @@ public:
 	 * Constructor for the CellAddress.
 	 * @param string address to convert
 	 */
-	CellAddress(std::string address);
+	CellAddress(const std::string & address);
 	CellAddress() = default;
 
 	/**
@@ -49,7 +49,7 @@ public:
 	}
 
 private:
-	size_t row, column;
+	int row, column;
 
 	/**
 	 * Converts a letter to a number.

@@ -10,7 +10,9 @@
 #include <iostream>
 #include <cmath>
 
-CellAddress::CellAddress(std::string address) {
+#define ASCII_START 64
+
+CellAddress::CellAddress(const std::string & address) {
 	createFromReference(address);
 }
 
@@ -21,16 +23,11 @@ void CellAddress::createFromReference(const std::string & address) {
 	rowToIndex(address.substr(i));
 }
 
-int CellAddress::letterToInt(const char & c) {
-	return c - 64;
-}
-
 void CellAddress::columnToNumber(const std::string & col) {
 	column = 0;
-	int multiplier;
-	int exp = 0;
+	int multiplier, exp = 0;
 	for (int i = col.size() - 1; i >= 0; i--, exp++) {
-		multiplier = letterToInt(col[i]);
+		multiplier = (col.at(i) - ASCII_START);
 		column += multiplier * std::pow(26, exp);
 	}
 } //columnToNumber

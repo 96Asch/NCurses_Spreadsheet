@@ -1,8 +1,10 @@
 #include "column.h"
 #include "cell.h"
 
+#define DEFAULT_ROWS 24
+
 Column::Column() :
-		column(24) {
+		column(DEFAULT_ROWS) {
 }
 
 Cell& Column::getCell(const int & index) {
@@ -20,9 +22,4 @@ std::vector<Cell>::iterator Column::begin() {
 std::vector<Cell>::iterator Column::end() {
 	return column.end();
 }
-
-int Column::getSize() {
-	return column.size();
-}
-
 

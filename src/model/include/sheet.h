@@ -18,13 +18,13 @@ public:
 	static Sheet& getInstance();
 	std::vector<Column>::iterator begin();
 	std::vector<Column>::iterator end();
-	Cell& getCell(int row, int column);
+	Cell& getCell(const int & row, const int & column);
 	void ensureSize(const int & rows, const int & cols);
-	int getSize();
-	void notify(int row, int col) override;
+	void notify(const Cell & cell) override;
 	typedef std::vector<Column>::iterator iterator;
 
 private:
+	int rows, cols;
 	Sheet();
 	~Sheet() = default;
 	Sheet(Sheet const&);
