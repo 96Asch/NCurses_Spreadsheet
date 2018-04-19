@@ -21,13 +21,8 @@ CellFormula::CellFormula(const std::string & rawFormula) :
 		output = "ERR";
 		result = 0;
 		formula = nullptr;
-	} else {
-		result = evaluate(formula);
-		if (isInteger(result))
-			output = std::to_string(getInt());
-		else
-			output = std::to_string(getFloat());
-	}
+	} else
+		calculate();
 }
 
 CellFormula::~CellFormula() {
@@ -48,15 +43,12 @@ float CellFormula::getFloat() const {
 }
 
 int CellFormula::getInt() const {
-	return static_cast<int>(result);
+	int retval = static_cast<int>(result);
+	return retval;
 }
 
-void CellFormula::update(const Cell & cell) {
-	result = evaluate(formula);
-	if (isInteger(result))
-		output = std::to_string(getInt());
-	else
-		output = std::to_string(getFloat());
+void CellFormula::update() {
+	calculate();
 }
 
 bool CellFormula::isInteger(const float & val) {
@@ -91,6 +83,22 @@ float CellFormula::count(const std::string & begin, const std::string & end) {
 	return range.getSize();
 }
 
+void CellFormula::copyStringAtAddress(const CellAddress & address) {
+	if (!Sheet::getInstance().getCell(address.getRow(), address.getColumn()).getDrawString().empty())
+		output = Sheet::getInstance().getCell(address.getRow(),
+				address.getColumn()).getDrawString();
+}
+
+void CellFormula::calculate() {
+	result = evaluate(formula);
+	if (!output.empty()) {
+		if (isInteger(result))
+			output = std::to_string(getInt());
+		else
+			output = std::to_string(getFloat());
+	}
+}
+
 float CellFormula::evaluate(std::shared_ptr<Token> & node) {
 	if (node) {
 		switch (node->type) {
@@ -113,10 +121,12 @@ float CellFormula::evaluate(std::shared_ptr<Token> & node) {
 			return node->getValue();
 		case CELLADDRESS:
 			CellAddress address(node->toString());
-			cells.insert(&Sheet::getInstance().getCell(address.getRow(), address.getColumn()));
 			//TODO ERROR if cell is a string or circular
-			return Sheet::getInstance().getCell(address.getRow(),
+			float retval = Sheet::getInstance().getCell(address.getRow(),
 					address.getColumn()).getFloat();
+			if (retval == 0)
+				copyStringAtAddress(address);
+			return retval;
 		}
 	}
 	return 0;

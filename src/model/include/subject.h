@@ -17,7 +17,7 @@ public:
 	Subject();
 	virtual ~Subject();
 
-	virtual void notify(const Cell & cell) = 0;
+	virtual void notify() = 0;
 	void attach(Observer* observer);
 	void detach(Observer* observer);
 	std::vector<Observer*> observers;

@@ -11,6 +11,7 @@
 #include <string>
 #include <memory>
 
+#include "cellValue.h"
 #include "cellValueBase.h"
 
 class Cell {
@@ -46,6 +47,9 @@ public:
 	 * @return string value
 	 */
 	std::string getDrawString() const;
+
+	template <typename T>
+	CellValue<T> getValue() const;
 
 	/**
 	 * Clears the value of the cell

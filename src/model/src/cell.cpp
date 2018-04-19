@@ -17,7 +17,7 @@ Cell::Cell() {
 }
 
 void Cell::set(CellValueBase* base) {
-	Sheet::getInstance().notify(*this);
+	Sheet::getInstance().notify();
 	value.reset(base);
 }
 

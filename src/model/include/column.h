@@ -13,6 +13,7 @@
 class Column {
 public:
 	Column();
+	Column(const int & rows);
 	Cell& getCell(const int & index);
 	void resize(const int & rows);
 	std::vector<Cell>::iterator begin();

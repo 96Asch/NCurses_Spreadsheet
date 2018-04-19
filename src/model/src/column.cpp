@@ -7,6 +7,11 @@ Column::Column() :
 		column(DEFAULT_ROWS) {
 }
 
+Column::Column(const int & rows) {
+	for(int i = 0; i < rows; i++)
+		column.push_back(Cell());
+}
+
 Cell& Column::getCell(const int & index) {
 	return column[index];
 }

@@ -6,7 +6,11 @@
 
 Sheet::Sheet() :
 		rows(DEFAULT_ROWS), cols(DEFAULT_COLS),sheet(DEFAULT_COLS) {
+}
 
+Sheet::Sheet(const int & rows, const int & cols) {
+	for(int i = 0; i < cols; i++)
+		sheet.push_back(Column(rows));
 }
 
 Sheet& Sheet::getInstance() {
@@ -29,10 +33,10 @@ Cell & Sheet::getCell(const int & row, const int & column) {
 	return sheet[0].getCell(0);
 }
 
-void Sheet::notify(const Cell & cell) {
+void Sheet::notify() {
 	for(Observer* obs : observers) {
 		if(obs)
-			obs->update(cell);
+			obs->update();
 	}
 }
 

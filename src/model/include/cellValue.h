@@ -21,10 +21,6 @@ public:
 
 	}
 	~CellValue() = default;
-	T getValue() {
-		return value;
-	}
-
 	std::string getDrawString() const{
 		using boost::lexical_cast;
 		using boost::bad_lexical_cast;

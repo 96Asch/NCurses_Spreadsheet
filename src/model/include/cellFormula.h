@@ -50,7 +50,7 @@ public:
 	 */
 	int getInt() const;
 
-	void update(const Cell & cell) override;
+	void update() override;
 
 	/**
 	 * Prints the expression tree in infix notation
@@ -61,7 +61,6 @@ private:
 	Range range;
 	std::string originalFormula, output;
 	std::shared_ptr<Token> formula;
-	std::set<Cell*> cells;
 	float result;
 	int recursionDepth;
 
@@ -108,6 +107,10 @@ private:
 	 * @return true if float val contains an integer 
 	 */
 	bool isInteger(const float & val);
+
+	void copyStringAtAddress(const CellAddress & address);
+
+	void calculate();
 
 };
 
