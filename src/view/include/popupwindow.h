@@ -17,7 +17,7 @@ public:
 	void drawWindow();
 	void exit();
 	int getInput();
-	void insertChar();
+	void drawString(std::string inputString);
 	int getRow();
 	int getColumn();
 

@@ -14,20 +14,24 @@ void PopupWindow::initialize() {
 	noecho();
 	popupwin = newwin(3, CELLSIZE, row, column*8 + 4);
 	keypad(popupwin, TRUE);
+	
 
 }
 
 
-void PopupWindow::insertChar(){
-
-	//waddch(popupwin, );
-
+void PopupWindow::drawString(std::string inputString){	
+	werase(popupwin);
+	drawWindow();	
+	wmove(popupwin,1,1);	
+	wprintw(popupwin,inputString.c_str());
+	wrefresh(popupwin);
+	doupdate();
 }
 
 
 void PopupWindow::drawWindow(){
 
-wborder(popupwin, '|', '|', '-', '-', '+', '+', '+', '+');
+	wborder(popupwin, '|', '|', '-', '-', '+', '+', '+', '+');
 
 }
 
@@ -45,7 +49,6 @@ PopupWindow::PopupWindow(int row, int column): column(column), row(row) {
 
 
 }
-
 
 void PopupWindow::exit() {
 	delwin(popupwin); /* Dealloceer venster */

@@ -16,7 +16,8 @@ private:
 	PopupWindow window;
 	void handlePopup(int command);
 	void writeString();
-	int command;
+	void backspace();
+	void addToString(char input);
 	int row;
 	int column;
 	std::string editString;
