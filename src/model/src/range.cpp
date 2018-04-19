@@ -1,6 +1,18 @@
 #include "range.h"
 #include "util.h"
 
+#define DEFAULT_ADDRESS "A1"
+
+Range::Range() {
+	beginAddress.createFromReference(DEFAULT_ADDRESS);
+	endAddress.createFromReference(DEFAULT_ADDRESS);
+}
+
+Range::Range(const CellAddress& begin, const CellAddress & end) : beginAddress(begin), endAddress(end) {
+	++endAddress;
+}
+
+
 bool Range::checkRange(const std::string & address, int & split) {
 	for (size_t i = 0; i < address.length(); i++) {
 		if (address[i] == ':') {
@@ -15,9 +27,10 @@ bool Range::checkRange(const std::string & address, int & split) {
 	return false;
 } //checkRange
 
-Range* Range::createRange(CellAddress begin, CellAddress end) {
+Range* Range::createRange(const CellAddress & begin, const CellAddress & end) {
 	beginAddress = begin;
-	endAddress = ++end;
+	endAddress = end;
+	++endAddress;
 	return this;
 } //createRange
 
@@ -31,15 +44,15 @@ Range* Range::rangeFromString(const std::string & rangeString) {
 	return this;
 } //createRange
 
-RangeIterator Range::begin() {
+RangeIterator Range::begin() const{
 	return RangeIterator(beginAddress, endAddress);
 } //begin
 
-RangeIterator Range::end() {
+RangeIterator Range::end() const{
 	return RangeIterator(endAddress, endAddress);
 } //end
 
-int Range::getSize() {
+int Range::getSize() const{
 	int distanceX = 1 + endAddress.getColumn() - beginAddress.getColumn();
 	int distanceY = endAddress.getRow() - beginAddress.getRow();
 	return (distanceX * distanceY);

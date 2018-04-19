@@ -17,7 +17,7 @@ public:
 	 * Constructor for the CellAddress.
 	 * @param string address to convert
 	 */
-	CellAddress(std::string address);
+	CellAddress(const std::string & address);
 	CellAddress() = default;
 
 	/**
@@ -30,7 +30,7 @@ public:
 	 * @return integer number of the row
 	 */
 	int getRow() const;
-
+	
 	/**
 	 * Returns the column of the cell.
 	 * @return integer number of the column
@@ -43,13 +43,18 @@ public:
 	 */
 	void createFromReference(const std::string & address);
 	
+	
+	CellAddress moveRow(const int number);
+	
+	CellAddress moveColumn(const int number);
+	
 	CellAddress &operator++() {
 		 row++;
 		return *this;
 	}
 
 private:
-	size_t row, column;
+	int row, column;
 
 	/**
 	 * Converts a letter to a number.
@@ -57,6 +62,7 @@ private:
 	 * @return integer number
 	 */
 	int letterToInt(const char & c);
+	
 
 	/**
 	 * Converts and sets the column string to numbers.

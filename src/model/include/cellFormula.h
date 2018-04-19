@@ -50,7 +50,7 @@ public:
 	 */
 	int getInt() const;
 
-	void update(int row, int col) override;
+	void update(const Cell & cell) override;
 
 	/**
 	 * Prints the expression tree in infix notation
@@ -61,7 +61,7 @@ private:
 	Range range;
 	std::string originalFormula, output;
 	std::shared_ptr<Token> formula;
-	std::set<std::pair<int, int>> addresses;
+	std::set<Cell*> cells;
 	float result;
 	int recursionDepth;
 

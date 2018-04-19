@@ -34,6 +34,7 @@ CellFormula::~CellFormula() {
 	Sheet::getInstance().detach(this);
 	formula = nullptr;
 }
+
 std::string CellFormula::getDrawString() const {
 	return output;
 }
@@ -50,9 +51,12 @@ int CellFormula::getInt() const {
 	return static_cast<int>(result);
 }
 
-void CellFormula::update(int row, int col) {
-	if(addresses.find(std::make_pair(row, col)) != addresses.end())
-		result = evaluate(formula);
+void CellFormula::update(const Cell & cell) {
+	result = evaluate(formula);
+	if (isInteger(result))
+		output = std::to_string(getInt());
+	else
+		output = std::to_string(getFloat());
 }
 
 bool CellFormula::isInteger(const float & val) {
@@ -64,8 +68,9 @@ float CellFormula::sum(const std::string & begin, const std::string & end) {
 	CellAddress address1(begin), address2(end);
 	range.createRange(address1, address2);
 	float sum = 0;
-	for (const auto &i : range)
+	for (const auto &i : range) {
 		sum += i.getFloat();
+	}
 	return sum;
 }
 
@@ -73,8 +78,10 @@ float CellFormula::average(const std::string & begin, const std::string & end) {
 	CellAddress address1(begin), address2(end);
 	range.createRange(address1, address2);
 	float count = range.getSize(), sum = 0;
-	for (const auto &i : range) 
+	for (const auto &i : range) {
 		sum += i.getFloat();
+	}
+
 	return sum / count;
 }
 
@@ -106,9 +113,10 @@ float CellFormula::evaluate(std::shared_ptr<Token> & node) {
 			return node->getValue();
 		case CELLADDRESS:
 			CellAddress address(node->toString());
-			addresses.insert(std::make_pair(address.getRow(), address.getColumn()));
+			cells.insert(&Sheet::getInstance().getCell(address.getRow(), address.getColumn()));
 			//TODO ERROR if cell is a string or circular
-			return Sheet::getInstance().getCell(address.getRow(), address.getColumn()).getFloat();
+			return Sheet::getInstance().getCell(address.getRow(),
+					address.getColumn()).getFloat();
 		}
 	}
 	return 0;

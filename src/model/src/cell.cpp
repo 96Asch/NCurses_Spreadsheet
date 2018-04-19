@@ -7,6 +7,7 @@
 
 #include "cell.h"
 #include "cellValue.h"
+#include "sheet.h"
 
 #define DEFAULT_NUM 0
 #define DEFAULT_STR ""
@@ -16,6 +17,7 @@ Cell::Cell() {
 }
 
 void Cell::set(CellValueBase* base) {
+	Sheet::getInstance().notify(*this);
 	value.reset(base);
 }
 

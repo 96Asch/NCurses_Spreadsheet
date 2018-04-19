@@ -19,8 +19,9 @@ private:
 	void drawHighlight(const char* string);
 	void drawHeader();
 	void drawCells();
+	void drawCursor();
 	std::string numberToAlpha(const int & num);
-	std::string formater(std::string cellstring);
+	std::string formatter(std::string cellstring);
 
 public:
 
@@ -34,7 +35,7 @@ public:
 	void draw();
 
 	CellAddress getCursor();
-	void setCursor();
+	void setCursor(const CellAddress newLocation);
 
 
 };

@@ -8,11 +8,13 @@
 #ifndef SRC_UTIL_OBSERVER_H_
 #define SRC_UTIL_OBSERVER_H_
 
+#include "cell.h"
+
 class Observer {
 public:
 	Observer(){};
 	virtual ~Observer(){};
-	virtual void update(int row, int col) = 0;
+	virtual void update(const Cell & cell) = 0;
 };
 
 #endif /* SRC_UTIL_OBSERVER_H_ */

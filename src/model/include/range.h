@@ -11,14 +11,15 @@ class RangeIterator;
 
 class Range {
 public:
-	Range() = default;
+	Range();
+	Range(const CellAddress & begin, const CellAddress & end);
 	~Range() = default;
 
-	Range* createRange(CellAddress begin, CellAddress end);
+	Range* createRange(const CellAddress & begin, const CellAddress & end);
 	Range* rangeFromString(const std::string & rangeString);
-	RangeIterator begin();
-	RangeIterator end();
-	int getSize();
+	RangeIterator begin() const;
+	RangeIterator end() const;
+	int getSize() const;
 	typedef RangeIterator iterator;
 
 private:
@@ -34,14 +35,12 @@ private:
 	int beginY, endX, endY;
 
 public:
-	RangeIterator(const CellAddress & beginAdd,
-			const CellAddress & endAdd) :
-			offsetX(beginAdd.getColumn()), offsetY(
-					beginAdd.getRow()), beginY(beginAdd.getRow()), endX(
-					endAdd.getColumn()), endY(endAdd.getRow()) {
+	RangeIterator(const CellAddress & beginAdd, const CellAddress & endAdd) :
+			offsetX(beginAdd.getColumn()), offsetY(beginAdd.getRow()), beginY(
+					beginAdd.getRow()), endX(endAdd.getColumn()), endY(
+					endAdd.getRow()) {
 	}
 
-	//TODO FIX equals
 	/* Zijn de iteratoren gelijk aan elkaar? */
 	bool operator==(const RangeIterator &iter) const {
 		return (iter.offsetY == offsetY && iter.offsetX == offsetX);
