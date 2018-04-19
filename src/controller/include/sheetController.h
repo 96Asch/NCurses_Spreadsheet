@@ -10,6 +10,7 @@
 
 #include "sheetView.h"
 #include "sheet.h"
+#include "popupwindow.h"
 
 class SheetController {
 public:
@@ -25,6 +26,7 @@ private:
 
 	void handleCommand(const int & command);
 	void loop();
+	void popup();
 
 };
 
