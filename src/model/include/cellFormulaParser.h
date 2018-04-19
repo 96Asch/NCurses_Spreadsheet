@@ -134,6 +134,21 @@ private:
 	std::map<std::string, TokenType> aggregateMap = { { "AVG", AVG }, { "COUNT",
 			COUNT }, { "SUM", SUM } };
 
+
+   /**
+	 * Returns true if the string is an operator.
+	 * @param string str, the string operator.
+	 * @return true if the string is an operator.
+	 */
+	bool isOperator(const std::string & str);
+	
+	/**
+	 * Returns true if the char is an operator.
+	 * @param string str, the char operator.
+	 * @return true if the char is an operator.
+	 */
+	bool isOperator(const char & c); 
+	
 	/**
 	 * Returns true if the string is an aggregate formula.
 	 * @param string str, the string formula.
@@ -198,7 +213,7 @@ private:
 	 * @return std::shared_ptr<Token>, the new node of the expression tree.
 	 */
 	std::shared_ptr<Token> buildTree(ListIt & begin, const ListIt & end,
-			bool & hasError);
+			bool & hasError);		
 
 };
 

@@ -12,6 +12,24 @@
 #include <list>
 #include <stack>
 
+bool CellFormulaParser::isOperator(const std::string & str) {
+	return (str.size() == 1 && isOperator(str.front()));
+}
+
+bool CellFormulaParser::isOperator(const char & c) {
+	switch (c) {
+	case '+':
+	case '-':
+	case '/':
+	case '*':
+	case '(':
+	case ')':
+		return true;
+	default:
+		return false;
+	}
+}
+
 bool CellFormulaParser::isAggregate(const std::string & str) {
 	std::string aggregates[] = { "SUM", "AVG", "COUNT" };
 	size_t firstBracketIndex;

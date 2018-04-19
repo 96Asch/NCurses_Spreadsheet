@@ -9,6 +9,7 @@
 #include "util.h"
 #include <iostream>
 #include "sheet.h"
+#include <fenv.h>
 
 #define MAX_RECURSION 7
 
@@ -56,6 +57,11 @@ void CellFormula::update(const Cell & cell) {
 		output = std::to_string(getInt());
 	else
 		output = std::to_string(getFloat());
+}
+
+bool CellFormula::isInteger(const float & val) {
+	fesetround (FE_TONEAREST);
+	return val == rintf(val);
 }
 
 float CellFormula::sum(const std::string & begin, const std::string & end) {
