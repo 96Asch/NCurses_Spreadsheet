@@ -8,7 +8,6 @@
 #define COLS 80
 #define CELLSIZE 8
 
-
 void popupwindow::callwindow() {
 	int row = cursorLocation.getRow();
 	int column = cursorLocation.getColumn();
