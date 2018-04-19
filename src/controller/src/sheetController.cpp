@@ -25,7 +25,9 @@ void SheetController::handleCommand(const int & command) {
 	
 	switch(command) {
 		case '\n':
-			popup();
+			popupcontroller popup;
+			popup.windowloop();
+			break;
 		case 'q':
 			finished = true;
 			break;
@@ -97,14 +99,5 @@ void SheetController::loop() {
 		command = view.getInput();
 		handleCommand(command);
 	} while(!finished);
-}
-
-void SheetController::popup() {
-	popupwindow popup;
-	do{
-		popup.callwindow();
-		command = popup.getInput();
-	} while(command != '\n');
-	popup.exit();
 }
 
