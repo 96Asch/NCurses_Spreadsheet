@@ -48,6 +48,7 @@ void SheetController::handleCommand(const int & command) {
 			deleteCell();
 			break;
 		default:
+			insertChar(command);
 			break;
 	} 
 	
@@ -55,14 +56,17 @@ void SheetController::handleCommand(const int & command) {
 }
 
 
-void SheetController::backspace(){
+void SheetController::insertChar(const char c){
 	int row = view.getCursor().getRow();
 	int column = view.getCursor().getColumn();
+	
+	std::string input = Sheet::getInstance().getCell(row,column).getEditString();
+	
+	input = input + c; 
+	
+	Sheet::getInstance().getCell(row,column).set(new CellValue<std::string>(input));
 
-
-	Sheet::getInstance().getCell(row,column).clear();
 }
-
 
 void SheetController::deleteCell(){
 	int row = view.getCursor().getRow();

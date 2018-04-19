@@ -32,6 +32,7 @@ private:
 	void popup();
 	void backspace();
 	void deleteCell();
+	void insertChar(const char c);
 };
 
 #endif /* SRC_CONTROLLER_INCLUDE_SHEETCONTROLLER_H_ */
