@@ -13,11 +13,12 @@
 class CellValueBase {
 public:
 	CellValueBase();
-	virtual ~CellValueBase() = 0;
+	virtual ~CellValueBase();
 	virtual std::string getDrawString() const = 0;
 	virtual std::string getEditString() const = 0;
 	virtual float getFloat() const = 0;
 	virtual int getInt() const = 0;
+	static CellValueBase* cellValueFactory (const std::string & input);
 
 };
 

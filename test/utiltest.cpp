@@ -18,7 +18,6 @@ void testUtil(Test & tester) {
   //TESTING splitAddress(const std::string & address, size_t & index)
   size_t index = 0; //size_t is needed for splitAddress()
   int index2 = 0; //int is needed for assertEquals()
-  float floatje = 0; //needed for isInteger
   
   std::string testString = "AB12";
   splitAddress(testString, index);
@@ -35,7 +34,7 @@ void testUtil(Test & tester) {
   char testChar = 'A';
   bool test = false; //expected result
   int testje = 0;
-  tester.assertEquals("Testing contains: A in abcdefghijklmnopqrstuvqxyz", contains(testString, testChar, testje), test);
+  tester.assertEquals("Testing contains: A in abcdefghijklmnopqrstuvqxyz", contains(testString, testChar, testje), false);
   
   testString = "ABCDEFGHIJKLMNOPQRSTUVQXYZ";
   testChar = 'a';
