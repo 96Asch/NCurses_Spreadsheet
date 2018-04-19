@@ -18,6 +18,8 @@ void testUtil(Test & tester) {
   //TESTING splitAddress(const std::string & address, size_t & index)
   size_t index = 0; //size_t is needed for splitAddress()
   int index2 = 0; //int is needed for assertEquals()
+  float floatje = 0; //needed for isInteger
+  
   std::string testString = "AB12";
   splitAddress(testString, index);
   index2 = index;
@@ -82,46 +84,7 @@ void testUtil(Test & tester) {
   
   testString = "A?";
   test = false;
-  tester.assertEquals("Testing isCellAddress: a1", isCellAddress(testString), test);
-  
-  //TESTING  isOperator(const std::string & str)
-  test = true;
-  testString = "+";
-  tester.assertEquals("Testing isCellAddress: +", isOperator(testString), test);
-  
-  testString = "-";
-  tester.assertEquals("Testing isCellAddress: -", isOperator(testString), test);
-  
-  testString = "/";
-  tester.assertEquals("Testing isCellAddress: /", isOperator(testString), test);
-  
-  testString = "*";
-  tester.assertEquals("Testing isCellAddress: *", isOperator(testString), test);
-  
-  testString = "(";
-  tester.assertEquals("Testing isCellAddress: (", isOperator(testString), test);
-  
-  testString = ")";
-  tester.assertEquals("Testing isCellAddress: )", isOperator(testString), test);
-  
-  test = false;
-  testString = "=";
-  tester.assertEquals("Testing isCellAddress: =", isOperator(testString), test);
-  
-  testString = "{";
-  tester.assertEquals("Testing isCellAddress: {", isOperator(testString), test);
-
-  testString = "%";
-  tester.assertEquals("Testing isCellAddress: %", isOperator(testString), test);
-  
-  testString = "1";
-  tester.assertEquals("Testing isCellAddress: 1", isOperator(testString), test);
-  
-  testString = "a";
-  tester.assertEquals("Testing isCellAddress: a", isOperator(testString), test);
-  
-  //TESTING isInteger(const float & val)
-  
+  tester.assertEquals("Testing isCellAddress: a1", isCellAddress(testString), test); 
 }
 
 

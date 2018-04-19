@@ -74,27 +74,4 @@ void splitAddress(const std::string & address, size_t & index) {
 	}
 }
 
-bool isOperator(const std::string & str) {
-	return (str.size() == 1 && isOperator(str.front()));
-}
-
-bool isOperator(const char & c) {
-	switch (c) {
-	case '+':
-	case '-':
-	case '/':
-	case '*':
-	case '(':
-	case ')':
-		return true;
-	default:
-		return false;
-	}
-}
-
-bool isInteger(const float & val) {
-	fesetround (FE_TONEAREST);
-	return val == rintf(val);
-}
-
 

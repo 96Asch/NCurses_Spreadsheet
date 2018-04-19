@@ -9,6 +9,7 @@
 #include "util.h"
 #include <iostream>
 #include "sheet.h"
+#include <fenv.h>
 
 #define MAX_RECURSION 7
 
@@ -54,6 +55,10 @@ void CellFormula::update(int row, int col) {
 		result = evaluate(formula);
 }
 
+bool CellFormula::isInteger(const float & val) {
+	fesetround (FE_TONEAREST);
+	return val == rintf(val);
+}
 
 float CellFormula::sum(const std::string & begin, const std::string & end) {
 	CellAddress address1(begin), address2(end);
@@ -108,8 +113,6 @@ float CellFormula::evaluate(std::shared_ptr<Token> & node) {
 	}
 	return 0;
 }
-
-
 
 void CellFormula::print(std::shared_ptr<Token> const token) {
 	if (token) {

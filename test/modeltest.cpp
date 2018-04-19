@@ -151,12 +151,56 @@ void testRange(Test & tester) {
 	tester.assertEquals("Testing Range: B2:C3, C4 = 0 ", (++it)->getInt(), 0);
 }
 
+void testUtil(Test & tester){
+  //TESTING  isOperator(const std::string & str)
+  float floatje = 0; //needed for isInteger 
+ 
+  test = true;
+  testString = "+";
+  tester.assertEquals("Testing isCellAddress: +", isOperator(testString), test);
+  
+  testString = "-";
+  tester.assertEquals("Testing isCellAddress: -", isOperator(testString), test);
+  
+  testString = "/";
+  tester.assertEquals("Testing isCellAddress: /", isOperator(testString), test);
+  
+  testString = "*";
+  tester.assertEquals("Testing isCellAddress: *", isOperator(testString), test);
+  
+  testString = "(";
+  tester.assertEquals("Testing isCellAddress: (", isOperator(testString), test);
+  
+  testString = ")";
+  tester.assertEquals("Testing isCellAddress: )", isOperator(testString), test);
+  
+  test = false;
+  testString = "=";
+  tester.assertEquals("Testing isCellAddress: =", isOperator(testString), test);
+  
+  testString = "{";
+  tester.assertEquals("Testing isCellAddress: {", isOperator(testString), test);
+
+  testString = "%";
+  tester.assertEquals("Testing isCellAddress: %", isOperator(testString), test);
+  
+  testString = "1";
+  tester.assertEquals("Testing isCellAddress: 1", isOperator(testString), test);
+  
+  testString = "a";
+  tester.assertEquals("Testing isCellAddress: a", isOperator(testString), test);
+  
+  //TESTING isInteger(const float & val)
+  test = true;
+  tester.assertEquals("Testing isInteger: 1", isOperator(floatje), test);
+}
 
 int main(void) {
 	Test tester;
 	testCell(tester);
 	testCellAddress(tester);
 	testRange(tester);
+	testUtil(tester);
 	tester.printStatistics();
 	return 0;
 }

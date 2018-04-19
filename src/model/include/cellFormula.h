@@ -101,6 +101,13 @@ private:
 	 * @param std:shared_ptr<Token> node, the current node to print.
 	 */
 	void print(std::shared_ptr<Token> const node);
+	
+	 /**
+	 * Returns true if float val contains an integer
+	 * @param float val, the float that will be evaluated
+	 * @return true if float val contains an integer 
+	 */
+	bool isInteger(const float & val);
 
 };
 
