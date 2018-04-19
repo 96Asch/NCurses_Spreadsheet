@@ -5,18 +5,21 @@
 #include <curses.h>
 #include "cellAddress.h"
 
-class popupwindow {
+class PopupWindow {
 
 private:
 
 	WINDOW *popupwin;
-	CellAddress cursorLocation;
-
+	int column, row;
 public:
-
-	void callwindow();
+	PopupWindow(int row, int column);
+	void initialize();
+	void drawWindow();
 	void exit();
 	int getInput();
+	void insertChar();
+	int getRow();
+	int getColumn();
 
 };
 

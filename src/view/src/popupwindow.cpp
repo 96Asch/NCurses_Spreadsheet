@@ -6,23 +6,52 @@
 
 #define LINES 24
 #define COLS 80
-#define CELLSIZE 8
+#define CELLSIZE 16
 
-void popupwindow::callwindow() {
-	int row = cursorLocation.getRow();
-	int column = cursorLocation.getColumn();
+void PopupWindow::initialize() {
+	
 	initscr();
 	noecho();
-	popupwin = newwin(3, CELLSIZE, 0, 0);
+	popupwin = newwin(3, CELLSIZE, row, column*8 + 4);
 	keypad(popupwin, TRUE);
-	wborder(popupwin, '|', '|', '-', '-', '+', '+', '+', '+');
+
 }
 
-void popupwindow::exit() {
+
+void PopupWindow::insertChar(){
+
+	//waddch(popupwin, );
+
+}
+
+
+void PopupWindow::drawWindow(){
+
+wborder(popupwin, '|', '|', '-', '-', '+', '+', '+', '+');
+
+}
+
+int PopupWindow::getRow(){
+	return row;
+
+}
+
+int PopupWindow::getColumn(){
+	return column;
+}
+
+
+PopupWindow::PopupWindow(int row, int column): column(column), row(row) {
+
+
+}
+
+
+void PopupWindow::exit() {
 	delwin(popupwin); /* Dealloceer venster */
 	endwin(); /* Curses stoppen */
 }
 
-int popupwindow::getInput() {
+int PopupWindow::getInput() {
 	return wgetch(popupwin);
 }

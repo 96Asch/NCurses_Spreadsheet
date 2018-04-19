@@ -5,13 +5,22 @@
 #include "sheet.h"
 #include "popupwindow.h"
 
-class popupcontroller {
+class PopupController {
 
 public:
-	void windowloop();
+	void windowLoop();
+	PopupController(PopupWindow window);
+	
 
 private:
+	PopupWindow window;
+	void handlePopup(int command);
+	void writeString();
 	int command;
+	int row;
+	int column;
+	std::string editString;
+	
 
 };
 

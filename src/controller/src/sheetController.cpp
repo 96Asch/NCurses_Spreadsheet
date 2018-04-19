@@ -8,6 +8,7 @@
 #include "sheetController.h"
 #include "cellValue.h"
 
+
 SheetController::SheetController(SheetView view) :
 		view(view), finished(false) {
 }
@@ -21,12 +22,13 @@ void SheetController::run() {
 	view.exit();
 }
 
+
+
 void SheetController::handleCommand(const int & command) {
 	
 	switch(command) {
 		case '\n':
-			popupcontroller popup;
-			popup.windowloop();
+			pressEnter();
 			break;
 		case 'q':
 			finished = true;
@@ -50,7 +52,6 @@ void SheetController::handleCommand(const int & command) {
 			deleteCell();
 			break;
 		default:
-			insertChar(command);
 			break;
 	} 
 	
@@ -75,8 +76,16 @@ void SheetController::deleteCell(){
 	int column = view.getCursor().getColumn();
 
 	Sheet::getInstance().getCell(row,column).set(nullptr);
+	
 }
 
+void SheetController::pressEnter() {
+	int row = view.getCursor().getRow();
+	int column = view.getCursor().getColumn();
+	PopupWindow window(row,column);
+	PopupController popup(window);
+	popup.windowLoop();
+}
 
 void SheetController::moveCursorDown(){
 	view.setCursor(view.getCursor().moveRow(1));

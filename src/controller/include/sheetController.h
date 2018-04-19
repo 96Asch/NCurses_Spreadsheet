@@ -10,7 +10,7 @@
 
 #include "sheetView.h"
 #include "sheet.h"
-#include "popupwindow.h"
+#include "popupcontroller.h"
 
 class SheetController {
 public:
@@ -29,8 +29,8 @@ private:
 	void moveCursorRight();
 	void handleCommand(const int & command);
 	void loop();
-	void popup();
 	void backspace();
+	void pressEnter();
 	void deleteCell();
 	void insertChar(const char c);
 };
