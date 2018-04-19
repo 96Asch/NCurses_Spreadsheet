@@ -36,6 +36,19 @@ void CellAddress::rowToIndex(const std::string & rowNumber) {
 	row = std::stoi(rowNumber) - 1;
 }
 
+CellAddress CellAddress::moveRow(const int number){
+	if(row + number >= 0)
+		row += number;
+	return *this; 
+}
+
+CellAddress CellAddress::moveColumn(const int number){
+	if (column + number > 0)
+		column += number;
+	return *this;
+}
+
+
 int CellAddress::getRow() const {
 	return row;
 }

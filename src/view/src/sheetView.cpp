@@ -7,8 +7,8 @@
 
 #define CELLSIZE 8
 
-SheetView::SheetView(): rows(24), cols(80) {
-
+SheetView::SheetView(): rows(24), cols(80), cursorLocation("A1") {
+	Sheet::getInstance().getCell(4,5).set(new CellValue<std::string>("lange string"));
 }
 
 SheetView::~SheetView() {
@@ -23,6 +23,7 @@ void SheetView::initialize() {
 	/* Maak een venster, grootte lines x cols */
 	win = newwin((rows + 5), (cols + 5) * CELLSIZE, 0, 0);
 	keypad(win, TRUE); /* Enable keypad input */
+	curs_set(0);
 
 }
 void SheetView::drawHighlight(const char* string) {
@@ -71,11 +72,12 @@ void SheetView::drawCells() {
 	int row = 0, column = 0;
 	for (Sheet::iterator sit = Sheet::getInstance().begin(); sit != Sheet::getInstance().end(); ++sit){
 			for(Column::iterator cit = sit->begin() ; cit != sit->end(); ++cit){
-				drawstring = formater(cit->getDrawString());
+				drawstring = formatter(cit->getDrawString());
 				wmove(win, row + 1, (column+1) * CELLSIZE);
 				waddstr(win, drawstring.c_str());
 				row++;
 			}
+	row = 0;
 	column++;
 	}
 }
@@ -85,10 +87,19 @@ void SheetView::drawCells() {
 void SheetView::draw() {
 	drawHeader();
 	drawCells();
+	drawCursor();
 }
 
-void SheetView::setCursor() {
+void SheetView::drawCursor(){
+	int row = cursorLocation.getRow();
+	int column = cursorLocation.getColumn();
+	std::string string = Sheet::getInstance().getCell(row,column).getDrawString();
+	wmove(win, row+1, (column+1)*CELLSIZE);
+	drawHighlight(formatter(string).c_str());
+}
 
+void SheetView::setCursor(const CellAddress newLocation) {
+	cursorLocation = newLocation;
 }
 
 CellAddress SheetView::getCursor() {
@@ -101,10 +112,13 @@ void SheetView::exit() {
 }
 
 //retutn string van 8 tekens
-std::string SheetView::formater(std::string cellstring){
-	if (cellstring.length()<8)
-		while(cellstring.length()<8)
-			cellstring = " " + cellstring;
+std::string SheetView::formatter(std::string cellstring){
+	std::string temp;
+	if(cellstring.length() < 8) {
+		for(size_t i = 0; i < 8-cellstring.length(); i++)
+			temp += " ";
+		cellstring = temp + cellstring;
+	}
 	return cellstring.substr(0,8);
 }
 

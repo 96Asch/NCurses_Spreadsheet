@@ -23,11 +23,15 @@ private:
 	SheetView view;
 	bool finished;
 	int command;
-
+	void moveCursorUp();
+	void moveCursorDown();
+	void moveCursorLeft();
+	void moveCursorRight();
 	void handleCommand(const int & command);
 	void loop();
 	void popup();
-
+	void backspace();
+	void deleteCell();
 };
 
 #endif /* SRC_CONTROLLER_INCLUDE_SHEETCONTROLLER_H_ */
