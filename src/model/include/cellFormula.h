@@ -50,12 +50,10 @@ public:
 	 */
 	int getInt() const;
 
-	void update() override;
-
 	/**
-	 * Prints the expression tree in infix notation
+	 * Updates the calculation of the formula.
 	 */
-	void print();
+	void update() override;
 
 private:
 	Range range;
@@ -94,12 +92,6 @@ private:
 	 * @return float, the result of the evaluation.
 	 */
 	float evaluate(std::shared_ptr<Token> & node);
-
-	/**
-	 * Recursively prints the nodes in the expression tree in inorder notation.
-	 * @param std:shared_ptr<Token> node, the current node to print.
-	 */
-	void print(std::shared_ptr<Token> const node);
 	
 	 /**
 	 * Returns true if float val contains an integer
@@ -108,8 +100,17 @@ private:
 	 */
 	bool isInteger(const float & val);
 
-	void copyStringAtAddress(const CellAddress & address);
+	/**
+	 * Sets the output if the Cell already has a string.
+	 * @param Cell cell, the cell to look at.
+	 * @return the float value of the cell.
+	 */
+	float setIfCellContainsString(const Cell & cell);
 
+	/**
+	 * Evaluates the parse tree and sets the output variables.
+	 * Sets the output to ERR if there is an error.
+	 */
 	void calculate();
 
 };

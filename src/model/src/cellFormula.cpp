@@ -12,16 +12,13 @@
 #include <fenv.h>
 
 #define MAX_RECURSION 7
+#define ERROR_MSG "ERR"
 
 CellFormula::CellFormula(const std::string & rawFormula) :
-		originalFormula(rawFormula), recursionDepth(5) {
+		originalFormula(rawFormula),  output(ERROR_MSG), formula(nullptr), result(0), recursionDepth(5){
 	Sheet::getInstance().attach(this);
 	CellFormulaParser parser;
-	if (!parser.parse(rawFormula, formula)) {
-		output = "ERR";
-		result = 0;
-		formula = nullptr;
-	} else
+	if (parser.parse(rawFormula, formula))
 		calculate();
 }
 
@@ -73,7 +70,6 @@ float CellFormula::average(const std::string & begin, const std::string & end) {
 	for (const auto &i : range) {
 		sum += i.getFloat();
 	}
-
 	return sum / count;
 }
 
@@ -83,15 +79,17 @@ float CellFormula::count(const std::string & begin, const std::string & end) {
 	return range.getSize();
 }
 
-void CellFormula::copyStringAtAddress(const CellAddress & address) {
-	if (!Sheet::getInstance().getCell(address.getRow(), address.getColumn()).getDrawString().empty())
-		output = Sheet::getInstance().getCell(address.getRow(),
-				address.getColumn()).getDrawString();
+float CellFormula::setIfCellContainsString(const Cell & cell) {
+	int retval = cell.getFloat();
+	if (retval == 0 && !cell.getDrawString().empty())
+		output = cell.getDrawString();
+	return retval;
+
 }
 
 void CellFormula::calculate() {
 	result = evaluate(formula);
-	if (!output.empty()) {
+	if (output.empty()) {
 		if (isInteger(result))
 			output = std::to_string(getInt());
 		else
@@ -121,34 +119,9 @@ float CellFormula::evaluate(std::shared_ptr<Token> & node) {
 			return node->getValue();
 		case CELLADDRESS:
 			CellAddress address(node->toString());
-			//TODO ERROR if cell is a string or circular
-			float retval = Sheet::getInstance().getCell(address.getRow(),
-					address.getColumn()).getFloat();
-			if (retval == 0)
-				copyStringAtAddress(address);
-			return retval;
+			//TODO ERROR if cell is circular
+			return setIfCellContainsString(Sheet::getInstance().getCell(address.getRow(), address.getColumn()));
 		}
 	}
 	return 0;
 }
-
-void CellFormula::print(std::shared_ptr<Token> const token) {
-	if (token) {
-		if (token->isOperator) {
-			if (token != formula)
-				std::cout << "( ";
-			print(token->left);
-			std::cout << token->toString() << ' ';
-			print(token->right);
-			if (token != formula)
-				std::cout << ") ";
-		} else {
-			std::cout << token->toString() << ' ';
-		}
-	}
-}
-
-void CellFormula::print() {
-	print(formula);
-}
-

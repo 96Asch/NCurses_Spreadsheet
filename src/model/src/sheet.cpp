@@ -26,18 +26,10 @@ std::vector<Column>::iterator Sheet::end(){
 	return sheet.end();
 }
 
-//TODO return value in case out of bounds.
 Cell & Sheet::getCell(const int & row, const int & column) {
 	if(row < rows && column < cols)
 		return sheet[column].getCell(row);
 	return sheet[0].getCell(0);
-}
-
-void Sheet::notify() {
-	for(Observer* obs : observers) {
-		if(obs)
-			obs->update();
-	}
 }
 
 void Sheet::ensureSize(const int & row, const int & col) {
@@ -46,4 +38,19 @@ void Sheet::ensureSize(const int & row, const int & col) {
 	sheet.resize(cols);
 	for(size_t i = 0; i < sheet.size(); i++)
 		sheet[i].resize(rows);
+}
+
+int Sheet::getRows() const {
+	return rows;
+}
+
+int Sheet::getCols() const {
+	return cols;
+}
+
+void Sheet::notify() {
+	for(Observer* obs : observers) {
+		if(obs)
+			obs->update();
+	}
 }

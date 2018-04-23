@@ -12,8 +12,20 @@
 
 class Observer {
 public:
+
+	/**
+	 * Constructor for the Observer class
+	 */
 	Observer(){};
+
+	/**
+	 * Destructor for the Observer class.
+	 */
 	virtual ~Observer(){};
+
+	/**
+	 * Updates this class.
+	 */
 	virtual void update() = 0;
 };
 

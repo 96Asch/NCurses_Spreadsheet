@@ -43,11 +43,23 @@ public:
 	 */
 	void createFromReference(const std::string & address);
 	
+	/**
+	 * Moves the row of the address.
+	 * @param int number, the number to move the row.
+	 * @return  CellAddress, the moved address.
+	 */
+	CellAddress moveRow(const int & number);
 	
-	CellAddress moveRow(const int number);
+	/**
+	 * Moves the column of the address.
+	 * @param int number, the number to move the column.
+	 * @return  CellAddress, the moved address.
+	 */
+	CellAddress moveColumn(const int & number);
 	
-	CellAddress moveColumn(const int number);
-	
+	/**
+	 * The increment operator of the CellAddress class.
+	 */
 	CellAddress &operator++() {
 		 row++;
 		return *this;

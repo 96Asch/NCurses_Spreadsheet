@@ -21,6 +21,9 @@ void testFormula(Test & tester) {
 	cell.set(new CellFormula("=8/8"));
 	tester.assertEquals("Testing formula =8/8 = 1", cell.getInt(), 1);
 
+	cell.set(new CellFormula("=55.5+44.5"));
+	tester.assertEquals("Testing formula =55.5+44.5 = 100", cell.getFloat(), 100.0f);
+
 	cell.set(new CellFormula("=A1"));
 	tester.assertEquals("Testing formula =A1 = 2", cell.getInt(), 2);
 
@@ -37,7 +40,7 @@ void testFormula(Test & tester) {
 	tester.assertEquals("Testing formula =B1/A1 = 2.5", cell.getFloat(), 2.5f);
 
 	cell.set(new CellFormula("=s121a"));
-	tester.assertEquals("Testing formula =s121a = ERR", cell.getDrawString(), error);
+	tester.assertEquals("Testing formula =s121a = ERR", cell.getDrawString(), "ERR");
 
 	cell.set(new CellFormula("=A1+B1+8+8+8+8+8"));
 	tester.assertEquals("Testing formula =A1+B1+8+8+8+8+8 = 47", cell.getInt(), 47);
@@ -72,14 +75,30 @@ void testFormula(Test & tester) {
 	cell.set(new CellFormula("=AVG(A1:B2)-SUM(A1:B2)"));
 	tester.assertEquals("Testing formula =AVG(A1:B2)-SUM(A1:B2) = -7", cell.getInt(),
 			-7);
+
+	Sheet::getInstance().getCell(1, 0).set(CellValueBase::cellValueFactory("Hello World"));
+	cell.set(CellValueBase::cellValueFactory("=A2"));
+	tester.assertEquals("Testing formula =B2 = Hello World", cell.getInt(), 0);
+	tester.assertEquals("Testing formula =B2 = Hello World", cell.getDrawString(), "Hello World");
+
+	cell.set(CellValueBase::cellValueFactory("=SUM(A1:B2)"));
+	tester.assertEquals("Testing formula =SUM(A1:B2), A2(string), = 2+5+2=9", cell.getFloat(), 9);
+	tester.assertEquals("Testing formula =SUM(A1:B2), A2(string), = ERR", cell.getDrawString(), "ERR");
+
+	Sheet::getInstance().getCell(0, 0).set(CellValueBase::cellValueFactory("=A1+B1"));
+	tester.assertEquals("Testing formula =A1 self reference", Sheet::getInstance().getCell(0, 0).getDrawString(), "ERR");
+
+	Sheet::getInstance().getCell(2, 0).set(CellValueBase::cellValueFactory("=C2"));
+	Sheet::getInstance().getCell(2, 1).set(CellValueBase::cellValueFactory("=C1"));
+
+	tester.assertEquals("Testing formula =C2, circular reference ", Sheet::getInstance().getCell(2, 0).getDrawString(), "ERR");
 }
 
 void testCell(Test & tester) {
 	std::cout << "\n++++ CELL TEST CASE ++++" << std::endl;
 	Cell cell;
 
-	std::string empty = "";
-	tester.assertEquals("Testing uninitialized cell", cell.getDrawString(), empty);
+	tester.assertEquals("Testing uninitialized cell", cell.getDrawString(), "");
 
 	std::string seven = "7";
 	cell.set(new CellValue<int>(7));
@@ -100,7 +119,17 @@ void testCell(Test & tester) {
 	tester.assertEquals("Testing cell value is AaBb123456789,./;'[] (float)",
 			cell.getFloat(), 0.0f);
 
-	testFormula(tester);
+	cell.set(CellValueBase::cellValueFactory("d"));
+	tester.assertEquals("Testing cellValueFactory value: d", cell.getEditString(), "d");
+
+	cell.set(CellValueBase::cellValueFactory("8"));
+	tester.assertEquals("Testing cellValueFactory value: 8", cell.getInt(), 8);
+
+	cell.set(CellValueBase::cellValueFactory("8.4"));
+	tester.assertEquals("Testing cellValueFactory value: 8.0f", cell.getFloat(), 8.4);
+
+	cell.set(CellValueBase::cellValueFactory("=9"));
+	tester.assertEquals("Testing cellValueFactory value: =9", cell.getInt(), 9);
 }
 
 void testCellAddress(Test & tester) {
@@ -116,6 +145,11 @@ void testCellAddress(Test & tester) {
 	tester.assertEquals("Testing CellAddress = G5, Column = 6", address.getColumn(),
 			6);
 	tester.assertEquals("Testing CellAddress = G5, Row = 4", address.getRow(), 4);
+
+	CellAddress faulty("AaAA");
+
+	tester.assertEquals("Testing CellAddress = AaAA, Row = 0", faulty.getRow(), 0);
+	tester.assertEquals("Testing CellAddress = AaAA, Col = 0", faulty.getColumn(), 0);
 }
 
 void testRange(Test & tester) {
@@ -149,11 +183,13 @@ void testRange(Test & tester) {
 			check);
 	tester.assertEquals("Testing Range: B2:C3, C3 = 99 ", (++it)->getInt(), 99);
 	tester.assertEquals("Testing Range: B2:C3, C4 = 0 ", (++it)->getInt(), 0);
+
 }
 
 int main(void) {
 	Test tester;
 	testCell(tester);
+	testFormula(tester);
 	testCellAddress(tester);
 	testRange(tester);
 	tester.printStatistics();

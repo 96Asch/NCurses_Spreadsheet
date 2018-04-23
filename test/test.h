@@ -36,6 +36,27 @@ public:
 		}
 	}
 
+	template<typename T, typename V>
+	void assertEquals(const std::string & message, const T & obj1,
+			const V & obj2) {
+		size_t length = WHITESPACE_SIZE - message.size();
+
+		testAmount++;
+		std::cout << message << "...";
+		if (length > 0) {
+			for (size_t i = 0; i < length; i++)
+				std::cout << ' ';
+		}
+
+		if (obj1 == static_cast<T>(obj2)) {
+			std::cout << "Succes" << std::endl;
+		} else {
+			failed++;
+			std::cout << "Failed: expected: " << obj2 << " got: " << obj1
+					<< std::endl;
+		}
+	}
+
 	void printStatistics() {
 		std::cout << "\nResults: ";
 		for (size_t i = 0; i < WHITESPACE_SIZE - 30; i++)

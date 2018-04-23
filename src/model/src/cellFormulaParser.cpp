@@ -204,7 +204,7 @@ bool CellFormulaParser::parseToken(const std::string & token,
 		default:
 			return false;
 		}
-	} else if (token == "AVG" || token == "SUM" || token == "COUNT")
+	} else if (aggregateMap.find(token) != aggregateMap.end())
 		newTok = std::make_shared < Operator > (aggregateMap.at(token));
 	else if (isCellAddress(token))
 		newTok = std::make_shared < Address > (token);

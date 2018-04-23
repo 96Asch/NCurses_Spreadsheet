@@ -1,25 +1,66 @@
 #ifndef INCLUDE_RANGE_H_
 #define INCLUDE_RANGE_H_
 
-#include <string>
 #include "cellAddress.h"
 #include "cell.h"
 #include "sheet.h"
-#include <iostream>
+
+#include <string>
 
 class RangeIterator;
 
 class Range {
 public:
+	/**
+	 * Constructor of the Range class.
+	 */
 	Range();
+
+	/**
+	 * Constructor of the Range class.
+	 * @param CellAddress begin, the begin address of the range.
+	 * @param CellAddress end, the end address of the range.
+	 */
 	Range(const CellAddress & begin, const CellAddress & end);
+
+	/**
+	 * Destructor of the Range class.
+	 */
 	~Range() = default;
 
+	/**
+	 * Creates a Range pointer which iterates over the given range.
+	 * @param CellAddress begin, the begin address of the range.
+	 * @param CellAddress end, the end address of the range.
+	 * @return Range*, pointer to the created range.
+	 */
 	Range* createRange(const CellAddress & begin, const CellAddress & end);
+
+	/**
+	 * Creates a Range pointer which iterates over the given range.
+	 * @param std::string rangeString, the range to iterate over.
+	 * @return Range*, pointer to the created range.
+	 */
 	Range* rangeFromString(const std::string & rangeString);
+
+	/**
+	 * Returns an iterator to the begin of the range.
+	 * @return RangeIterator, an iterator to the begin of the range.
+	 */
 	RangeIterator begin() const;
+
+	/**
+	 * Returns an iterator to the end of the range.
+	 * @return RangeIterator, an iterator to the end of the range.
+	 */
 	RangeIterator end() const;
+
+	/**
+	 * Returns the number of cells to iterate over.
+	 * @return int, the number of cells to iterate over.
+	 */
 	int getSize() const;
+
 	typedef RangeIterator iterator;
 
 private:
@@ -41,7 +82,6 @@ public:
 					endAdd.getRow()) {
 	}
 
-	/* Zijn de iteratoren gelijk aan elkaar? */
 	bool operator==(const RangeIterator &iter) const {
 		return (iter.offsetY == offsetY && iter.offsetX == offsetX);
 	}
@@ -50,7 +90,6 @@ public:
 		return !operator==(iter);
 	}
 
-	/* Element op de huidige plek van de iterator uitlezen */
 	Cell &operator*() const {
 		return Sheet::getInstance().getCell(offsetY, offsetX);
 	}
@@ -59,7 +98,6 @@ public:
 		return &Sheet::getInstance().getCell(offsetY, offsetX);
 	}
 
-	/* Implementeer "++iter": verplaats de iterator een plek */
 	RangeIterator &operator++() {
 		if (offsetX <= endX) {
 			offsetY++;

@@ -17,7 +17,12 @@
 class Cell {
 
 public:
+
+	/**
+	 * Constructor for the Cell class.
+	 */
 	Cell();
+
 	/**
 	 * Sets a value in the cell.
 	 * @param Celvaluebase pointer to a value
@@ -43,13 +48,10 @@ public:
 	std::string getEditString() const;
 
 	/**
-	 * Returs a string value for drawing.
+	 * Returns a string value for drawing.
 	 * @return string value
 	 */
 	std::string getDrawString() const;
-
-	template <typename T>
-	CellValue<T> getValue() const;
 
 	/**
 	 * Clears the value of the cell

@@ -44,25 +44,6 @@ bool isCellAddress(const std::string & address) {
 	      return false;
 	}
 	return true;
-	
-	/*bool digitMode = false;
-	size_t digitIn;
-	splitAddress(address, digitIn);
-	if (digitIn > MAX_COL_LENGTH
-			|| (address.length() - digitIn) > MAX_ROW_LENGTH)
-		return false;
-	if (address.size() >= 2 && isalpha(address.front())
-			&& isdigit(address.back())) {
-		for (size_t i = 1; i < address.size() - 1; i++) {
-			if (isdigit(address[i]) && !digitMode) {
-				digitMode = true;
-			} else if (digitMode && isalpha(address[i])) {
-				return false;
-			}
-		}
-		return true;
-	}
-	return false;*/
 }
 
 void splitAddress(const std::string & address, size_t & index) {
