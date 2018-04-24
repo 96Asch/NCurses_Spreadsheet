@@ -1,7 +1,7 @@
 #include "sheet.h"
 #include <iostream>
 
-#define DEFAULT_ROWS 24
+#define DEFAULT_ROWS 23
 #define DEFAULT_COLS 80
 
 Sheet::Sheet() :
