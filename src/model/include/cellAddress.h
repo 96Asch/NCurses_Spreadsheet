@@ -1,9 +1,10 @@
 /*
- * cellAddress.h
- *
- *  Created on: Mar 22, 2018
- *      Author: asch
- */
+  Programmeertechnieken opdracht 2
+  Andrew Huang        s1913999
+  Paul Peters         s1453440
+  Ruben van Erkelens  s1437267
+  Karl Freeke         s1551973
+*/
 
 #ifndef INCLUDE_CELLADDRESS_H_
 #define INCLUDE_CELLADDRESS_H_

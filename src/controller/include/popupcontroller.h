@@ -1,3 +1,10 @@
+/*
+  Programmeertechnieken opdracht 2
+  Andrew Huang        s1913999
+  Paul Peters         s1453440
+  Ruben van Erkelens  s1437267
+  Karl Freeke         s1551973
+*/
 
 #ifndef POPUPCONTROLLER_H_
 #define POPUPCONTROLLER_H_
