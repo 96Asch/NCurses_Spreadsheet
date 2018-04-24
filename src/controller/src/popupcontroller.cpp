@@ -3,7 +3,8 @@
 
 #define CELLSIZE 16
 
-PopupController::PopupController(PopupWindow window): window(window){	
+PopupController::PopupController(PopupWindow window, const int & row, const int & col)
+: window(window), row(row), col(col){	
 }
 
 void PopupController::loopSizeInput(const std::string & msg, int & getal) {
@@ -24,15 +25,15 @@ void PopupController::loopSizeInput(const std::string & msg, int & getal) {
 }
 
 void PopupController::inputSizeWindow(){
-	int row(0),column(0);
-	loopSizeInput("Enter row size: ", row);
-	loopSizeInput("Enter column size: ", column);
-	Sheet::getInstance().ensureSize(row,column);
+	int numRows(0),numColumns(0);
+	loopSizeInput("Enter row size: ", numRows);
+	loopSizeInput("Enter column size: ", numColumns);
+	Sheet::getInstance().ensureSize(numRows,numColumns);
 }
 
- void PopupController::windowSizeLoop(){
+void PopupController::windowSizeLoop(){
  	int command;
- 	window.initialize(CELLSIZE*2);
+ 	window.initialize();
  	window.drawWindow();
  	window.drawString("Edit size? (y/n)");
 	command = window.getInput();
@@ -42,10 +43,9 @@ void PopupController::inputSizeWindow(){
  }
 
 void PopupController::windowLoop() {
-	
 	int command;
-	editString = Sheet::getInstance().getCell(window.getRow(),window.getColumn()).getEditString();
-	window.initialize(CELLSIZE);
+	editString = Sheet::getInstance().getCell(row,col).getEditString();
+	window.initialize();
 	window.drawWindow();
 	window.drawString(editString);
 	do{
@@ -60,6 +60,8 @@ void PopupController::windowLoop() {
 
 void PopupController::handlePopup(int command){
 	switch(command){
+		case '\n':
+			break;
 		case KEY_BACKSPACE:
 			backspace();
 			break;		
@@ -80,7 +82,8 @@ void PopupController::addToString(char input){
 }
 
 void PopupController::writeString(){
-	Sheet::getInstance().getCell(window.getRow(),window.getColumn()).set(CellValueBase::cellValueFactory(editString));
+	if(!editString.empty())
+		Sheet::getInstance().getCell(row,col).set(CellValueBase::cellValueFactory(editString));
 }
 
 

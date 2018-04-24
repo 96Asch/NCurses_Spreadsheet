@@ -20,7 +20,7 @@ SheetController::~SheetController() {
 }
 
 void SheetController::run() {
-	view.initialize(24,80);
+	view.initialize(Sheet::getInstance().getRows(), Sheet::getInstance().getCols());
 	loop();
 	view.exit();
 }
@@ -57,6 +57,7 @@ void SheetController::handleCommand(const int & command) {
 		case KEY_DC:
 			deleteCell();
 			break;
+		break;
 		default:
 			break;
 	} 
@@ -65,8 +66,8 @@ void SheetController::handleCommand(const int & command) {
 
 
 void SheetController::editSize(){
-	PopupWindow sizePopup(EDIT_POS_Y,EDIT_POS_X);
-	PopupController size(sizePopup);
+	PopupWindow sizePopup;
+	PopupController size(sizePopup, 0, 0);
 	size.windowSizeLoop();
 	view.clear();
 	view.exit();
@@ -77,7 +78,6 @@ void SheetController::editSize(){
 void SheetController::deleteCell(){
 	int row = view.getCursor().getRow();
 	int column = view.getCursor().getColumn();
-
 	Sheet::getInstance().getCell(row,column).set(nullptr);
 	
 }
@@ -85,8 +85,8 @@ void SheetController::deleteCell(){
 void SheetController::pressEnter() {
 	int row = view.getCursor().getRow();
 	int column = view.getCursor().getColumn();
-	PopupWindow window(row,column);
-	PopupController popup(window);
+	PopupWindow window;
+	PopupController popup(window, row, column);
 	popup.windowLoop();
 }
 
@@ -105,6 +105,7 @@ void SheetController::moveCursorRight(){
 
 void SheetController::loop() {
 	do {
+		view.clear();
 		view.draw();
 		command = view.getInput();
 		handleCommand(command);
