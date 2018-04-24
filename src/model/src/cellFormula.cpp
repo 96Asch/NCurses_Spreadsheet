@@ -15,11 +15,15 @@
 #define ERROR_MSG "ERR"
 
 CellFormula::CellFormula(const std::string & rawFormula) :
-		originalFormula(rawFormula),  output(ERROR_MSG), formula(nullptr), result(0), recursionDepth(5){
+		originalFormula(rawFormula), output(""), formula(nullptr), result(0), calculationError(false), parserError(false){
 	Sheet::getInstance().attach(this);
 	CellFormulaParser parser;
 	if (parser.parse(rawFormula, formula))
 		calculate();
+	else {
+		parserError = true;
+		output = ERROR_MSG;
+	}
 }
 
 CellFormula::~CellFormula() {
@@ -45,6 +49,8 @@ int CellFormula::getInt() const {
 }
 
 void CellFormula::update() {
+	output = "";
+	calculationError = false;
 	calculate();
 }
 
@@ -58,6 +64,8 @@ float CellFormula::sum(const std::string & begin, const std::string & end) {
 	range.createRange(address1, address2);
 	float sum = 0;
 	for (const auto &i : range) {
+		if(isCellAString(i) || i.getDrawString() == ERROR_MSG)
+			calculationError = true;
 		sum += i.getFloat();
 	}
 	return sum;
@@ -68,6 +76,8 @@ float CellFormula::average(const std::string & begin, const std::string & end) {
 	range.createRange(address1, address2);
 	float count = range.getSize(), sum = 0;
 	for (const auto &i : range) {
+		if(isCellAString(i) || i.getDrawString() == ERROR_MSG)
+			calculationError = true;
 		sum += i.getFloat();
 	}
 	return sum / count;
@@ -79,18 +89,16 @@ float CellFormula::count(const std::string & begin, const std::string & end) {
 	return range.getSize();
 }
 
-float CellFormula::setIfCellContainsString(const Cell & cell) {
-	int retval = cell.getFloat();
-	if (retval == 0 && !cell.getDrawString().empty())
-		output = cell.getDrawString();
-	return retval;
-
+bool CellFormula::isCellAString (const Cell & cell) {
+	return (cell.getFloat() == 0 && !cell.getDrawString().empty());
 }
 
 void CellFormula::calculate() {
 	result = evaluate(formula);
 	if (output.empty()) {
-		if (isInteger(result))
+		if(parserError || calculationError)
+			output = ERROR_MSG;
+		else if (isInteger(result))
 			output = std::to_string(getInt());
 		else
 			output = std::to_string(getFloat());
@@ -98,7 +106,7 @@ void CellFormula::calculate() {
 }
 
 float CellFormula::evaluate(std::shared_ptr<Token> & node) {
-	if (node) {
+	if (node && !calculationError) {
 		switch (node->type) {
 		case PLUS:
 			return evaluate(node->left) + evaluate(node->right);
@@ -119,9 +127,14 @@ float CellFormula::evaluate(std::shared_ptr<Token> & node) {
 			return node->getValue();
 		case CELLADDRESS:
 			CellAddress address(node->toString());
+			Cell* cell = &Sheet::getInstance().getCell(address.getRow(), address.getColumn());
 			//TODO ERROR if cell is circular
-			return setIfCellContainsString(Sheet::getInstance().getCell(address.getRow(), address.getColumn()));
+			if(isCellAString(*cell) || cell->getDrawString() == ERROR_MSG)
+				output = cell->getDrawString();
+			return cell->getFloat();
 		}
 	}
+
+
 	return 0;
 }
