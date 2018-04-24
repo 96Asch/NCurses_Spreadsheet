@@ -14,23 +14,20 @@
 #include <string>
 
 #define CELLSIZE 8
+#define UPPER_MARGIN 3
 
 
-SheetView::SheetView(): rows(24), cols(80), cursorLocation("A1") {
+SheetView::SheetView():cursorLocation("A1") {}
 
-}
+SheetView::~SheetView() {}
 
-SheetView::~SheetView() {
-
-}
-
-void SheetView::initialize() {
+void SheetView::initialize(const int & numRows, const int & numCols) {
 
 	/* Initialiseren */
 	initscr();
 	noecho();
 	/* Maak een venster, grootte lines x cols */
-	win = newwin((rows + 5), (cols + 5) * CELLSIZE, 0, 0);
+	win = newwin((UPPER_MARGIN + numRows + 5), (numCols + 5) * CELLSIZE, 0, 0);
 	keypad(win, TRUE); /* Enable keypad input */
 	curs_set(0);
 
@@ -46,18 +43,18 @@ void SheetView::drawHighlight(const char* string) {
 
 void SheetView::drawHeader() {
 	std::string temp, temp2;
-	for (int i = 0; i <= cols; i++) {
-		wmove(win, 0, i * 8 + 8);
+	for (int i = 0; i < Sheet::getInstance().getCols(); i++) {
+		wmove(win,UPPER_MARGIN, i * 8 + 8);
 		temp = "   ";
 		temp += numberToAlpha(i);
 		temp += "    ";
-		if (i > 26)
+		if (i > 25)
 			temp.pop_back();
 		drawHighlight(temp.c_str());
 	}
 
-	for (int i = 1; i <= rows; i++) {
-		wmove(win, i, 0);
+	for (int i = 1; i <= Sheet::getInstance().getRows(); i++) {
+		wmove(win, i+UPPER_MARGIN, 0);
 		temp = "   ";
 		temp += std::to_string(i);
 		temp += "    ";
@@ -82,7 +79,7 @@ void SheetView::drawCells() {
 	for (Sheet::iterator sit = Sheet::getInstance().begin(); sit != Sheet::getInstance().end(); ++sit){
 			for(Column::iterator cit = sit->begin() ; cit != sit->end(); ++cit){
 				drawstring = formatter(cit->getDrawString());
-				wmove(win, row + 1, (column+1) * CELLSIZE);
+				wmove(win, UPPER_MARGIN+row + 1, (column+1) * CELLSIZE);
 				waddstr(win, drawstring.c_str());
 				row++;
 			}
@@ -103,7 +100,7 @@ void SheetView::drawCursor(){
 	int row = cursorLocation.getRow();
 	int column = cursorLocation.getColumn();
 	std::string string = Sheet::getInstance().getCell(row,column).getDrawString();
-	wmove(win, row+1, (column+1)*CELLSIZE);
+	wmove(win, UPPER_MARGIN+row+1, (column+1)*CELLSIZE);
 	drawHighlight(formatter(string).c_str());
 }
 
@@ -129,6 +126,11 @@ std::string SheetView::formatter(std::string cellstring){
 		cellstring = temp + cellstring;
 	}
 	return cellstring.substr(0,8);
+}
+
+void SheetView::clear() {
+	werase(win);
+	wrefresh(win);
 }
 
 std::string SheetView::numberToAlpha(const int & num) {

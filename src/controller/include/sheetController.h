@@ -30,6 +30,7 @@ private:
 	void moveCursorRight();
 	void handleCommand(const int & command);
 	void loop();
+	void editSize();
 	void backspace();
 	void pressEnter();
 	void deleteCell();

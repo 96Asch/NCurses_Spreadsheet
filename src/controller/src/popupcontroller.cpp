@@ -11,69 +11,52 @@
 
 #define CELLSIZE 16
 
-PopupController::PopupController(PopupWindow window): window(window){
-	
-	row = window.getRow();
-	column = window.getColumn();
-	
+PopupController::PopupController(PopupWindow window, const int & row, const int & col)
+: window(window), row(row), col(col){	
+}
+
+void PopupController::loopSizeInput(const std::string & msg, int & getal) {
+	int command;
+	editString = "";
+	window.drawWindow();
+	window.drawString(msg);
+	do{
+		command = window.getInput();
+		if(isdigit(command) or command == KEY_BACKSPACE){
+			handlePopup(command);
+			window.drawWindow();
+			window.drawString(msg+editString);
+		}
+	} while(command != '\n');
+	if(not editString.empty())
+		getal = stoi(editString);
 }
 
 void PopupController::inputSizeWindow(){
-	int command, getal = 0;
-	editString = "Number of Rows: ";
-	window.drawString(editString);
-	do{
-		command = window.getInput();
-		if(command >= 0 && command <=9){
-			addToString(command);
-			window.drawString(editString);
-			getal = getal*10 + command;
-		}
-	} while(command != '\n');
-	
-	if(getal != 0)
-		row = getal;
-	getal = 0;
-	editString = "Number of columns: ";
-	window.drawString(editString);
-	do {
-		command = window.getInput();
-		if(command >= 0 && command <= 9){
-			addToString(command);
-			window.drawString(editString);
-			getal = getal*10 + command;
-		}
-	} while (command != '\n');
-	if(getal != 0)
-		column = getal;
-		
+	int numRows(0),numColumns(0);
+	loopSizeInput("Enter row size: ", numRows);
+	loopSizeInput("Enter column size: ", numColumns);
+	Sheet::getInstance().ensureSize(numRows,numColumns);
 }
 
-
-
-
-
- void PopupController::windowSizeLoop(){
+void PopupController::windowSizeLoop(){
  	int command;
- 	window.initialize(CELLSIZE*2);
+ 	window.initialize();
  	window.drawWindow();
  	window.drawString("Edit size? (y/n)");
- 	do{
- 		command = window.getInput();
- 		if(command == 'y')
-			inputSizeWindow();
- 	} while(command != 'n');
+	command = window.getInput();
+	if(command == 'y')
+		inputSizeWindow();
+ 	window.exit();
  }
 
 void PopupController::windowLoop() {
-	
 	int command;
-	editString = Sheet::getInstance().getCell(row,column).getEditString();
-	window.initialize(CELLSIZE);
+	editString = Sheet::getInstance().getCell(row,col).getEditString();
+	window.initialize();
 	window.drawWindow();
 	window.drawString(editString);
 	do{
-		
 		command = window.getInput();
 		handlePopup(command);
 		window.drawString(editString);
@@ -84,11 +67,8 @@ void PopupController::windowLoop() {
 }
 
 void PopupController::handlePopup(int command){
-
 	switch(command){
-	
-		case '\n' :
-			writeString();
+		case '\n':
 			break;
 		case KEY_BACKSPACE:
 			backspace();
@@ -110,7 +90,8 @@ void PopupController::addToString(char input){
 }
 
 void PopupController::writeString(){
-	Sheet::getInstance().getCell(row,column).set(CellValueBase::cellValueFactory(editString));
+	if(!editString.empty())
+		Sheet::getInstance().getCell(row,col).set(CellValueBase::cellValueFactory(editString));
 }
 
 

@@ -10,8 +10,11 @@
 #include "sheet.h"
 #include <iostream>
 
-#define DEFAULT_ROWS 23
+#define DEFAULT_ROWS 24
 #define DEFAULT_COLS 80
+
+#define MAX_COLS 200
+#define MAX_ROWS 200
 
 Sheet::Sheet() :
 		rows(DEFAULT_ROWS), cols(DEFAULT_COLS),sheet(DEFAULT_COLS) {
@@ -42,11 +45,13 @@ Cell & Sheet::getCell(const int & row, const int & column) {
 }
 
 void Sheet::ensureSize(const int & row, const int & col) {
-	rows = row;
-	cols = col;
-	sheet.resize(cols);
-	for(size_t i = 0; i < sheet.size(); i++)
-		sheet[i].resize(rows);
+	if(row > 0 && row < MAX_ROWS && col > 0 && col < MAX_COLS) { 
+		rows = row;
+		cols = col;
+		sheet.resize(cols);
+		for(size_t i = 0; i < sheet.size(); i++)
+			sheet[i].resize(rows);
+	}
 }
 
 int Sheet::getRows() const {

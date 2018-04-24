@@ -12,20 +12,23 @@
 #include "util.h"
 #include <string>
 
-#define LINES 24
-#define COLS 80
-#define CELLSIZE 16
+#define POS_X 0
+#define POS_Y 0
+#define CELLSIZE 8
+#define MAX_WIDTH 64
+#define MAX_HEIGHT 3
+#define UPPER_MARGIN 3
 
-void PopupWindow::initialize(int windowSize) {
-	
-	initscr();
-	noecho();
-	popupwin = newwin(3, windowSize, row, column*8 + 4);
-	keypad(popupwin, TRUE);
-	
 
+PopupWindow::PopupWindow() {
 }
 
+void PopupWindow::initialize() {
+	initscr();
+	noecho();
+	popupwin = newwin(MAX_HEIGHT, MAX_WIDTH, POS_Y, POS_X*CELLSIZE);
+	keypad(popupwin, TRUE);
+}
 
 void PopupWindow::drawString(std::string inputString){	
 	werase(popupwin);
@@ -40,21 +43,6 @@ void PopupWindow::drawString(std::string inputString){
 void PopupWindow::drawWindow(){
 
 	wborder(popupwin, '|', '|', '-', '-', '+', '+', '+', '+');
-
-}
-
-int PopupWindow::getRow(){
-	return row;
-
-}
-
-int PopupWindow::getColumn(){
-	return column;
-}
-
-
-PopupWindow::PopupWindow(int row, int column): column(column), row(row) {
-
 
 }
 

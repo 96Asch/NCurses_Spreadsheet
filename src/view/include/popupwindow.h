@@ -17,17 +17,13 @@ class PopupWindow {
 private:
 
 	WINDOW *popupwin;
-	int column, row;
 public:
-	PopupWindow(int row, int column);
-	void initialize(int windowSize);
+	PopupWindow();
+	void initialize();
 	void drawWindow();
 	void exit();
 	int getInput();
 	void drawString(std::string inputString);
-	int getRow();
-	int getColumn();
-
 };
 
 #endif

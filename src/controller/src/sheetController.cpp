@@ -9,6 +9,9 @@
 #include "sheetController.h"
 #include "cellValue.h"
 
+#define EDIT_POS_X 1
+#define EDIT_POS_Y 0
+
 
 SheetController::SheetController(SheetView view) :
 		view(view), finished(false) {
@@ -18,7 +21,7 @@ SheetController::~SheetController() {
 }
 
 void SheetController::run() {
-	view.initialize();
+	view.initialize(Sheet::getInstance().getRows(), Sheet::getInstance().getCols());
 	loop();
 	view.exit();
 }
@@ -33,6 +36,9 @@ void SheetController::handleCommand(const int & command) {
 			break;
 		case 'q':
 			finished = true;
+			break;
+		case 'r':
+			editSize();
 			break;
 		case KEY_DOWN:
 			moveCursorDown();
@@ -52,28 +58,27 @@ void SheetController::handleCommand(const int & command) {
 		case KEY_DC:
 			deleteCell();
 			break;
+		break;
 		default:
 			break;
 	} 
-	
-	
 }
 
 
 
-void editSize(){
-
-	PopupWindow sizePopup(5,5);
-	PopupController size(sizePopup);
+void SheetController::editSize(){
+	PopupWindow sizePopup;
+	PopupController size(sizePopup, 0, 0);
 	size.windowSizeLoop();
-	
+	view.clear();
+	view.exit();
+	view.initialize(Sheet::getInstance().getRows(),Sheet::getInstance().getCols());
 
 }
 
 void SheetController::deleteCell(){
 	int row = view.getCursor().getRow();
 	int column = view.getCursor().getColumn();
-
 	Sheet::getInstance().getCell(row,column).set(nullptr);
 	
 }
@@ -81,8 +86,8 @@ void SheetController::deleteCell(){
 void SheetController::pressEnter() {
 	int row = view.getCursor().getRow();
 	int column = view.getCursor().getColumn();
-	PopupWindow window(row,column);
-	PopupController popup(window);
+	PopupWindow window;
+	PopupController popup(window, row, column);
 	popup.windowLoop();
 }
 
@@ -90,14 +95,10 @@ void SheetController::moveCursorDown(){
 	view.setCursor(view.getCursor().moveRow(1));
 }
 void SheetController::moveCursorUp(){
-	if(view.getCursor().getRow() != 0)
-		view.setCursor(view.getCursor().moveRow(-1));
-	else
-		editSize();
+	view.setCursor(view.getCursor().moveRow(-1));
 }
 void SheetController::moveCursorLeft(){
-	if(view.getCursor().getColumn() != 0)	
-		view.setCursor(view.getCursor().moveColumn(-1));
+	view.setCursor(view.getCursor().moveColumn(-1));
 }
 void SheetController::moveCursorRight(){
 	view.setCursor(view.getCursor().moveColumn(1));
@@ -105,6 +106,7 @@ void SheetController::moveCursorRight(){
 
 void SheetController::loop() {
 	do {
+		view.clear();
 		view.draw();
 		command = view.getInput();
 		handleCommand(command);

@@ -15,10 +15,9 @@
 class PopupController {
 
 public:
+	PopupController(PopupWindow window, const int & row, const int & col);
 	void windowLoop();
 	void windowSizeLoop();
-	PopupController(PopupWindow window);
-	
 
 private:
 	PopupWindow window;
@@ -27,10 +26,10 @@ private:
 	void backspace();
 	void addToString(char input);
 	
+	void loopSizeInput(const std::string & msg, int & getal);
 	void inputSizeWindow();
-	int row;
-	int column;
 	std::string editString;
+	int row, col;
 	
 
 };
