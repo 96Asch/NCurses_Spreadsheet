@@ -9,6 +9,7 @@ class PopupController {
 
 public:
 	void windowLoop();
+	void windowSizeLoop();
 	PopupController(PopupWindow window);
 	
 
@@ -18,6 +19,8 @@ private:
 	void writeString();
 	void backspace();
 	void addToString(char input);
+	
+	void inputSizeWindow();
 	int row;
 	int column;
 	std::string editString;

@@ -13,7 +13,7 @@ private:
 	int column, row;
 public:
 	PopupWindow(int row, int column);
-	void initialize();
+	void initialize(int windowSize);
 	void drawWindow();
 	void exit();
 	int getInput();
