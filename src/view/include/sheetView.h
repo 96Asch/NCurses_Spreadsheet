@@ -8,8 +8,6 @@
 class SheetView {
 
 private:
-	int rows, cols;
-
 	WINDOW *win;
 	CellAddress cursorLocation;
 
@@ -29,9 +27,9 @@ public:
 	~SheetView();
 
 	int getInput();
-	void initialize();
+	void initialize(const int & numRows, const int & numCols);
 	void exit();
-
+	void clear();
 	void draw();
 
 	CellAddress getCursor();

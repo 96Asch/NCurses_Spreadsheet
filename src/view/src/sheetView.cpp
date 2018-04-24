@@ -7,20 +7,20 @@
 
 #define CELLSIZE 8
 
-SheetView::SheetView(): rows(24), cols(80), cursorLocation("A1") {
+SheetView::SheetView():cursorLocation("A1") {
 }
 
 SheetView::~SheetView() {
 
 }
 
-void SheetView::initialize() {
+void SheetView::initialize(const int & numRows, const int & numCols) {
 
 	/* Initialiseren */
 	initscr();
 	noecho();
 	/* Maak een venster, grootte lines x cols */
-	win = newwin((rows + 5), (cols + 5) * CELLSIZE, 0, 0);
+	win = newwin((numRows + 5), (numCols + 5) * CELLSIZE, 0, 0);
 	keypad(win, TRUE); /* Enable keypad input */
 	curs_set(0);
 
@@ -36,17 +36,17 @@ void SheetView::drawHighlight(const char* string) {
 
 void SheetView::drawHeader() {
 	std::string temp, temp2;
-	for (int i = 0; i <= cols; i++) {
+	for (int i = 0; i < Sheet::getInstance().getCols(); i++) {
 		wmove(win, 0, i * 8 + 8);
 		temp = "   ";
 		temp += numberToAlpha(i);
 		temp += "    ";
-		if (i > 26)
+		if (i > 25)
 			temp.pop_back();
 		drawHighlight(temp.c_str());
 	}
 
-	for (int i = 1; i <= rows; i++) {
+	for (int i = 1; i <= Sheet::getInstance().getRows(); i++) {
 		wmove(win, i, 0);
 		temp = "   ";
 		temp += std::to_string(i);
@@ -119,6 +119,11 @@ std::string SheetView::formatter(std::string cellstring){
 		cellstring = temp + cellstring;
 	}
 	return cellstring.substr(0,8);
+}
+
+void SheetView::clear() {
+	werase(win);
+	wrefresh(win);
 }
 
 std::string SheetView::numberToAlpha(const int & num) {

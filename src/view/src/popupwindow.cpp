@@ -7,6 +7,11 @@
 #define LINES 24
 #define COLS 80
 #define CELLSIZE 16
+#define UPPER_MARGIN 3
+
+
+PopupWindow::PopupWindow(int row, int column): column(column), row(row) {
+}
 
 void PopupWindow::initialize(int windowSize) {
 	
@@ -45,10 +50,6 @@ int PopupWindow::getColumn(){
 }
 
 
-PopupWindow::PopupWindow(int row, int column): column(column), row(row) {
-
-
-}
 
 void PopupWindow::exit() {
 	delwin(popupwin); /* Dealloceer venster */

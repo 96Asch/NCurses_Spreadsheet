@@ -8,6 +8,9 @@
 #include "sheetController.h"
 #include "cellValue.h"
 
+#define EDIT_POS_X 1
+#define EDIT_POS_Y 0
+
 
 SheetController::SheetController(SheetView view) :
 		view(view), finished(false) {
@@ -17,7 +20,7 @@ SheetController::~SheetController() {
 }
 
 void SheetController::run() {
-	view.initialize();
+	view.initialize(24,80);
 	loop();
 	view.exit();
 }
@@ -32,6 +35,9 @@ void SheetController::handleCommand(const int & command) {
 			break;
 		case 'q':
 			finished = true;
+			break;
+		case 'r':
+			editSize();
 			break;
 		case KEY_DOWN:
 			moveCursorDown();
@@ -54,18 +60,17 @@ void SheetController::handleCommand(const int & command) {
 		default:
 			break;
 	} 
-	
-	
 }
 
 
 
-void editSize(){
-
-	PopupWindow sizePopup(5,5);
+void SheetController::editSize(){
+	PopupWindow sizePopup(EDIT_POS_Y,EDIT_POS_X);
 	PopupController size(sizePopup);
 	size.windowSizeLoop();
-	
+	view.clear();
+	view.exit();
+	view.initialize(Sheet::getInstance().getRows(),Sheet::getInstance().getCols());
 
 }
 
@@ -89,14 +94,10 @@ void SheetController::moveCursorDown(){
 	view.setCursor(view.getCursor().moveRow(1));
 }
 void SheetController::moveCursorUp(){
-	if(view.getCursor().getRow() != 0)
-		view.setCursor(view.getCursor().moveRow(-1));
-	else
-		editSize();
+	view.setCursor(view.getCursor().moveRow(-1));
 }
 void SheetController::moveCursorLeft(){
-	if(view.getCursor().getColumn() != 0)	
-		view.setCursor(view.getCursor().moveColumn(-1));
+	view.setCursor(view.getCursor().moveColumn(-1));
 }
 void SheetController::moveCursorRight(){
 	view.setCursor(view.getCursor().moveColumn(1));
