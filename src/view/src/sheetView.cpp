@@ -8,7 +8,6 @@
 #define CELLSIZE 8
 
 SheetView::SheetView(): rows(24), cols(80), cursorLocation("A1") {
-	Sheet::getInstance().getCell(4,5).set(new CellValue<std::string>("lange string"));
 }
 
 SheetView::~SheetView() {
