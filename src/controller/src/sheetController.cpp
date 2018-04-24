@@ -59,15 +59,13 @@ void SheetController::handleCommand(const int & command) {
 }
 
 
-void SheetController::insertChar(const char c){
-	int row = view.getCursor().getRow();
-	int column = view.getCursor().getColumn();
+
+void editSize(){
+
+	PopupWindow sizePopup(5,5);
+	PopupController size(sizePopup);
+	size.windowSizeLoop();
 	
-	std::string input = Sheet::getInstance().getCell(row,column).getEditString();
-	
-	input = input + c; 
-	
-	Sheet::getInstance().getCell(row,column).set(new CellValue<std::string>(input));
 
 }
 
@@ -93,6 +91,8 @@ void SheetController::moveCursorDown(){
 void SheetController::moveCursorUp(){
 	if(view.getCursor().getRow() != 0)
 		view.setCursor(view.getCursor().moveRow(-1));
+	else
+		editSize();
 }
 void SheetController::moveCursorLeft(){
 	if(view.getCursor().getColumn() != 0)	

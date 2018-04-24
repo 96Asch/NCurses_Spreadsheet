@@ -8,11 +8,11 @@
 #define COLS 80
 #define CELLSIZE 16
 
-void PopupWindow::initialize() {
+void PopupWindow::initialize(int windowSize) {
 	
 	initscr();
 	noecho();
-	popupwin = newwin(3, CELLSIZE, row, column*8 + 4);
+	popupwin = newwin(3, windowSize, row, column*8 + 4);
 	keypad(popupwin, TRUE);
 	
 

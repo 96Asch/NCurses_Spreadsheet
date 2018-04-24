@@ -20,7 +20,7 @@ CellValueBase* CellValueBase::cellValueFactory (const std::string & input) {
   float floatValue = 0;
   
   if (!input.empty()) {
-    if (input[0] == '=')
+    if (input.front() == '=')
       return new CellFormula(input);
     else if (is<int>(input, intValue))
       return new CellValue<int>(intValue);

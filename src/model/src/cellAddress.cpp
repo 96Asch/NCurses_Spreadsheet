@@ -19,7 +19,7 @@ CellAddress::CellAddress(const std::string & address) :  row(0), column(0) {
 
 void CellAddress::createFromReference(const std::string & address) {
 	size_t i;
-	if (isCellAddress(address)) {
+	if (!address.empty() && isCellAddress(address)) {
 		splitAddress(address, i);
 		columnToNumber(address.substr(0, i));
 		rowToIndex(address.substr(i));

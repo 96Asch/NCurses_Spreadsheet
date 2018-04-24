@@ -1,20 +1,67 @@
 #include "popupcontroller.h"
 #include "cellValueBase.h"
 
-
+#define CELLSIZE 16
 
 PopupController::PopupController(PopupWindow window): window(window){
 	
 	row = window.getRow();
 	column = window.getColumn();
-	editString = Sheet::getInstance().getCell(row,column).getDrawString();
-
+	
 }
+
+void PopupController::inputSizeWindow(){
+	int row,column, command, getal = 0;
+	editString = "Number of Rows: ";
+	window.drawString(editString);
+	do{
+		command = window.getInput();
+		if(command >= 0 && command <=9){
+			addToString(command);
+			window.drawString(editString);
+			getal = getal*10 + command;
+		}
+	} while(command != '\n');
+	
+	if(getal != 0)
+		row = getal;
+	getal = 0;
+	editString = "Number of columns: ";
+	window.drawString(editString);
+	do {
+		command = window.getInput();
+		if(command >= 0 && command <= 9){
+			addToString(command);
+			window.drawString(editString);
+			getal = getal*10 + command;
+		}
+	} while (command != '\n');
+	if(getal != 0)
+		column = getal;
+		
+}
+
+
+
+
+
+ void PopupController::windowSizeLoop(){
+ 	int command;
+ 	window.initialize(CELLSIZE*2);
+ 	window.drawWindow();
+ 	window.drawString("Edit size? (y/n)");
+ 	do{
+ 		command = window.getInput();
+ 		if(command == 'y')
+			inputSizeWindow();
+ 	} while(command != 'n');
+ }
 
 void PopupController::windowLoop() {
 	
-	int command;	
-	window.initialize();
+	int command;
+	editString = Sheet::getInstance().getCell(row,column).getEditString();
+	window.initialize(CELLSIZE);
 	window.drawWindow();
 	window.drawString(editString);
 	do{
@@ -46,7 +93,8 @@ void PopupController::handlePopup(int command){
 
 
 void PopupController::backspace(){
-	editString.pop_back();
+	if(!editString.empty())
+		editString.pop_back();
 }
 
 void PopupController::addToString(char input){

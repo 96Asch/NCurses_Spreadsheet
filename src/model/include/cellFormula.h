@@ -15,7 +15,6 @@
 #include "cellFormulaParser.h"
 #include "range.h"
 #include "observer.h"
-#include <set>
 
 class CellFormula: public CellValueBase, public Observer{
 public:
@@ -60,7 +59,7 @@ private:
 	std::string originalFormula, output;
 	std::shared_ptr<Token> formula;
 	float result;
-	int recursionDepth;
+	bool calculationError, parserError;
 
 	/**
 	 * Calculates the sum of the cells within the given range.
@@ -101,15 +100,16 @@ private:
 	bool isInteger(const float & val);
 
 	/**
-	 * Sets the output if the Cell already has a string.
+	 * Returns true if the Cell already has a string.
 	 * @param Cell cell, the cell to look at.
-	 * @return the float value of the cell.
+	 * @return bool, true if the cell has a string value.
 	 */
-	float setIfCellContainsString(const Cell & cell);
+	bool isCellAString (const Cell & cell);
 
 	/**
 	 * Evaluates the parse tree and sets the output variables.
 	 * Sets the output to ERR if there is an error.
+	 * @param bool recalculate, indicates whether this is a recalculation.
 	 */
 	void calculate();
 

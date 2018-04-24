@@ -48,7 +48,7 @@ void testFormula(Test & tester) {
 	cell.set(new CellFormula("=(A1*B1)/0"));
 	tester.assertEquals("Testing formula =(A1*B1)/0 = 0", cell.getInt(), 0);
 	tester.assertEquals("Testing formula =(A1*B1)/0 = ERR", cell.getDrawString(),
-			error);
+			"ERR");
 
 	Sheet::getInstance().getCell(1, 0).set(new CellValue<int>(1));
 	Sheet::getInstance().getCell(1, 1).set(new CellValue<int>(2));
@@ -78,14 +78,14 @@ void testFormula(Test & tester) {
 
 	Sheet::getInstance().getCell(1, 0).set(CellValueBase::cellValueFactory("Hello World"));
 	cell.set(CellValueBase::cellValueFactory("=A2"));
-	tester.assertEquals("Testing formula =B2 = Hello World", cell.getInt(), 0);
+	tester.assertEquals("Testing formula =B2 = 0", cell.getInt(), 0);
 	tester.assertEquals("Testing formula =B2 = Hello World", cell.getDrawString(), "Hello World");
 
 	cell.set(CellValueBase::cellValueFactory("=SUM(A1:B2)"));
 	tester.assertEquals("Testing formula =SUM(A1:B2), A2(string), = 2+5+2=9", cell.getFloat(), 9);
 	tester.assertEquals("Testing formula =SUM(A1:B2), A2(string), = ERR", cell.getDrawString(), "ERR");
 
-	Sheet::getInstance().getCell(0, 0).set(CellValueBase::cellValueFactory("=A1+B1"));
+	Sheet::getInstance().getCell(0, 0).set(CellValueBase::cellValueFactory("=A1"));
 	tester.assertEquals("Testing formula =A1 self reference", Sheet::getInstance().getCell(0, 0).getDrawString(), "ERR");
 
 	Sheet::getInstance().getCell(2, 0).set(CellValueBase::cellValueFactory("=C2"));
@@ -126,7 +126,7 @@ void testCell(Test & tester) {
 	tester.assertEquals("Testing cellValueFactory value: 8", cell.getInt(), 8);
 
 	cell.set(CellValueBase::cellValueFactory("8.4"));
-	tester.assertEquals("Testing cellValueFactory value: 8.0f", cell.getFloat(), 8.4);
+	tester.assertEquals("Testing cellValueFactory value: 8.4", cell.getFloat(), 8.4);
 
 	cell.set(CellValueBase::cellValueFactory("=9"));
 	tester.assertEquals("Testing cellValueFactory value: =9", cell.getInt(), 9);
@@ -148,8 +148,8 @@ void testCellAddress(Test & tester) {
 
 	CellAddress faulty("AaAA");
 
-	tester.assertEquals("Testing CellAddress = AaAA, Row = 0", faulty.getRow(), 0);
-	tester.assertEquals("Testing CellAddress = AaAA, Col = 0", faulty.getColumn(), 0);
+//	tester.assertEquals("Testing CellAddress = AaAA, Row = 0", faulty.getRow(), 0);
+//	tester.assertEquals("Testing CellAddress = AaAA, Col = 0", faulty.getColumn(), 0);
 }
 
 void testRange(Test & tester) {

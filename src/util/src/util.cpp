@@ -24,12 +24,14 @@ bool contains(const std::string & src, const char & c, int & occurence) {
 //TODO improve >> improved, lijkt nu goed te werken
 bool isCellAddress(const std::string & address) {
 	bool digitMode = false;
-	size_t digitIn;
+	size_t digitIn = 0;
+	if(address.empty())
+		return false;
 	splitAddress(address, digitIn);
 	if (digitIn > MAX_COL_LENGTH || (address.length() - digitIn) > MAX_ROW_LENGTH)
 		return false;
 		
-	if (!isupper(address[0]) || address.size() < 2)
+	if (!isupper(address.front()) || address.size() < 2)
 	  return false;
 	  
 	for (size_t i = 1; i < address.size() - 1; i++) {
