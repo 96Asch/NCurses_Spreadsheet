@@ -83,7 +83,7 @@ void testUtil(Test & tester) {
   
   testString = "A?";
   test = false;
-  tester.assertEquals("Testing isCellAddress: a1", isCellAddress(testString), test); 
+  tester.assertEquals("Testing isCellAddress: A?  ", isCellAddress(testString), test); 
 }
 
 

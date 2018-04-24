@@ -5,6 +5,7 @@
  *      Author: asch
  */
 
+#include "iostream"
 #include "util.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,7 +22,6 @@ bool contains(const std::string & src, const char & c, int & occurence) {
 	return false;
 }
 
-//TODO improve >> improved, lijkt nu goed te werken
 bool isCellAddress(const std::string & address) {
 	bool digitMode = false;
 	size_t digitIn = 0;
@@ -30,17 +30,14 @@ bool isCellAddress(const std::string & address) {
 	splitAddress(address, digitIn);
 	if (digitIn > MAX_COL_LENGTH || (address.length() - digitIn) > MAX_ROW_LENGTH)
 		return false;
-		
 	if (!isupper(address.front()) || address.size() < 2)
 	  return false;
-	  
-	for (size_t i = 1; i < address.size() - 1; i++) {
+	for (size_t i = 1; i < address.size(); i++) {
 	  if (!isdigit(address[i]) && !isupper(address[i]))
 	    return false;
-	  if (!digitMode) {
+	  if (!digitMode) 
 	    if (isdigit(address[i]))
         digitMode = true;	  
-	  }
 	  if (digitMode)
 	    if (!isdigit(address[i]))
 	      return false;
