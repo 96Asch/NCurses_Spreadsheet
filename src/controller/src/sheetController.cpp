@@ -79,10 +79,8 @@ void SheetController::handleCommand(const int & command) {
 		break;
 	case KEY_BACKSPACE:
 		deleteCell();
-		break;
 	case KEY_DC:
 		deleteCell();
-		break;
 		break;
 	default:
 		break;
