@@ -19,7 +19,7 @@ class SheetView {
 private:
 	WINDOW *win;
 	CellAddress cursorLocation;
-	std::string INFORMATION = "q: Exit  r: Resize sheet  h: Show formulas  ENTER: edit cell  BACKSPACE: delete cell";
+	std::string INFORMATION = "q: Exit  r: Resize sheet  h: Show formulas  c: Show credits  ENTER: edit cell  BACKSPACE: delete cell";
 
 	void initHeader();
 	char headerLetter(int asciiVal);
