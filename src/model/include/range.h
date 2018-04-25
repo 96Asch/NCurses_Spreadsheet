@@ -42,7 +42,7 @@ public:
 	 * @param CellAddress end, the end address of the range.
 	 * @return Range*, pointer to the created range.
 	 */
-	Range* createRange(const CellAddress & begin, const CellAddress & end);
+	Range* createRange(CellAddress begin, CellAddress end);
 
 	/**
 	 * Creates a Range pointer which iterates over the given range.

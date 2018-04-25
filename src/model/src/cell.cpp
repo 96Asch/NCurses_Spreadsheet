@@ -17,9 +17,9 @@ Cell::Cell() {
 	clear();
 }
 
-void Cell::set(CellValueBase* base) {
-	Sheet::getInstance().notify();
+void Cell::set(CellValueBase* base) {	
 	value.reset(base);
+	Sheet::getInstance().notify();
 }
 
 int Cell::getInt() const {

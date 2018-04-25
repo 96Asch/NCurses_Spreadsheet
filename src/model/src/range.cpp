@@ -35,7 +35,13 @@ bool Range::checkRange(const std::string & address, int & split) const{
 	return false;
 } //checkRange
 
-Range* Range::createRange(const CellAddress & begin, const CellAddress & end) {
+Range* Range::createRange(CellAddress begin, CellAddress end){
+	CellAddress temp;
+	if (begin > end) {
+	  temp = begin;
+	  begin = end;
+	  end = temp;
+	}
 	beginAddress = begin;
 	endAddress = end;
 	++endAddress;
@@ -45,9 +51,7 @@ Range* Range::createRange(const CellAddress & begin, const CellAddress & end) {
 Range* Range::rangeFromString(const std::string & rangeString) {
 	int split = 0;
 	if (checkRange(rangeString, split)) {
-		beginAddress.createFromReference(rangeString.substr(0, split));
-		endAddress.createFromReference(rangeString.substr(split + 1));
-		++endAddress;
+    return createRange(CellAddress(rangeString.substr(0,split)), CellAddress(rangeString.substr(split+1)));
 	} //if
 	return this;
 } //createRange
