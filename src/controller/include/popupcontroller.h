@@ -51,7 +51,7 @@ private:
 	 * handles user input in the popupwindow.
 	 * @param integer value from user.
 	*/
-	void handlePopup(int command);
+	void handlePopup(const int & command);
 	/**
 	 * Writes string of popupwindow to the Sheets model.
 	 * 
@@ -66,7 +66,7 @@ private:
 	 * Adds character to string in popupwindow.
 	 * @param character value.
 	*/
-	void addToString(char input);
+	void addToString(const char & input);
 	/**
 	 * Formats string in popupwindow, to not exceed the window.
 	 * @param std::string value.

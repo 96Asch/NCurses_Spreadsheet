@@ -98,7 +98,7 @@ std::string PopupController::format(const std::string & str,
 	return str;
 }
 
-void PopupController::handlePopup(int command) {
+void PopupController::handlePopup(const int & command) {
 	switch (command) {
 	case KEY_BACKSPACE:
 		backspace();
@@ -114,7 +114,7 @@ void PopupController::backspace() {
 		editString.pop_back();
 }
 
-void PopupController::addToString(char input) {
+void PopupController::addToString(const char & input) {
 	if (input != '\n')
 		editString += input;
 }
