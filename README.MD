@@ -1,11 +1,10 @@
-export LD_LIBRARY_PATH="src/lib"
-
 Compiled with g++
+Using C++ 14
 gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.9) 
 
-Build with 'make'
-Build and run tests with 'make check'
-
+Run export LD_LIBRARY_PATH="src/lib" in the terminal
+Build with 'make' in root folder
+Build and run tests with 'make check' in root folder
 Run ./spreadsheet
 
 Authors:
