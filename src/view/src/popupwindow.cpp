@@ -12,25 +12,23 @@
 #include "util.h"
 #include <string>
 
-#define POS_X 0
-#define POS_Y 0
 #define CELLSIZE 8
-#define MAX_WIDTH 64
-#define MAX_HEIGHT 3
 #define UPPER_MARGIN 3
 
 
-PopupWindow::PopupWindow() {
+PopupWindow::PopupWindow(const int & height, const int & width, const int & posX, const int & posY)
+: height(height), width(width), posX(posX), posY(posY){
 }
 
 void PopupWindow::initialize() {
 	initscr();
 	noecho();
-	popupwin = newwin(MAX_HEIGHT, MAX_WIDTH, POS_Y, POS_X*CELLSIZE);
+	popupwin = newwin(height, width, posY, posX*CELLSIZE);
 	keypad(popupwin, TRUE);
+	curs_set(1);
 }
 
-void PopupWindow::drawString(std::string inputString){	
+void PopupWindow::drawString(const std::string & inputString){
 	werase(popupwin);
 	drawWindow();	
 	wmove(popupwin,1,1);	
@@ -39,6 +37,13 @@ void PopupWindow::drawString(std::string inputString){
 	doupdate();
 }
 
+size_t PopupWindow::getHeight() const {
+	return height;
+}
+
+size_t PopupWindow::getWidth() const {
+	return width;
+}
 
 void PopupWindow::drawWindow(){
 
@@ -47,6 +52,7 @@ void PopupWindow::drawWindow(){
 }
 
 void PopupWindow::exit() {
+	curs_set(0);
 	delwin(popupwin); /* Dealloceer venster */
 	endwin(); /* Curses stoppen */
 }

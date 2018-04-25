@@ -45,13 +45,17 @@ Cell & Sheet::getCell(const int & row, const int & column) {
 }
 
 void Sheet::ensureSize(const int & row, const int & col) {
-	if(row > 0 && row < MAX_ROWS && col > 0 && col < MAX_COLS) { 
+	int oldValRow(rows), oldValCol(cols);
+	if(row > 0 && row < MAX_ROWS)
 		rows = row;
+	if(col > 0 && col < MAX_COLS)
 		cols = col;
+
+	if(oldValCol != cols)
 		sheet.resize(cols);
+	if(oldValRow != rows)
 		for(size_t i = 0; i < sheet.size(); i++)
 			sheet[i].resize(rows);
-	}
 }
 
 int Sheet::getRows() const {

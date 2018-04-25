@@ -15,15 +15,19 @@
 class PopupWindow {
 
 private:
-
 	WINDOW *popupwin;
+	size_t height, width;
+	int posX, posY;
+
 public:
-	PopupWindow();
+	PopupWindow(const int & height, const int & width, const int & posX, const int & posY);
 	void initialize();
 	void drawWindow();
 	void exit();
 	int getInput();
-	void drawString(std::string inputString);
+	size_t getHeight() const;
+	size_t getWidth() const;
+	void drawString(const std::string & inputString);
 };
 
 #endif

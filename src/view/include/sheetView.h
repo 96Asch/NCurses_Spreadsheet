@@ -12,21 +12,24 @@
 #include <curses.h>
 #include "cellAddress.h"
 
+
+
 class SheetView {
 
 private:
 	WINDOW *win;
 	CellAddress cursorLocation;
+	std::string INFORMATION = "q: Exit  r: Resize sheet  h: Show formulas  ENTER: edit cell  BACKSPACE: delete cell";
 
 	void initHeader();
-
 	char headerLetter(int asciiVal);
 	void drawHighlight(const char* string);
 	void drawHeader();
 	void drawCells();
+	void drawHelp();
 	void drawCursor();
 	std::string numberToAlpha(const int & num);
-	std::string formatter(std::string cellstring);
+	std::string formatter(const std::string & cellstring);
 
 public:
 
@@ -38,6 +41,7 @@ public:
 	void exit();
 	void clear();
 	void draw();
+	void removeHelp();
 
 	CellAddress getCursor();
 	void setCursor(const CellAddress newLocation);

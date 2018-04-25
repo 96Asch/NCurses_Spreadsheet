@@ -33,12 +33,12 @@ void SheetView::initialize(const int & numRows, const int & numCols) {
 
 }
 void SheetView::drawHighlight(const char* string) {
-	attr_t old_attr; /* Huidige settings onthouden */
+	attr_t old_attr;
 	short old_pair;
 	wattr_get(win, &old_attr, &old_pair, NULL);
 	wattron(win, A_STANDOUT);
 	waddstr(win, string);
-	wattr_set(win, old_attr, old_pair, NULL); /* Oude settings terugzetten */
+	wattr_set(win, old_attr, old_pair, NULL);
 }
 
 void SheetView::drawHeader() {
@@ -88,10 +88,23 @@ void SheetView::drawCells() {
 	}
 }
 
+void SheetView::drawHelp() {
+	wmove(win, 1, CELLSIZE);
+	waddstr(win, INFORMATION.c_str());
+}
 
+void SheetView::removeHelp(){
+	wmove(win, 1, CELLSIZE);
+	std::string spaces = " ";
+	for(size_t i = 0; i < INFORMATION.size(); i++)
+		spaces += " ";
+	waddstr(win, spaces.c_str());
+	wrefresh(win);
+}
 
 void SheetView::draw() {
 	drawHeader();
+	drawHelp();
 	drawCells();
 	drawCursor();
 }
@@ -118,14 +131,14 @@ void SheetView::exit() {
 }
 
 //retutn string van 8 tekens
-std::string SheetView::formatter(std::string cellstring){
-	std::string temp;
-	if(cellstring.length() < 8) {
-		for(size_t i = 0; i < 8-cellstring.length(); i++)
-			temp += " ";
-		cellstring = temp + cellstring;
+std::string SheetView::formatter(const std::string & cellstring){
+	std::string spaces, temp;
+	if(cellstring.length() < CELLSIZE) {
+		for(size_t i = 0; i < CELLSIZE - cellstring.length(); i++)
+			spaces += " ";
+		temp = spaces + cellstring;
 	}
-	return cellstring.substr(0,8);
+	return temp.substr(0,CELLSIZE);
 }
 
 void SheetView::clear() {

@@ -31,6 +31,7 @@ private:
 	void handleCommand(const int & command);
 	void loop();
 	void editSize();
+	void showFormulae();
 	void backspace();
 	void pressEnter();
 	void deleteCell();

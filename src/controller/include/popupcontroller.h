@@ -16,22 +16,23 @@ class PopupController {
 
 public:
 	PopupController(PopupWindow window, const int & row, const int & col);
-	void windowLoop();
-	void windowSizeLoop();
+	PopupController(PopupWindow window);
+	void editLoop();
+	void resizeLoop();
+	void showText(const std::string & text);
 
 private:
 	PopupWindow window;
+	std::string editString;
+	int row, col;
+
 	void handlePopup(int command);
 	void writeString();
 	void backspace();
 	void addToString(char input);
-	
-	void loopSizeInput(const std::string & msg, int & getal);
+	std::string format(const std::string & str, const size_t & offset);
+	void getInt(const std::string & msg, int & getal);
 	void inputSizeWindow();
-	std::string editString;
-	int row, col;
-	
-
 };
 
 #endif
