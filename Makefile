@@ -58,19 +58,6 @@ comptest:	$(TESTDIR)/modeltest.cpp $(TESTDIR)/utiltest.cpp
 dist: clean
 	tar -czvf opdracht2-s1913999-s1437267-s1551973-s1453440.tar.gz src/ Makefile README.MD --exclude=".*"
 
-
-#REMOVE before distribution#############
-vcCleanBuild:
-	@rm -f $(TARGET) $(wildcard *.o)
-	@+$(MAKE) -C $(VIEW) clean
-	@+$(MAKE) -C $(VIEW)
-	@+$(MAKE) -C $(CONTROL) clean
-	@+$(MAKE) -C $(CONTROL)
-	 
-vc:	build vcCleanBuild $(TARGET) 
-	./spreadsheet
-########################################
-
 clean:
 	@echo Cleaning $(OBJDIR) $(LIBDIR) $(TARGET) $(wildcard *.o)...
 	@rm -f $(TARGET) $(TESTERS) $(wildcard *.o)
