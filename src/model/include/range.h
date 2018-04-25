@@ -75,7 +75,7 @@ private:
 	CellAddress beginAddress;
 	CellAddress endAddress;
 
-	bool checkRange(const std::string & address, int & split);
+	bool checkRange(const std::string & address, int & split) const;
 };
 
 class RangeIterator: public std::iterator<std::input_iterator_tag, Cell> {

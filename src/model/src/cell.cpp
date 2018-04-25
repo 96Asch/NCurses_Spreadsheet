@@ -45,7 +45,3 @@ std::string Cell::getDrawString() const {
 		return value->getDrawString();
 	return DEFAULT_STR;
 }
-
-void Cell::clear() {
-	value.reset(nullptr);
-}

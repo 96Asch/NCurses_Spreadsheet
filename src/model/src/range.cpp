@@ -21,8 +21,7 @@ Range::Range(const CellAddress& begin, const CellAddress & end) : beginAddress(b
 	++endAddress;
 }
 
-
-bool Range::checkRange(const std::string & address, int & split) {
+bool Range::checkRange(const std::string & address, int & split) const{
 	for (size_t i = 0; i < address.length(); i++) {
 		if (address[i] == ':') {
 			split = i;

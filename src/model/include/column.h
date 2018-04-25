@@ -30,7 +30,7 @@ public:
 	 * @param int index, the row index to retrieve the cell.
 	 * @return Cell&, a reference to the cell.
 	 */
-	Cell& getCell(const int & index);
+	Cell& getCell(const size_t & index);
 
 	/**
 	 * Resizes the column.
