@@ -23,3 +23,4 @@ UI basis & UI edit: Ruben & Paul
 FormulaParser: Andrew
 Tests: Andrew & Karl
 Denkwerk: Andrew & Karl & Paul & Ruben
+Bugfixes: Andrew & Karl & Paul & Ruben

@@ -14,7 +14,7 @@
 #define DEFAULT_STR ""
 
 Cell::Cell() {
-	clear();
+	value.reset(nullptr);
 }
 
 void Cell::set(CellValueBase* base) {	
@@ -44,8 +44,4 @@ std::string Cell::getDrawString() const {
 	if (value)
 		return value->getDrawString();
 	return DEFAULT_STR;
-}
-
-void Cell::clear() {
-	value.reset(nullptr);
 }

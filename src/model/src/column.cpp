@@ -20,7 +20,9 @@ Column::Column(const int & rows) {
 		column.push_back(Cell());
 }
 
-Cell& Column::getCell(const int & index) {
+Cell& Column::getCell(const size_t & index) {
+	if(index > column.size())
+		return column.front();
 	return column[index];
 }
 

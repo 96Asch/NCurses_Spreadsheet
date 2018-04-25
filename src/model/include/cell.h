@@ -54,11 +54,6 @@ public:
 	 */
 	std::string getDrawString() const;
 
-	/**
-	 * Clears the value of the cell
-	 */
-	void clear();
-
 private:
 	std::unique_ptr<CellValueBase> value;
 };
