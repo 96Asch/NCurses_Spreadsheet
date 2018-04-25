@@ -15,6 +15,11 @@
 #define EDIT_HEIGHT 3
 #define TEXT_WINDOW_HEIGHT 10
 
+const static std::string FORMULAS =
+		"Supported formulas:\n Summation: =SUM(ADDRESS:ADDRESS)\n Mean: =AVG(ADDRESS:ADDRESS)\n Count: =COUNT(ADDRESS:ADDRESS)\n Non-aggregate functions also allowed.";
+const static std::string CREDITS =
+		"This spreadsheet is an assignment for PRT.\n This program was developed by:\n \t\t Andrew Huang \t\t s1913999\n \t\t Paul Peters \t\t s1453440\n \t\t Ruben van Erkelens \t s1437267\n \t\t Karl Freeke \t\t s1551973.";
+
 SheetController::SheetController(SheetView view) :
 		view(view), finished(false) {
 }
@@ -56,6 +61,9 @@ void SheetController::handleCommand(const int & command) {
 		break;
 	case 'r':
 		editSize();
+		break;
+	case 'c':
+		showCredits();
 		break;
 	case KEY_DOWN:
 		moveCursorDown();
@@ -109,11 +117,15 @@ void SheetController::pressEnter() {
 }
 
 void SheetController::showFormulae() {
-	std::string formulae =
-			"Supported formulas:\n Summation: =SUM(ADDRESS:ADDRESS)\n Mean: =AVG(ADDRESS:ADDRESS)\n Count: =COUNT(ADDRESS:ADDRESS)\n Non-aggregate functions also allowed.";
 	PopupWindow help(TEXT_WINDOW_HEIGHT, EDIT_WIDTH, EDIT_POS_X, EDIT_POS_Y + 4);
 	PopupController control(help);
-	control.showText(formulae);
+	control.showText(FORMULAS);
+}
+
+void SheetController::showCredits() {
+	PopupWindow help(TEXT_WINDOW_HEIGHT, EDIT_WIDTH, EDIT_POS_X, EDIT_POS_Y + 4);
+	PopupController control(help);
+	control.showText(CREDITS);
 }
 
 void SheetController::loop() {
