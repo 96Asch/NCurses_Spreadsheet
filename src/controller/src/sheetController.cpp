@@ -82,14 +82,17 @@ void SheetController::handleCommand(const int & command) {
 }
 
 void SheetController::editSize() {
+	int width = 0;
 	view.removeHelp();
 	PopupWindow sizePopup(EDIT_HEIGHT, EDIT_WIDTH, EDIT_POS_X, EDIT_POS_Y);
 	PopupController control(sizePopup);
 	control.resizeLoop();
 	view.clear();
 	view.exit();
-	view.initialize(Sheet::getInstance().getRows(),
-			Sheet::getInstance().getCols());
+	width = Sheet::getInstance().getCols();
+	if (width < 20)
+	  width = 20;
+	view.initialize(Sheet::getInstance().getRows(),width);
 
 }
 

@@ -65,7 +65,18 @@ public:
 		 row++;
 		return *this;
 	}
-
+	
+	bool operator>(const CellAddress & address) {
+	  return ((this->getColumn() > address.getColumn()) 
+	          || (this->getRow() > address.getRow()));
+	}
+	
+	/*CellAddress& operator=(CellAddress address) {
+	  this->row = address.getRow();
+	  this->column = address.getColumn();
+	  return *this;
+	}*/
+	
 private:
 	int row, column;
 
