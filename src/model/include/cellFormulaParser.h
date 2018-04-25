@@ -135,7 +135,7 @@ private:
 	std::map<std::string, TokenType> aggregateMap = { { "AVG", AVG }, { "COUNT",
 			COUNT }, { "SUM", SUM } };
 
-
+	bool parseError;
    /**
 	 * Returns true if the string is an operator.
 	 * @param string str, the string operator.
@@ -150,6 +150,8 @@ private:
 	 */
 	bool isOperator(const char & c); 
 	
+	bool isAggregateValid(const std::string & aggregate, const std::string & str);
+
 	/**
 	 * Returns true if the string is an aggregate formula.
 	 * @param string str, the string formula.

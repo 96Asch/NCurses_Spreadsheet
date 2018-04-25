@@ -1,11 +1,10 @@
 /*
-  Programmeertechnieken opdracht 2
-  Andrew Huang        s1913999
-  Paul Peters         s1453440
-  Ruben van Erkelens  s1437267
-  Karl Freeke         s1551973
-*/
-
+ Programmeertechnieken opdracht 2
+ Andrew Huang        s1913999
+ Paul Peters         s1453440
+ Ruben van Erkelens  s1437267
+ Karl Freeke         s1551973
+ */
 
 #include "cellFormulaParser.h"
 #include "util.h"
@@ -32,19 +31,27 @@ bool CellFormulaParser::isOperator(const char & c) {
 	}
 }
 
+bool CellFormulaParser::isAggregateValid(const std::string & agg, const std::string & str) {
+	int occurence = 0;
+	size_t firstBracketIndex = agg.size();
+	if (str[firstBracketIndex] == '(' && str.back() == ')') {
+		if (contains(str.substr(firstBracketIndex + 1), ':', occurence)
+				&& occurence == 1) {
+			return true;
+		}
+	}
+	return false;
+}
+
 bool CellFormulaParser::isAggregate(const std::string & str) {
 	std::string aggregates[] = { "SUM", "AVG", "COUNT" };
-	size_t firstBracketIndex;
-	int occurence = 0;
+
 	for (std::string agg : aggregates) {
 		if (str.size() > agg.size() && str.substr(0, agg.size()) == agg) {
-			firstBracketIndex = agg.size();
-			if (str[firstBracketIndex] == '(' && str.back() == ')') {
-				if (contains(str.substr(firstBracketIndex + 1), ':', occurence)
-						&& occurence == 1) {
-					return true;
-				}
-			}
+			if (isAggregateValid(agg, str))
+				return true;
+			else
+				parseError = true;
 		}
 	}
 	return false;
@@ -252,6 +259,7 @@ bool CellFormulaParser::parse(const std::string & formula,
 
 	root = nullptr;
 	bool hasError = false;
+	parseError = false;
 	std::list < std::string > tokens;
 
 	split(formula.substr(1, formula.size() - 1), tokens);
@@ -260,7 +268,7 @@ bool CellFormulaParser::parse(const std::string & formula,
 	ListIt tokenIt = tokens.begin();
 	root = buildTree(tokenIt, tokens.end(), hasError);
 
-	if (hasError) {
+	if (hasError || parseError) {
 		root = nullptr;
 		return false;
 	}
