@@ -68,10 +68,6 @@ int SheetView::getInput() {
 	return wgetch(win);
 }
 
-char SheetView::headerLetter(int asciiVal) {
-	char asciiChar = asciiVal + 65;
-	return asciiChar;
-}
 
 void SheetView::drawCells() {
 	std::string drawstring;
@@ -126,8 +122,8 @@ CellAddress SheetView::getCursor() {
 }
 
 void SheetView::exit() {
-	delwin(win); /* Dealloceer venster */
-	endwin(); /* Curses stoppen */
+	delwin(win);
+	endwin(); 
 }
 
 //retutn string van 8 tekens

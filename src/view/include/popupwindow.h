@@ -20,13 +20,44 @@ private:
 	int posX, posY;
 
 public:
+	/**
+	 *	Constructor of PopupWindow class.
+	 * @param integer value for height.
+	 * @param integer value for width.
+	 *	@param integer value for position X .
+	 * @param integer value for position Y.
+	 */
 	PopupWindow(const int & height, const int & width, const int & posX, const int & posY);
+	/**
+	 * Initializes popupwindow.
+	 */
 	void initialize();
+	/**
+	 *	Draws borders of popupwindow.
+	 */
 	void drawWindow();
+	/**
+	 *	Exits curses and deallocates popupwindow.
+	 *	
+	 */
 	void exit();
+	/**
+	 *	Gets input from user.
+	 *	@return integer value.
+	 */
 	int getInput();
+	/**
+	 *	Gets height of popupwindow.
+	 * @return size_t value
+	 */
 	size_t getHeight() const;
+	/**
+	 *	gets width of popupwindow.
+	 */
 	size_t getWidth() const;
+	/**
+	 *
+	 */
 	void drawString(const std::string & inputString);
 };
 

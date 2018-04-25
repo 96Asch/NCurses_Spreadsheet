@@ -53,8 +53,8 @@ void PopupWindow::drawWindow(){
 
 void PopupWindow::exit() {
 	curs_set(0);
-	delwin(popupwin); /* Dealloceer venster */
-	endwin(); /* Curses stoppen */
+	delwin(popupwin);
+	endwin(); 
 }
 
 int PopupWindow::getInput() {
