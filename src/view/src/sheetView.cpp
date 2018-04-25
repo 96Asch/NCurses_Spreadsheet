@@ -132,7 +132,7 @@ void SheetView::exit() {
 
 //retutn string van 8 tekens
 std::string SheetView::formatter(const std::string & cellstring){
-	std::string spaces, temp;
+	std::string spaces, temp = cellstring;
 	if(cellstring.length() < CELLSIZE) {
 		for(size_t i = 0; i < CELLSIZE - cellstring.length(); i++)
 			spaces += " ";
