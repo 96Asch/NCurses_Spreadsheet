@@ -14,7 +14,7 @@
 #define DEFAULT_STR ""
 
 Cell::Cell() {
-	clear();
+	value.reset(nullptr);
 }
 
 void Cell::set(CellValueBase* base) {	
