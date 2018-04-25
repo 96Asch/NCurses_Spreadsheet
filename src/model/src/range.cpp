@@ -21,20 +21,6 @@ Range::Range(const CellAddress& begin, const CellAddress & end) : beginAddress(b
 	++endAddress;
 }
 
-bool Range::checkRange(const std::string & address, int & split) const{
-	for (size_t i = 0; i < address.length(); i++) {
-		if (address[i] == ':') {
-			split = i;
-			if (isCellAddress(address.substr(0, i))
-					&& (isCellAddress(address.substr(i + 1))))
-				return true;
-			else
-				return false;
-		}
-	} //for
-	return false;
-} //checkRange
-
 Range* Range::createRange(CellAddress begin, CellAddress end){
 	CellAddress temp;
 	if (begin > end) {

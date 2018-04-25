@@ -22,7 +22,7 @@ public:
 		size_t length = WHITESPACE_SIZE - message.size();
 
 		testAmount++;
-		std::cout << message << "...";
+		std::cout << message;
 		if (length > 0) {
 			for (size_t i = 0; i < length; i++)
 				std::cout << ' ';

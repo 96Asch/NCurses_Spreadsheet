@@ -14,6 +14,20 @@
 #include <math.h>
 #include <fenv.h>
 
+bool checkRange(const std::string & address, int & split){
+	for (size_t i = 0; i < address.length(); i++) {
+		if (address[i] == ':') {
+			split = i;
+			if (isCellAddress(address.substr(0, i))
+					&& (isCellAddress(address.substr(i + 1))))
+				return true;
+			else
+				return false;
+		}
+	} //for
+	return false;
+} //checkRange
+
 bool contains(const std::string & src, const char & c, int & occurence) {
 	for (char ch : src)
 		if (ch == c)
@@ -26,19 +40,27 @@ bool contains(const std::string & src, const char & c, int & occurence) {
 bool isCellAddress(const std::string & address) {
 	bool digitMode = false;
 	size_t digitIn = 0;
+	
 	if(address.empty())
 		return false;
+	
 	splitAddress(address, digitIn);
-	if (digitIn > MAX_COL_LENGTH || (address.length() - digitIn) > MAX_ROW_LENGTH)
+	if (digitIn < 1 
+	  || digitIn > MAX_COL_LENGTH 
+	  || (address.length() - digitIn) < 1 
+	  ||(address.length() - digitIn) > MAX_ROW_LENGTH)
 		return false;
 	if (!isupper(address.front()) || address.size() < 2)
 	  return false;
+	
 	for (size_t i = 1; i < address.size(); i++) {
 	  if (!isdigit(address[i]) && !isupper(address[i]))
 	    return false;
+	  
 	  if (!digitMode) 
 	    if (isdigit(address[i]))
         digitMode = true;	  
+	  
 	  if (digitMode)
 	    if (!isdigit(address[i]))
 	      return false;

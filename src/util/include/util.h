@@ -28,6 +28,8 @@ bool is(std::string someString, T & casted) {
 
 	return true;
 }
+
+bool checkRange(const std::string & address, int & split);
 void splitAddress(const std::string & address, size_t & index);
 bool contains(const std::string & src, const char & c, int & occurence);
 bool isCellAddress(const std::string & address);

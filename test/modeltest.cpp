@@ -6,6 +6,8 @@
   Karl Freeke         s1551973
 */
 
+#include <memory>
+#include "cellFormulaParser.h"
 #include "sheet.h"
 #include "cellFormula.h"
 #include "cellValue.h"
@@ -156,8 +158,8 @@ void testCellAddress(Test & tester) {
 
 	CellAddress faulty("AaAA");
 
-//	tester.assertEquals("Testing CellAddress = AaAA, Row = 0", faulty.getRow(), 0);
-//	tester.assertEquals("Testing CellAddress = AaAA, Col = 0", faulty.getColumn(), 0);
+	tester.assertEquals("Testing CellAddress = AaAA, Row = 0", faulty.getRow(), 0);
+	tester.assertEquals("Testing CellAddress = AaAA, Col = 0", faulty.getColumn(), 0);
 }
 
 void testRange(Test & tester) {
@@ -194,12 +196,82 @@ void testRange(Test & tester) {
 
 }
 
+
+void testFormulaParser(Test & tester) {
+  std::cout << "\n++++ CELLFORMULAPARSER TEST CASE ++++" << std::endl;
+  CellFormulaParser cellFormulaParser;
+  std::shared_ptr<Token> node;
+  
+
+  tester.assertEquals("Testing =SUM(A1:D5)", cellFormulaParser.parse("=SUM(A1:D5)", node),  true);
+  
+  tester.assertEquals("Testing =AVG(A1:D5)", cellFormulaParser.parse("=AVG(A1:D5)", node),  true);
+  
+  tester.assertEquals("Testing =COUNT(A1:D5)", cellFormulaParser.parse("=COUNT(A1:D5)", node),  true);
+  
+  tester.assertEquals("Testing =SUM(A1:D5)+SUM(A1:A5)", cellFormulaParser.parse("=SUM(A1:D5)+SUM(A1:A5)", node),  true);
+  
+  tester.assertEquals("Testing =SUM(A1:D5)/SUM(A1:A5)", cellFormulaParser.parse("=SUM(A1:D5)/SUM(A1:A5)", node),  true);
+  
+  tester.assertEquals("Testing =SUM(A1:D5)*SUM(A1:A5)", cellFormulaParser.parse("=SUM(A1:D5)*SUM(A1:A5)", node),  true);
+  
+  tester.assertEquals("Testing =SUM", cellFormulaParser.parse("=SUM", node),  false);
+  
+  tester.assertEquals("Testing =SUM(A1)", cellFormulaParser.parse("=SUM(A1)", node),  false);
+
+  tester.assertEquals("Testing =SUM(:)", cellFormulaParser.parse("=SUM(:)", node),  false);
+
+  tester.assertEquals("Testing ==SUM(A1::A5)", cellFormulaParser.parse("=SUM(A1::A5)", node),  false);
+
+  tester.assertEquals("Testing =SUM(A1:A5:A10)", cellFormulaParser.parse("=SUM(A1:A5:A10)", node),  false);
+  
+  tester.assertEquals("Testing =SUM(A1:A5)", cellFormulaParser.parse("SUM(A1:A5)", node),  false);
+  
+  
+  
+  tester.assertEquals("Testing =AVG", cellFormulaParser.parse("=AVG", node),  false);
+
+  tester.assertEquals("Testing =AVG(A1)", cellFormulaParser.parse("=AVG(A1)", node),  false);
+
+  tester.assertEquals("Testing =AVG(:)", cellFormulaParser.parse("=AVG(:)", node),  false);
+
+  tester.assertEquals("Testing =AVG(A1::A5)", cellFormulaParser.parse("=AVG(A1::A5)", node),  false);
+ 
+  tester.assertEquals("Testing =AVG(A1:A5:A10)", cellFormulaParser.parse("=AVG(A1:A5:A10)", node),  false);
+
+  tester.assertEquals("Testing AVG(A1:A5)", cellFormulaParser.parse("AVG(A1:A5)", node),  false);
+  
+  
+
+  tester.assertEquals("Testing =COUNT", cellFormulaParser.parse("=COUNT", node),  false);
+
+  tester.assertEquals("Testing =COUNT(A1)", cellFormulaParser.parse("=COUNT(A1)", node),  false);
+
+  tester.assertEquals("Testing =COUNT(:)", cellFormulaParser.parse("=COUNT(:)", node),  false);
+
+  tester.assertEquals("Testing =COUNT(A1::A5)", cellFormulaParser.parse("=COUNT(A1::A5)", node),  false);
+
+  tester.assertEquals("Testing =COUNT(A1:A5:A10)", cellFormulaParser.parse("=COUNT(A1:A5:A10)", node),  false);
+
+  tester.assertEquals("Testing COUNT(A1:A5)", cellFormulaParser.parse("COUNT(A1:A5)", node),  false);
+
+  tester.assertEquals("Testing =SUM((A1:A5))", cellFormulaParser.parse("=SUM((A1:A5))", node),  false);
+
+  tester.assertEquals("Testing ==SUM(A1:A5)", cellFormulaParser.parse("==SUM(A1:A5)", node),  false);
+  
+  tester.assertEquals("Testing =AA", cellFormulaParser.parse("=AA", node),  false);
+  
+  
+  
+}
+
 int main(void) {
 	Test tester;
 	testCell(tester);
 	testFormula(tester);
 	testCellAddress(tester);
 	testRange(tester);
+	testFormulaParser(tester);
 	tester.printStatistics();
 	return 0;
 }

@@ -32,11 +32,10 @@ bool CellFormulaParser::isOperator(const char & c) {
 }
 
 bool CellFormulaParser::isAggregateValid(const std::string & agg, const std::string & str) {
-	int occurence = 0;
+	int split = 0;
 	size_t firstBracketIndex = agg.size();
-	if (str[firstBracketIndex] == '(' && str.back() == ')') {
-		if (contains(str.substr(firstBracketIndex + 1), ':', occurence)
-				&& occurence == 1) {
+	if (str[firstBracketIndex] == '(' && str.back() == ')') {      
+		if (checkRange(str.substr(firstBracketIndex + 1, str.length() - agg.length() - 2), split)) {
 			return true;
 		}
 	}
@@ -45,7 +44,6 @@ bool CellFormulaParser::isAggregateValid(const std::string & agg, const std::str
 
 bool CellFormulaParser::isAggregate(const std::string & str) {
 	std::string aggregates[] = { "SUM", "AVG", "COUNT" };
-
 	for (std::string agg : aggregates) {
 		if (str.size() > agg.size() && str.substr(0, agg.size()) == agg) {
 			if (isAggregateValid(agg, str))
@@ -126,6 +124,8 @@ void CellFormulaParser::split(std::string rename,
 			}
 		}
 	}
+	if(aggregateMode)
+	  parseError = true;
 }
 
 void CellFormulaParser::infixToPrefix(std::list<std::string> & tokens) {
