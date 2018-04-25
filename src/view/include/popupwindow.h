@@ -52,11 +52,12 @@ public:
 	 */
 	size_t getHeight() const;
 	/**
-	 *	gets width of popupwindow.
+	 *	Gets width of popupwindow.
 	 */
 	size_t getWidth() const;
 	/**
-	 *
+	 *	Prints string in popupwindow.
+	 * @param string value.
 	 */
 	void drawString(const std::string & inputString);
 };
